@@ -24,3 +24,9 @@ hs_err_pid*
 .DS_Store
 
 out/
+
+# Android Studio Navigation editor temp files
+.navigation/
+
+# Android Studio captures folder
+captures/
