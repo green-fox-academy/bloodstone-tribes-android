@@ -1,5 +1,5 @@
 general:
-  build_dir: app/
+  build_dir: /app/
   
 dependencies:
   override:
