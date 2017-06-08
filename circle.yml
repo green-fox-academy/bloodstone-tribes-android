@@ -1,6 +1,2 @@
 general:
     build_dir: /app/
-
-dependencies:
-    override:
-        - ./gradlew dependencies
