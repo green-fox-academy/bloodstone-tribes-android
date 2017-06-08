@@ -1,13 +1,3 @@
 general:
-  build_dir: TribesOfLagopus/app/
+  build_dir: app/
   
-dependencies:
-  override:
-    - chmod +x gradlew
-    - ./gradlew dependencies
-    
-deployment:
-  production:
-    branch: master
-    commands:
-      - ./deploy_master.sh
