@@ -22,6 +22,7 @@ public class MainActivity extends AppCompatActivity {
         TextView textView = (TextView) findViewById(R.id.textView2);
         textView.setText(message);
     }
+    
 
     public void sendMessage(View view) {
         Intent intent = new Intent(this, MainActivity.class);
