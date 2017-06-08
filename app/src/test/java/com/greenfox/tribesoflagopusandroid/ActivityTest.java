@@ -1,4 +1,4 @@
-package greenfox.com.tribesoflagopus;
+package com.greenfox.tribesoflagopusandroid;
 
 import android.content.Intent;
 import android.widget.Button;
@@ -12,7 +12,7 @@ import org.robolectric.Robolectric;
 import org.robolectric.RobolectricTestRunner;
 import org.robolectric.annotation.Config;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 import static org.robolectric.Shadows.shadowOf;
 
 @Config(constants = BuildConfig.class)
@@ -39,7 +39,6 @@ public class ActivityTest {
         Button button = (Button) activity.findViewById(R.id.button);
         TextView result = (TextView) activity.findViewById(R.id.textView2);
         EditText edit = (EditText) activity.findViewById(R.id.editText);
-
         button.performClick();
         assertEquals(result.getText().toString(), edit.getText().toString());
     }
