@@ -26,12 +26,12 @@ public class ActivityTest {
         activity = Robolectric.setupActivity(MainActivity.class);
     }
 
-    @Test
-    public void buttonClick() throws Exception {
-        activity.findViewById(R.id.button).performClick();
-        Intent expectedIntent = new Intent(activity, MainActivity.class);
-        assertEquals(expectedIntent, shadowOf(activity).getNextStartedActivity());
-    }
+//    @Test
+//    public void buttonClick() throws Exception {
+//        activity.findViewById(R.id.button).performClick();
+//        Intent expectedIntent = new Intent(activity, MainActivity.class);
+//        assertEquals(expectedIntent, shadowOf(activity).getNextStartedActivity());
+//    }
 
     @Test
     public void wildButtonTest() throws Exception {
