@@ -1,2 +1,7 @@
 general:
   build_dir: app/
+  
+dependencies:
+  pre:
+    - echo y | android update sdk --no-ui --filter build-tools-25.0.0,android-25,extra-android-m2repository
+    
