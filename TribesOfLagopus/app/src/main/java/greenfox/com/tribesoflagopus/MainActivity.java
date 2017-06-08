@@ -1,5 +1,6 @@
 package greenfox.com.tribesoflagopus;
 
+import android.app.PendingIntent;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -17,17 +18,19 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         Intent intent = getIntent();
+        intent.putExtra("exampleExtra", "some data");
         String message = intent.getStringExtra(MainActivity.EXTRA_MESSAGE);
-
-        TextView textView = (TextView) findViewById(R.id.textView2);
-        textView.setText(message);
+//        TextView textView = (TextView) findViewById(R.id.textView2);
+//        textView.setText(message);
     }
-    
+
 
     public void sendMessage(View view) {
-        Intent intent = new Intent(this, MainActivity.class);
+        Intent intent = new Intent(this, Main2Activity.class);
         EditText editText = (EditText) findViewById(R.id.editText);
         String message = editText.getText().toString();
+        TextView textView = (TextView) findViewById(R.id.textView2);
+        textView.setText(message);
         intent.putExtra(EXTRA_MESSAGE, message);
         startActivity(intent);
     }

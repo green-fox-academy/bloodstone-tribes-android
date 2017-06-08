@@ -23,4 +23,7 @@ public class ExampleInstrumentedTest {
 
         assertEquals("greenfox.com.tribesoflagopus", appContext.getPackageName());
     }
+
+
+
 }
