@@ -36,7 +36,7 @@ public class MainActivity extends AppCompatActivity {
 
         Retrofit retrofit = builder.build();
         LoginService service = retrofit.create(LoginService.class);
-        Call<User> call = service.loginWithUser("Dummy");
+        Call<User> call = service.loginWithUser("Dummy", "password");
 
         call.enqueue(new Callback<User>() {
             @Override

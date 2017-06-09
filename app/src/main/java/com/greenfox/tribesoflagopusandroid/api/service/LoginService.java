@@ -2,11 +2,12 @@ package com.greenfox.tribesoflagopusandroid.api.service;
 
 import com.greenfox.tribesoflagopusandroid.api.model.User;
 
-import java.util.List;
-
 import retrofit2.Call;
+import retrofit2.http.Field;
+import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
-import retrofit2.http.Path;
+import retrofit2.http.POST;
+import retrofit2.http.Query;
 
 /**
  * Created by User on 2017. 06. 09..
@@ -14,7 +15,8 @@ import retrofit2.http.Path;
 
 public interface LoginService {
 
-    @GET("login")
-    Call<User> loginWithUser(String user);
+    @FormUrlEncoded
+    @POST("/login")
+    Call<User> loginWithUser(@Field("username") String username,@Field("password") String password);
 
 }
