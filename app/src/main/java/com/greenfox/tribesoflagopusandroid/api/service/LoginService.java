@@ -15,6 +15,6 @@ import retrofit2.http.Path;
 public interface LoginService {
 
     @GET("login")
-    Call<List<User>> loginWithUser(String user);
+    Call<User> loginWithUser(String user);
 
 }

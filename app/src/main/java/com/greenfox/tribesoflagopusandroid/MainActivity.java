@@ -1,26 +1,15 @@
 package com.greenfox.tribesoflagopusandroid;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
-import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ListView;
-import android.widget.TextView;
-
-import android.app.PendingIntent;
-import android.content.Intent;
-import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
-import android.view.View;
-import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.greenfox.tribesoflagopusandroid.api.model.User;
 import com.greenfox.tribesoflagopusandroid.api.service.LoginService;
-import com.greenfox.tribesoflagopusandroid.ui.adapter.UserAdapter;
 
 import java.util.List;
 
@@ -47,18 +36,16 @@ public class MainActivity extends AppCompatActivity {
 
         Retrofit retrofit = builder.build();
         LoginService service = retrofit.create(LoginService.class);
-        Call<List<User>> call = service.loginWithUser("Dummy");
+        Call<User> call = service.loginWithUser("Dummy");
 
-        call.enqueue(new Callback<List<User>>() {
+        call.enqueue(new Callback<User>() {
             @Override
-            public void onResponse(Call<List<User>> call, Response<List<User>> response) {
-                List<User> users= response.body();
-
-                listView.setAdapter(new UserAdapter(MainActivity.this, users));
+            public void onResponse(Call<User> call, Response<User> response) {
+                User user = response.body();
             }
 
             @Override
-            public void onFailure(Call<List<User>> call, Throwable t) {
+            public void onFailure(Call<User> call, Throwable t) {
                 Toast.makeText(MainActivity.this, "error :(", Toast.LENGTH_SHORT).show();
             }
         });
