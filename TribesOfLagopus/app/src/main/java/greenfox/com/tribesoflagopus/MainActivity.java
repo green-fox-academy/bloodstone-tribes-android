@@ -22,12 +22,14 @@ public class MainActivity extends AppCompatActivity {
         TextView textView = (TextView) findViewById(R.id.textView2);
         textView.setText(message);
     }
-    
+
 
     public void sendMessage(View view) {
         Intent intent = new Intent(this, MainActivity.class);
         EditText editText = (EditText) findViewById(R.id.editText);
         String message = editText.getText().toString();
+        TextView textView = (TextView) findViewById(R.id.textView2);
+        textView.setText(message);
         intent.putExtra(EXTRA_MESSAGE, message);
         startActivity(intent);
     }
