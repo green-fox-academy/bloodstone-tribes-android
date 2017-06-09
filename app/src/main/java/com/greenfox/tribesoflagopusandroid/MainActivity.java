@@ -24,11 +24,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
     }
-<<<<<<< HEAD:TribesOfLagopus/app/src/main/java/greenfox/com/tribesoflagopus/MainActivity.java
-
-=======
->>>>>>> 604dd461ce9807171a0caa9a9e29d1e0ddaffae2:app/src/main/java/com/greenfox/tribesoflagopusandroid/MainActivity.java
-
+    
     public void sendMessage(View view) {
         EditText editText = (EditText) findViewById(R.id.editText);
         String message = editText.getText().toString();
