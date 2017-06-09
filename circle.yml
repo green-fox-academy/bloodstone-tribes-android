@@ -20,4 +20,4 @@ test:
     override:
         - ./gradlew :app:test
         - ./gradlew assembleRelease
-        - adb install app/build.apk
+        - cp -r bloodstone-tribes-android/app $CIRCLE_ARTIFACTS
