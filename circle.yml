@@ -20,5 +20,4 @@ test:
     override:
         - ./gradlew :app:test
         - ./gradlew assembleRelease
-        - cp -r /app $CIRCLE_ARTIFACTS
-        
+        - adb install app/build.apk
