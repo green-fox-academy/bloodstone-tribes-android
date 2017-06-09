@@ -23,7 +23,6 @@ public class MainActivity extends AppCompatActivity {
 
     public static final String EXTRA_MESSAGE = "greenfox.com.tribesoflagopus.MESSAGE";
 
-    private ListView listView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,7 +35,7 @@ public class MainActivity extends AppCompatActivity {
 
         Retrofit retrofit = builder.build();
         LoginService service = retrofit.create(LoginService.class);
-        Call<User> call = service.loginWithUser("Dummy", "password");
+        Call<User> call = service.loginWithUser("username", "password");
 
         call.enqueue(new Callback<User>() {
             @Override
