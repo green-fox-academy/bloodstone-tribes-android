@@ -30,7 +30,8 @@ public class MainActivity extends AppCompatActivity {
         String message = editText.getText().toString();
         TextView textView = (TextView) findViewById(R.id.textView2);
         textView.setText(message);
+        Intent intent = new Intent(this, Login.class);
+        startActivity(intent);
     }
-
 }
 
