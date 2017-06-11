@@ -11,6 +11,9 @@ import android.widget.TextView;
 
 public class Login extends AppCompatActivity {
 
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
+        SharedPreferences.Editor editor = preferences.edit();
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -18,17 +21,27 @@ public class Login extends AppCompatActivity {
     }
 
     public void login(View view) {
-        addUsernameToPreferences();
+        addUserInfoToPreferences();
         Intent intent = new Intent(this, MainActivity.class);
         startActivity(intent);
     }
 
-    public void addUsernameToPreferences() {
-        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
-        SharedPreferences.Editor editor = preferences.edit();
+    protected void addUserInfoToPreferences() {
+        addUsername();
+        addPassword();
+    }
+
+    protected void addUsername() {
         EditText editText = (EditText) findViewById(R.id.editText3);
         String username = editText.getText().toString();
         editor.putString("Username", username);
+        editor.apply();
+    }
+
+    protected void addPassword() {
+        EditText editText = (EditText) findViewById(R.id.editText2);
+        String password = editText.getText().toString();
+        editor.putString("Password", password);
         editor.apply();
     }
 }
