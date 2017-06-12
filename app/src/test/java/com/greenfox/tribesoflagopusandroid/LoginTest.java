@@ -5,6 +5,7 @@ import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -40,6 +41,16 @@ public class LoginTest {
     public void addPassword() throws Exception {
         EditText password = (EditText) login.findViewById(R.id.editText2);
         login.addPassword();
+        assertEquals(password.getText().toString(), login.preferences.getString("Password", ""));
+    }
+
+    @Test
+    public void onClick() throws Exception {
+        Button button = (Button) login.findViewById(R.id.button2);
+        EditText username = (EditText) login.findViewById(R.id.editText3);
+        EditText password = (EditText) login.findViewById(R.id.editText2);
+        button.performClick();
+        assertEquals(username.getText().toString(), login.preferences.getString("Username", ""));
         assertEquals(password.getText().toString(), login.preferences.getString("Password", ""));
     }
 
