@@ -7,6 +7,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+<<<<<<< HEAD
 import com.greenfox.tribesoflagopusandroid.api.model.User;
 import com.greenfox.tribesoflagopusandroid.api.service.LoginService;
 
@@ -16,6 +17,8 @@ import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
+=======
+>>>>>>> eada2573b1dea97c190c89be5ca97d5dbf160bab
 public class MainActivity extends AppCompatActivity {
 
     public static final String EXTRA_MESSAGE = "greenfox.com.tribesoflagopus.MESSAGE";
@@ -51,5 +54,7 @@ public class MainActivity extends AppCompatActivity {
         String message = editText.getText().toString();
         TextView textView = (TextView) findViewById(R.id.textView2);
         textView.setText(message);
+        Intent intent = new Intent(this, Login.class);
+        startActivity(intent);
     }
 }
