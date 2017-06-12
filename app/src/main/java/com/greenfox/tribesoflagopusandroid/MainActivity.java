@@ -4,14 +4,11 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.EditText;
-import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.greenfox.tribesoflagopusandroid.api.model.User;
 import com.greenfox.tribesoflagopusandroid.api.service.LoginService;
-
-import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -22,7 +19,6 @@ import retrofit2.converter.gson.GsonConverterFactory;
 public class MainActivity extends AppCompatActivity {
 
     public static final String EXTRA_MESSAGE = "greenfox.com.tribesoflagopus.MESSAGE";
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

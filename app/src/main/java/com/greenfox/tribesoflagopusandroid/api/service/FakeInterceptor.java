@@ -3,8 +3,6 @@ package com.greenfox.tribesoflagopusandroid.api.service;
 import com.greenfox.tribesoflagopusandroid.BuildConfig;
 
 import java.io.IOException;
-import java.net.URI;
-import java.net.URL;
 
 import okhttp3.HttpUrl;
 import okhttp3.Interceptor;
