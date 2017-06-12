@@ -18,18 +18,15 @@ public class LoginTest {
 
     Login login;
 
-
     @Test
     public void addUsername() throws Exception {
-        Button button = (Button) login.findViewById(R.id.button2);
         EditText username = (EditText) login.findViewById(R.id.editText3);
-        button.performClick();
-        assertEquals(username, login.preferences.getString("Username", ""));
+        String user = username.toString();
+        assertEquals(user, login.preferences.getString("Username", ""));
     }
 
     @Test
     public void addPassword() throws Exception {
-
     }
 
 }
