@@ -4,7 +4,9 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -26,22 +28,16 @@ public class MainActivity extends AppCompatActivity {
         String message = editText.getText().toString();
         TextView textView = (TextView) findViewById(R.id.textView2);
         textView.setText(message);
-        Intent intent = new Intent(this, Login.class);
-        startActivity(intent);
     }
 
     public void checkUsername() {
-        Context context = getApplicationContext();
-        SharedPreferences preferences = context.getSharedPreferences("MyPrefs", Context.MODE_PRIVATE);
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
 
-        boolean check = preferences.contains("username");
+        String username = preferences.getString("Username", null);
 
-        if (check) {
-            Intent i = new Intent(getApplicationContext(), LoginActivity.class);
-            startActivity(i);
-            finish();
+        if (TextUtils.isEmpty(username)) {
+            Intent intent = new Intent(this, Login.class);
+            startActivity(intent);
         }
-
     }
 }
-
