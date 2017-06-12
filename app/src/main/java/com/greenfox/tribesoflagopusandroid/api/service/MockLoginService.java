@@ -1,6 +1,6 @@
 package com.greenfox.tribesoflagopusandroid.api.service;
 
-import com.greenfox.tribesoflagopusandroid.api.model.LoginResponse;
+import com.greenfox.tribesoflagopusandroid.api.model.User;
 
 import java.io.IOException;
 
@@ -17,16 +17,16 @@ import retrofit2.http.Field;
 public class MockLoginService implements LoginService {
 
     @Override
-    public Call<LoginResponse> loginWithUser(@Field("username") String username, @Field("password") String password) {
-        return new Call<LoginResponse>() {
+    public Call<User> loginWithUser(@Field("username") String username, @Field("password") String password) {
+        return new Call<User>() {
             @Override
-            public Response<LoginResponse> execute() throws IOException {
+            public Response<User> execute() throws IOException {
                 return null;
             }
 
             @Override
-            public void enqueue(Callback<LoginResponse> callback) {
-                callback.onResponse(null, Response.success(new LoginResponse()));
+            public void enqueue(Callback<User> callback) {
+                callback.onResponse(null, Response.success(new User()));
             }
 
             @Override
@@ -45,7 +45,7 @@ public class MockLoginService implements LoginService {
             }
 
             @Override
-            public Call<LoginResponse> clone() {
+            public Call<User> clone() {
                 return null;
             }
 
