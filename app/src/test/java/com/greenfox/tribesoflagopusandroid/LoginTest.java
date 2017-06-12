@@ -14,14 +14,6 @@ import static org.junit.Assert.*;
 public class LoginTest {
 
 
-    @Test
-    public void addUsername() throws Exception {
-        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
-        SharedPreferences.Editor editor = preferences.edit();
-        String username = "Test";
-        String message = preferences.getString("Username", "");
-        assertEquals(username, message);
-    }
 
     @Test
     public void addPassword() throws Exception {

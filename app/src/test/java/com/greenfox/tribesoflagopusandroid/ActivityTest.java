@@ -21,18 +21,37 @@ public class ActivityTest {
 
     MainActivity activity;
 
+    Login login;
+
     @Before
     public void setup() {
         activity = Robolectric.setupActivity(MainActivity.class);
+        login = Robolectric.setupActivity(Login.class);
     }
 
     @Test
     public void wildButtonTest() throws Exception {
-
         Button button = (Button) activity.findViewById(R.id.button);
         TextView result = (TextView) activity.findViewById(R.id.textView2);
         EditText edit = (EditText) activity.findViewById(R.id.editText);
         button.performClick();
         assertEquals(result.getText().toString(), edit.getText().toString());
+    }
+
+    @Test
+    public void userIsNotExistAndGoToLoginActivityTest() throws Exception {
+        activity.checkUsername();
+
+        Intent expectedIntent = new Intent(login, Login.class);
+        assertEquals(expectedIntent.getClass(), shadowOf(activity).getNextStartedActivity().getClass());
+    }
+
+    @Test
+    public void userIsExistAndStayInMainActivityTest() throws Exception {
+        login.editor.putString("Username", "test").apply();
+        activity.checkUsername();
+
+        Intent expectedIntent = new Intent(activity, MainActivity.class);
+        assertEquals(expectedIntent.getClass(), shadowOf(activity).getNextStartedActivity().getClass());
     }
 }
