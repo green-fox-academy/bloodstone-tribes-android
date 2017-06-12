@@ -1,6 +1,8 @@
 package com.greenfox.tribesoflagopusandroid;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
@@ -23,6 +25,8 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        checkUsername();
     }
     
     public void sendMessage(View view) {
@@ -30,6 +34,20 @@ public class MainActivity extends AppCompatActivity {
         String message = editText.getText().toString();
         TextView textView = (TextView) findViewById(R.id.textView2);
         textView.setText(message);
+    }
+
+    public void checkUsername() {
+        Context context = getApplicationContext();
+        SharedPreferences preferences = context.getSharedPreferences("MyPrefs", Context.MODE_PRIVATE);
+
+        boolean check = preferences.contains("username");
+
+        if (check) {
+            Intent i = new Intent(getApplicationContext(), LoginActivity.class);
+            startActivity(i);
+            finish();
+        }
+
     }
 }
 
