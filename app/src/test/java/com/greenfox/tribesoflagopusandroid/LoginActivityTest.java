@@ -1,5 +1,6 @@
 package com.greenfox.tribesoflagopusandroid;
 
+import android.content.Intent;
 import android.widget.Button;
 import android.widget.EditText;
 
@@ -11,6 +12,7 @@ import org.robolectric.RobolectricTestRunner;
 import org.robolectric.annotation.Config;
 
 import static org.junit.Assert.*;
+import static org.robolectric.Shadows.shadowOf;
 
 /**
  * Created by georgezsiga on 6/11/17.
@@ -20,10 +22,12 @@ import static org.junit.Assert.*;
 public class LoginActivityTest {
 
     LoginActivity login;
+    MainActivity main;
 
     @Before
     public void setup() {
         login = Robolectric.setupActivity(LoginActivity.class);
+        main = Robolectric.setupActivity(MainActivity.class);
     }
 
     @Test
@@ -50,4 +54,10 @@ public class LoginActivityTest {
         assertEquals(password.getText().toString(), login.preferences.getString("Password", ""));
     }
 
+    @Test
+    public void startMainActivity() {
+        login.findViewById(R.id.button2).performClick();
+        Intent expectedIntent = new Intent(login, MainActivity.class);
+        assertEquals(expectedIntent.getClass(), shadowOf(login).getNextStartedActivity().getClass());
+    }
 }
