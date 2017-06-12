@@ -1,6 +1,5 @@
 package com.greenfox.tribesoflagopusandroid.api.service;
 
-import com.greenfox.tribesoflagopusandroid.api.model.LoginResponse;
 import com.greenfox.tribesoflagopusandroid.api.model.User;
 
 import retrofit2.Call;
@@ -19,3 +18,4 @@ public interface LoginService {
     Call<User> loginWithUser(@Field("username") String username, @Field("password") String password);
 
 }
+
