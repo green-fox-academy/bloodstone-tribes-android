@@ -1,11 +1,7 @@
 package com.greenfox.tribesoflagopusandroid;
 
-import android.content.Context;
-import android.content.SharedPreferences;
-import android.preference.PreferenceManager;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.TextView;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -21,13 +17,13 @@ import static org.junit.Assert.*;
  */
 @Config(constants = BuildConfig.class)
 @RunWith(RobolectricTestRunner.class)
-public class LoginTest {
+public class LoginActivityTest {
 
-    Login login;
+    LoginActivity login;
 
     @Before
     public void setup() {
-        login = Robolectric.setupActivity(Login.class);
+        login = Robolectric.setupActivity(LoginActivity.class);
     }
 
     @Test
