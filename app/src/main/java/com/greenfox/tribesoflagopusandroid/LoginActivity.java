@@ -11,17 +11,16 @@ import android.widget.EditText;
 import static com.greenfox.tribesoflagopusandroid.MainActivity.PASSWORD;
 import static com.greenfox.tribesoflagopusandroid.MainActivity.USERNAME;
 
-public class Login extends AppCompatActivity {
+public class LoginActivity extends AppCompatActivity {
 
-        SharedPreferences preferences;
-        SharedPreferences.Editor editor;
+    SharedPreferences preferences;
+    SharedPreferences.Editor editor;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
-
-        preferences =PreferenceManager.getDefaultSharedPreferences(this);
+        preferences = PreferenceManager.getDefaultSharedPreferences(this);
         editor = preferences.edit();
     }
 

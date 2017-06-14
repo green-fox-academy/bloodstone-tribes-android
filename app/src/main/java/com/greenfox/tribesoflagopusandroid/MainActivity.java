@@ -1,5 +1,6 @@
 package com.greenfox.tribesoflagopusandroid;
 
+
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -15,6 +16,8 @@ public class MainActivity extends AppCompatActivity {
     public static final String EXTRA_MESSAGE = "greenfox.com.tribesoflagopus.MESSAGE";
     public static final String USERNAME = "Username";
     public static final String PASSWORD = "Password";
+
+    SharedPreferences preferences;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,13 +35,13 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void checkUsernameAndPassword() {
-        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
+        preferences = PreferenceManager.getDefaultSharedPreferences(this);
 
         String username = preferences.getString(USERNAME, null);
         String password = preferences.getString(PASSWORD, null);
 
         if (TextUtils.isEmpty(username) || TextUtils.isEmpty(password)) {
-            Intent intent = new Intent(this, Login.class);
+            Intent intent = new Intent(this, LoginActivity.class);
             startActivity(intent);
         }
     }
