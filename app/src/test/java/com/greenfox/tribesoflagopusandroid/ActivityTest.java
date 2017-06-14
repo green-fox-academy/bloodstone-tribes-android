@@ -40,7 +40,7 @@ public class ActivityTest {
 
     @Test
     public void userIsNotExistAndGoToLoginActivityTest() throws Exception {
-        activity.checkUsername();
+        activity.checkUsernameAndPassword();
 
         Intent expectedIntent = new Intent(login, Login.class);
         assertEquals(expectedIntent.getClass(), shadowOf(activity).getNextStartedActivity().getClass());
@@ -49,9 +49,8 @@ public class ActivityTest {
     @Test
     public void userIsExistAndStayInMainActivityTest() throws Exception {
         login.editor.putString("Username", "test").apply();
-        activity.checkUsername();
+        activity.checkUsernameAndPassword();
 
-        Intent expectedIntent = new Intent(activity, MainActivity.class);
-        assertEquals(expectedIntent.getClass(), shadowOf(activity).getNextStartedActivity().getClass());
+        assertEquals(activity.getIntent().getClass(), shadowOf(activity).getNextStartedActivity().getClass());
     }
 }

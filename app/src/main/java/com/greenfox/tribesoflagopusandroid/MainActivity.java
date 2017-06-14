@@ -13,13 +13,15 @@ import android.widget.TextView;
 public class MainActivity extends AppCompatActivity {
 
     public static final String EXTRA_MESSAGE = "greenfox.com.tribesoflagopus.MESSAGE";
+    public static final String USERNAME = "Username";
+    public static final String PASSWORD = "Password";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        checkUsername();
+        checkUsernameAndPassword();
     }
 
     public void sendMessage(View view) {
@@ -29,12 +31,13 @@ public class MainActivity extends AppCompatActivity {
         textView.setText(message);
     }
 
-    public void checkUsername() {
+    public void checkUsernameAndPassword() {
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
 
-        String username = preferences.getString("Username", null);
+        String username = preferences.getString(USERNAME, null);
+        String password = preferences.getString(PASSWORD, null);
 
-        if (TextUtils.isEmpty(username)) {
+        if (TextUtils.isEmpty(username) || TextUtils.isEmpty(password)) {
             Intent intent = new Intent(this, Login.class);
             startActivity(intent);
         }
