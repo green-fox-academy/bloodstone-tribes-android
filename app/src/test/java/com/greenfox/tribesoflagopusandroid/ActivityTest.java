@@ -34,3 +34,4 @@ public class ActivityTest {
         assertEquals(result.getText().toString(), edit.getText().toString());
     }
 }
+
