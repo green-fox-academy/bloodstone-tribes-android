@@ -2,4 +2,9 @@
     <string name="app_name">TribesOfLagopus</string>
     <string name="edit_message">Enter a message</string>
     <string name="button_send">Send</string>
+    <string name="title_activity_login">Tribes Of Lagopus - Sign in</string>
+    <string name="login_username">Username</string>
+    <string name="user_password">Password</string>
+    <string name="login_button">Login</string>
+    <string name="string_loginMessage">Please fill in your username and password to enter the game</string>
 </resources>

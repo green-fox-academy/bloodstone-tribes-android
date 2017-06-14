@@ -1,6 +1,5 @@
 package com.greenfox.tribesoflagopusandroid;
 
-import android.content.Intent;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -13,7 +12,6 @@ import org.robolectric.RobolectricTestRunner;
 import org.robolectric.annotation.Config;
 
 import static org.junit.Assert.assertEquals;
-import static org.robolectric.Shadows.shadowOf;
 
 @Config(constants = BuildConfig.class)
 @RunWith(RobolectricTestRunner.class)
