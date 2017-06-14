@@ -9,6 +9,8 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class ServiceFactory {
 
+
+
     public static <T> T createRetrofitService(Class serviceClass, String url) {
 
         Retrofit.Builder builder = new Retrofit.Builder()
@@ -18,6 +20,11 @@ public class ServiceFactory {
         Retrofit retrofit = builder.build();
 
         return (T) retrofit.create(serviceClass);
+    }
+
+    public static LoginService createMockService(Class serviceClass, String url) {
+
+        return new MockLoginService();
     }
 }
 

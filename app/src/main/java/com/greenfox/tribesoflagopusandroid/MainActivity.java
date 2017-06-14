@@ -23,9 +23,8 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        LoginService service = ServiceFactory.createRetrofitService(LoginService.class, "https://tribes-of-lagopus.herokuapp.com/");
-        Call<User> call = service.loginWithUser("username", "password");
-        call.enqueue(new Callback<User>() {
+        LoginService service = ServiceFactory.createMockService(LoginService.class, "https://tribes-of-lagopus.herokuapp.com/");
+        service.loginWithUser("username", "password").enqueue(new Callback<User>() {
             @Override
             public void onResponse(Call<User> call, Response<User> response) {
                 User user = response.body();
