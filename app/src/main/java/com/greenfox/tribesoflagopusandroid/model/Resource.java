@@ -1,4 +1,4 @@
-package com.greenfox.tribesoflagopusandroid.model.resource;
+package com.greenfox.tribesoflagopusandroid.model;
 
 /**
  * Created by User on 2017. 06. 14..

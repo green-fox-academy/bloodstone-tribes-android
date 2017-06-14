@@ -1,8 +1,5 @@
 package com.greenfox.tribesoflagopusandroid.model;
 
-import com.greenfox.tribesoflagopusandroid.model.building.Building;
-import com.greenfox.tribesoflagopusandroid.model.resource.Resource;
-
 import java.util.List;
 
 /**
