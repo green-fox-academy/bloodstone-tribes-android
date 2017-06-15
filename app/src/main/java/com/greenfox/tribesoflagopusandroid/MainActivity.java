@@ -8,8 +8,13 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
-
-
+import android.widget.Toast;
+import com.greenfox.tribesoflagopusandroid.api.model.User;
+import com.greenfox.tribesoflagopusandroid.api.service.LoginService;
+import com.greenfox.tribesoflagopusandroid.api.service.ServiceFactory;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 import android.app.PendingIntent;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
@@ -20,9 +25,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 public class MainActivity extends AppCompatActivity {
-
-    public static final String EXTRA_MESSAGE = "greenfox.com.tribesoflagopus.MESSAGE";
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,6 +52,18 @@ public class MainActivity extends AppCompatActivity {
         String message = editText.getText().toString();
         TextView textView = (TextView) findViewById(R.id.textView2);
         textView.setText(message);
+
+        LoginService service = ServiceFactory.createMockService(LoginService.class, "https://tribes-of-lagopus.herokuapp.com/");
+        service.loginWithUser("username", "password").enqueue(new Callback<User>() {
+            @Override
+            public void onResponse(Call<User> call, Response<User> response) {
+                User user = response.body();
+            }
+            @Override
+            public void onFailure(Call<User> call, Throwable t) {
+                Toast.makeText(MainActivity.this, "error :(", Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 }
 

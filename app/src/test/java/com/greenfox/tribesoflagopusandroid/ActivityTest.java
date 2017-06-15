@@ -31,16 +31,6 @@ public class ActivityTest {
     }
 
     @Test
-    public void wildButtonTest() throws Exception {
-
-        Button button = (Button) activity.findViewById(R.id.button);
-        TextView result = (TextView) activity.findViewById(R.id.textView2);
-        EditText edit = (EditText) activity.findViewById(R.id.editText);
-        button.performClick();
-        assertEquals(result.getText().toString(), edit.getText().toString());
-    }
-
-    @Test
     public void shouldHaveShortDuration() throws Exception {
         Toast toast = Toast.makeText(RuntimeEnvironment.application, "Refreshing", Toast.LENGTH_SHORT);
         assertThat(toast).isNotNull();
@@ -87,3 +77,4 @@ public class ActivityTest {
         assertThat(toast.getView()).isSameAs(view);
     }
 }
+
