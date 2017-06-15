@@ -8,10 +8,12 @@ import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.POST;
 
 /**
- * Created by User on 2017. 06. 09..
+ * Created by User on 2017. 06. 12..
  */
 
-public interface LoginService {
+public interface IRestService {
+
+    String ENDPOINT = "http://www.vavian.com/";
 
     @FormUrlEncoded
     @POST("/login")
