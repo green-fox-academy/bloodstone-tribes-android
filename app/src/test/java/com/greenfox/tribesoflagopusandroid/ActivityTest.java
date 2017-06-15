@@ -59,7 +59,9 @@ public class ActivityTest {
 
         Intent expectedIntent = new Intent(activity, MainActivity.class);
         assertEquals(expectedIntent.getClass(), shadowOf(activity).getNextStartedActivity().getClass());
+    }
 
+    @Test
     public void shouldHaveShortDuration() throws Exception {
         Toast toast = Toast.makeText(RuntimeEnvironment.application, "Refreshing", Toast.LENGTH_SHORT);
         assertThat(toast).isNotNull();
