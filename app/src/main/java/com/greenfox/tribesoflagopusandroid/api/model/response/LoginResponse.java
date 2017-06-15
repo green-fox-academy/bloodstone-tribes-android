@@ -10,6 +10,8 @@ public class LoginResponse extends BaseResponse {
     private String username;
     private long kingdomId;
 
+    public LoginResponse() {
+    }
 
     public LoginResponse(long id, String username, long kingdomId) {
         this.id = id;

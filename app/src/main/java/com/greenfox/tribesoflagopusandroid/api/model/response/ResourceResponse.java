@@ -10,6 +10,9 @@ public class ResourceResponse extends BaseResponse {
     private int amount;
     private int generation;
 
+    public ResourceResponse() {
+    }
+
     public ResourceResponse(String type, int amount, int generation) {
         this.type = type;
         this.amount = amount;

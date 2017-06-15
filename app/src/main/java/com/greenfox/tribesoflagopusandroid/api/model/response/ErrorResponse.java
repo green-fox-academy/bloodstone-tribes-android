@@ -6,6 +6,9 @@ package com.greenfox.tribesoflagopusandroid.api.model.response;
 
 public class ErrorResponse extends BaseResponse {
 
+    public ErrorResponse() {
+    }
+
     public ErrorResponse(String status, String message) {
         super(status, message);
     }

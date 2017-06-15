@@ -12,6 +12,9 @@ public class TroopResponse extends BaseResponse {
     private int attack;
     private int defense;
 
+    public TroopResponse() {
+    }
+
     public TroopResponse(long id, int level, int hp, int attack, int defense) {
         this.id = id;
         this.level = level;

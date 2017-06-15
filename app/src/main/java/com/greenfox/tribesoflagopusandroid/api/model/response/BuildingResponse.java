@@ -11,6 +11,9 @@ public class BuildingResponse extends BaseResponse {
     private int level;
     private int hp;
 
+    public BuildingResponse() {
+    }
+
     public BuildingResponse(long id, String type, int level, int hp) {
         this.id = id;
         this.type = type;
