@@ -32,15 +32,6 @@ public class MainActivityTest {
     }
 
     @Test
-    public void wildButtonTest() throws Exception {
-        Button button = (Button) main.findViewById(R.id.button);
-        TextView result = (TextView) main.findViewById(R.id.textView2);
-        EditText edit = (EditText) main.findViewById(R.id.editText);
-        button.performClick();
-        assertEquals(result.getText().toString(), edit.getText().toString());
-    }
-
-    @Test
     public void userDoesNotExistAndGoToLoginActivityTest() throws Exception {
         main.checkUsernameAndPassword();
 
