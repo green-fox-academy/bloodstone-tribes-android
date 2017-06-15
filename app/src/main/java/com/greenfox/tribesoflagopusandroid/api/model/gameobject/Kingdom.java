@@ -1,4 +1,4 @@
-package com.greenfox.tribesoflagopusandroid.model;
+package com.greenfox.tribesoflagopusandroid.api.model.gameobject;
 
 import java.util.List;
 

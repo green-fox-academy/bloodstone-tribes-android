@@ -1,4 +1,4 @@
-package com.greenfox.tribesoflagopusandroid.model;
+package com.greenfox.tribesoflagopusandroid.api.model.gameobject;
 
 /**
  * Created by User on 2017. 06. 14..
