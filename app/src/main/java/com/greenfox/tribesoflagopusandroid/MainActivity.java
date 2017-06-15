@@ -14,7 +14,6 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import com.greenfox.tribesoflagopusandroid.api.model.User;
 import com.greenfox.tribesoflagopusandroid.api.service.LoginService;
 
