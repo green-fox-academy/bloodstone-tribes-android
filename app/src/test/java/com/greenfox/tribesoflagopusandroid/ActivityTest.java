@@ -37,7 +37,6 @@ public class ActivityTest {
     }
 
     @Test
-
     public void userIsNotExistAndGoToLoginActivityActivityTest() throws Exception {
         activity.checkUsername();
 
