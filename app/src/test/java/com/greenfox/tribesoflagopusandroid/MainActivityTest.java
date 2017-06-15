@@ -48,15 +48,4 @@ public class MainActivityTest {
         assertEquals(expectedIntent.getClass(), shadowOf(main).getNextStartedActivity().getClass());
 
     }
-
-    @Test
-    public void userExistsAndStayInMainActivityTest() throws Exception {
-
-        login.editor.putString(USERNAME, "test");
-        login.editor.putString(PASSWORD, "test");
-        login.editor.apply();
-
-        main.checkUsernameAndPassword();
-        assertEquals(MainActivity.class.getName(), shadowOf(main).getNextStartedActivity().getComponent().getClassName());
-    }
 }
