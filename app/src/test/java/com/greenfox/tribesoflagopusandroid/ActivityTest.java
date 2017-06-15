@@ -13,10 +13,5 @@ public class ActivityTest {
 
     MainActivity activity;
 
-    @Before
-    public void setup() {
-        activity = Robolectric.setupActivity(MainActivity.class);
-    }
-
 }
 
