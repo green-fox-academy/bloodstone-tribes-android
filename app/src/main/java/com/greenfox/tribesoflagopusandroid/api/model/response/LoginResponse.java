@@ -1,29 +1,20 @@
-package com.greenfox.tribesoflagopusandroid.api.model;
+package com.greenfox.tribesoflagopusandroid.api.model.response;
 
 /**
  * Created by User on 2017. 06. 12..
  */
 
-public class LoginResponse {
+public class LoginResponse extends BaseResponse {
 
     private long id;
     private String username;
     private long kingdomId;
-    private String status;
-    private String message;
 
-    public LoginResponse() {
-    }
 
     public LoginResponse(long id, String username, long kingdomId) {
         this.id = id;
         this.username = username;
         this.kingdomId = kingdomId;
-    }
-
-    public LoginResponse(String status, String message) {
-        this.status = status;
-        this.message = message;
     }
 
     public long getId() {
@@ -38,14 +29,6 @@ public class LoginResponse {
         return kingdomId;
     }
 
-    public String getStatus() {
-        return status;
-    }
-
-    public String getMessage() {
-        return message;
-    }
-
     public void setId(long id) {
         this.id = id;
     }
@@ -56,14 +39,6 @@ public class LoginResponse {
 
     public void setKingdomId(long kingdomId) {
         this.kingdomId = kingdomId;
-    }
-
-    public void setStatus(String status) {
-        this.status = status;
-    }
-
-    public void setMessage(String message) {
-        this.message = message;
     }
 }
 
