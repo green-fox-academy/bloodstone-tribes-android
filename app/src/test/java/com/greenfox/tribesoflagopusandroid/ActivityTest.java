@@ -20,6 +20,8 @@ import static org.hamcrest.core.IsEqual.equalTo;
 import static org.junit.Assert.assertEquals;
 import static org.robolectric.Shadows.shadowOf;
 
+import static org.junit.Assert.assertEquals;
+
 @Config(constants = BuildConfig.class)
 @RunWith(RobolectricTestRunner.class)
 public class ActivityTest {
