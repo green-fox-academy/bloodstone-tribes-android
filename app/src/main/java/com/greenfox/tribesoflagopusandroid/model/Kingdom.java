@@ -1,12 +1,14 @@
 package com.greenfox.tribesoflagopusandroid.model;
 
+import com.greenfox.tribesoflagopusandroid.api.model.response.BaseResponse;
+
 import java.util.List;
 
 /**
  * Created by User on 2017. 06. 14..
  */
 
-public class Kingdom {
+public class Kingdom extends BaseResponse{
 
 
     private long id;
