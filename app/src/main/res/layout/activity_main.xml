@@ -10,7 +10,7 @@
 
     <android.support.constraint.ConstraintLayout
         android:id="@+id/constraintLayout"
-        android:layout_width="match_parent"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginEnd="16dp"
         android:layout_marginLeft="16dp"
@@ -34,8 +34,8 @@
             android:text="Buildings"
             android:textAppearance="@style/TextAppearance.AppCompat.Title.Inverse"
             android:textColor="@color/colorPrimaryDark"
-            app:layout_constraintLeft_toLeftOf="@+id/constraintLayout"
-            app:layout_constraintTop_toTopOf="@+id/constraintLayout" />
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
             android:id="@+id/textView4"
@@ -51,8 +51,8 @@
             android:textColor="@color/colorPrimaryDark"
             app:layout_constraintBottom_toTopOf="@+id/button8"
             app:layout_constraintHorizontal_bias="0.502"
-            app:layout_constraintLeft_toLeftOf="@+id/constraintLayout"
-            app:layout_constraintRight_toRightOf="@+id/constraintLayout"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/textView7" />
 
         <Button
@@ -65,13 +65,13 @@
             android:layout_marginRight="16dp"
             android:text="Go to buildings"
             android:textColor="@android:color/holo_orange_light"
-            app:layout_constraintBottom_toBottomOf="@+id/constraintLayout"
-            app:layout_constraintRight_toRightOf="@+id/constraintLayout" />
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintRight_toRightOf="parent" />
     </android.support.constraint.ConstraintLayout>
 
     <android.support.constraint.ConstraintLayout
         android:id="@+id/constraintLayout2"
-        android:layout_width="match_parent"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginEnd="16dp"
         android:layout_marginLeft="16dp"
@@ -95,8 +95,8 @@
             android:text="Resources"
             android:textAppearance="@style/TextAppearance.AppCompat.Title.Inverse"
             android:textColor="@color/colorPrimaryDark"
-            app:layout_constraintLeft_toLeftOf="@+id/constraintLayout2"
-            app:layout_constraintTop_toTopOf="@+id/constraintLayout2" />
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
             android:id="@+id/textView5"
@@ -109,8 +109,8 @@
             android:text="20 gold"
             android:textAppearance="@style/TextAppearance.AppCompat.Medium"
             android:textColor="@color/colorPrimaryDark"
-            app:layout_constraintLeft_toLeftOf="@+id/constraintLayout2"
-            app:layout_constraintRight_toRightOf="@+id/constraintLayout2"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/textView8" />
 
         <TextView
@@ -126,8 +126,8 @@
             android:textAppearance="@style/TextAppearance.AppCompat.Medium"
             android:textColor="@color/colorPrimaryDark"
             app:layout_constraintBottom_toTopOf="@+id/button9"
-            app:layout_constraintLeft_toLeftOf="@+id/constraintLayout2"
-            app:layout_constraintRight_toRightOf="@+id/constraintLayout2"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/textView5"
             app:layout_constraintVertical_bias="0.482" />
 
@@ -141,13 +141,13 @@
             android:layout_marginRight="16dp"
             android:text="Go to resources"
             android:textColor="@android:color/holo_orange_light"
-            app:layout_constraintBottom_toBottomOf="@+id/constraintLayout2"
-            app:layout_constraintRight_toRightOf="@+id/constraintLayout2" />
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintRight_toRightOf="parent" />
     </android.support.constraint.ConstraintLayout>
 
     <android.support.constraint.ConstraintLayout
         android:id="@+id/constraintLayout3"
-        android:layout_width="match_parent"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginEnd="16dp"
         android:layout_marginLeft="16dp"
@@ -155,7 +155,7 @@
         android:layout_marginStart="16dp"
         android:layout_marginTop="16dp"
         android:background="@color/colorPrimary"
-        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/constraintLayout2">
@@ -170,8 +170,8 @@
             android:text="Troops"
             android:textAppearance="@style/TextAppearance.AppCompat.Title.Inverse"
             android:textColor="@color/colorPrimaryDark"
-            app:layout_constraintLeft_toLeftOf="@+id/constraintLayout3"
-            app:layout_constraintTop_toTopOf="@+id/constraintLayout3" />
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
             android:id="@+id/textView6"
@@ -187,8 +187,8 @@
             android:textColor="@color/colorPrimaryDark"
             app:layout_constraintBottom_toTopOf="@+id/button10"
             app:layout_constraintHorizontal_bias="0.497"
-            app:layout_constraintLeft_toLeftOf="@+id/constraintLayout3"
-            app:layout_constraintRight_toRightOf="@+id/constraintLayout3"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/textView9" />
 
         <Button
@@ -201,8 +201,8 @@
             android:layout_marginRight="8dp"
             android:text="Go to troops"
             android:textColor="@android:color/holo_orange_light"
-            app:layout_constraintBottom_toBottomOf="@+id/constraintLayout3"
-            app:layout_constraintRight_toRightOf="@+id/constraintLayout3" />
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintRight_toRightOf="parent" />
     </android.support.constraint.ConstraintLayout>
 
 </android.support.constraint.ConstraintLayout>

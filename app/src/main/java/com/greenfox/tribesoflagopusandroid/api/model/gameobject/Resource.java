@@ -1,10 +1,12 @@
 package com.greenfox.tribesoflagopusandroid.api.model.gameobject;
 
+import com.greenfox.tribesoflagopusandroid.api.model.response.BaseResponse;
+
 /**
  * Created by User on 2017. 06. 14..
  */
 
-public class Resource {
+public class Resource extends BaseResponse{
 
     private String type;
     private int amount;
