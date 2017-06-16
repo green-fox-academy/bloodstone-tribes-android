@@ -37,23 +37,6 @@ public class ActivityTest {
     }
 
     @Test
-    public void userIsNotExistAndGoToLoginActivityActivityTest() throws Exception {
-        activity.checkUsername();
-
-        Intent expectedIntent = new Intent(login, LoginActivity.class);
-        assertEquals(expectedIntent.getClass(), shadowOf(activity).getNextStartedActivity().getClass());
-    }
-
-    @Test
-    public void userIsExistAndStayInMainActivityTest() throws Exception {
-        login.editor.putString("Username", "test").apply();
-        activity.checkUsername();
-
-        Intent expectedIntent = new Intent(activity, MainActivity.class);
-        assertEquals(expectedIntent.getClass(), shadowOf(activity).getNextStartedActivity().getClass());
-    }
-
-    @Test
     public void shouldHaveShortDuration() throws Exception {
         Toast toast = Toast.makeText(RuntimeEnvironment.application, "Refreshing", Toast.LENGTH_SHORT);
         assertThat(toast).isNotNull();

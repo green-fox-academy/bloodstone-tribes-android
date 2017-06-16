@@ -20,10 +20,17 @@ import retrofit2.Response;
 
 public class MainActivity extends AppCompatActivity {
 
+    public static final String USERNAME = "Username";
+    public static final String PASSWORD = "Password";
+
+    SharedPreferences preferences;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        checkUsernameAndPassword();
 
         LoginService service = ServiceFactory.createMockService(LoginService.class, "https://tribes-of-lagopus.herokuapp.com/");
         service.loginWithUser("username", "password").enqueue(new Callback<User>() {
@@ -36,9 +43,6 @@ public class MainActivity extends AppCompatActivity {
                 Toast.makeText(MainActivity.this, "error :(", Toast.LENGTH_SHORT).show();
             }
         });
-
-        checkUsername();
-
     }
 
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -56,15 +60,16 @@ public class MainActivity extends AppCompatActivity {
         return false;
     }
 
-    public void checkUsername() {
-        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
+    public void checkUsernameAndPassword() {
+        preferences = PreferenceManager.getDefaultSharedPreferences(this);
 
-        String username = preferences.getString("Username", null);
+        String username = preferences.getString(USERNAME, null);
+        String password = preferences.getString(PASSWORD, null);
 
-        if (TextUtils.isEmpty(username)) {
+        if (TextUtils.isEmpty(username) || TextUtils.isEmpty(password)) {
             Intent intent = new Intent(this, LoginActivity.class);
             startActivity(intent);
         }
     }
-}
 
+}
