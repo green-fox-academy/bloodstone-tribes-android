@@ -15,15 +15,17 @@ import org.robolectric.shadows.ShadowToast;
 
 import static org.assertj.core.api.Java6Assertions.assertThat;
 
+import static org.junit.Assert.assertEquals;
+
 @Config(constants = BuildConfig.class)
 @RunWith(RobolectricTestRunner.class)
 public class ActivityTest {
 
     MainActivity activity;
 
-    @Before
-    public void setup() {
-        activity = Robolectric.setupActivity(MainActivity.class);
+    @Test
+    public void addition_isCorrect() throws Exception {
+        assertEquals(4, 2 + 2);
     }
 
     @Test
