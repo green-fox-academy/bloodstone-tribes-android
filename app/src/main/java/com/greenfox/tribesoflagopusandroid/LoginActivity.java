@@ -7,19 +7,20 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
-import android.widget.TextView;
 
 public class LoginActivity extends AppCompatActivity {
 
-    SharedPreferences preferences;
-    SharedPreferences.Editor editor;
+
+        SharedPreferences preferences;
+        SharedPreferences.Editor editor;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         getSupportActionBar().hide();
         setContentView(R.layout.activity_login);
-        preferences = PreferenceManager.getDefaultSharedPreferences(this);
+
+        preferences =PreferenceManager.getDefaultSharedPreferences(this);
         editor = preferences.edit();
 
     }
