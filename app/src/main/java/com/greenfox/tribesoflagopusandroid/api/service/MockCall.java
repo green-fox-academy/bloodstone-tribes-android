@@ -10,7 +10,7 @@ import retrofit2.Response;
  * Created by User on 2017. 06. 15..
  */
 
-public abstract class MockCall implements Call {
+public abstract class MockCall<T> implements Call {
     @Override
     public Response execute() throws IOException {
         return null;

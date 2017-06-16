@@ -13,8 +13,8 @@ import retrofit2.http.Field;
 public class MockLoginService implements LoginService {
 
     @Override
-    public MockCall loginWithUser(@Field("username") String username, @Field("password") String password) {
-        return new MockCall() {
+    public MockCall<User> loginWithUser(@Field("username") String username, @Field("password") String password) {
+        return new MockCall<User>() {
 
             @Override
             public void enqueue(Callback callback) {
