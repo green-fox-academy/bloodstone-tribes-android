@@ -1,5 +1,7 @@
 <resources>
     <string name="app_name">TribesOfLagopus</string>
+    <string name="help">Help</string>
+    <string name="refreshing">Refreshing</string>
     <string name="title_activity_login">Tribes Of Lagopus - Sign in</string>
     <string name="login_username">Username</string>
     <string name="user_password">Password</string>
