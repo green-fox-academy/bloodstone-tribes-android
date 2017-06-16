@@ -7,7 +7,9 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
-import android.widget.TextView;
+
+import static com.greenfox.tribesoflagopusandroid.MainActivity.PASSWORD;
+import static com.greenfox.tribesoflagopusandroid.MainActivity.USERNAME;
 
 public class LoginActivity extends AppCompatActivity {
 
@@ -36,14 +38,14 @@ public class LoginActivity extends AppCompatActivity {
     protected void addUsername() {
         EditText editText = (EditText) findViewById(R.id.editText3);
         String username = editText.getText().toString();
-        editor.putString("Username", username);
+        editor.putString(USERNAME, username);
         editor.apply();
     }
 
     protected void addPassword() {
         EditText editText = (EditText) findViewById(R.id.editText2);
         String password = editText.getText().toString();
-        editor.putString("Password", password);
+        editor.putString(PASSWORD, password);
         editor.apply();
     }
 }
