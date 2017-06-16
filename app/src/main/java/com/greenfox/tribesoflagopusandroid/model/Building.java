@@ -1,10 +1,12 @@
 package com.greenfox.tribesoflagopusandroid.model;
 
+import com.greenfox.tribesoflagopusandroid.api.model.response.BaseResponse;
+
 /**
  * Created by User on 2017. 06. 14..
  */
 
-public class Building {
+public class Building extends BaseResponse{
 
     private long id;
     private String type;
