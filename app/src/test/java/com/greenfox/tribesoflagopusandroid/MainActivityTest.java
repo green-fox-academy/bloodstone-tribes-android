@@ -2,8 +2,6 @@ package com.greenfox.tribesoflagopusandroid;
 
 import android.content.Intent;
 import android.widget.Button;
-import android.widget.EditText;
-import android.widget.TextView;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -14,7 +12,9 @@ import org.robolectric.annotation.Config;
 
 import static com.greenfox.tribesoflagopusandroid.MainActivity.PASSWORD;
 import static com.greenfox.tribesoflagopusandroid.MainActivity.USERNAME;
+import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertThat;
 import static org.robolectric.Shadows.shadowOf;
 
 @Config(constants = BuildConfig.class)
@@ -37,6 +37,29 @@ public class MainActivityTest {
 
         Intent expectedIntent = new Intent(login, LoginActivity.class);
         assertEquals(expectedIntent.getClass(), shadowOf(main).getNextStartedActivity().getClass());
-
     }
+
+    @Test
+    public void logoutButtonIsClickedIsGoingToLoginActivityTest() throws Exception {
+        Button button = (Button) main.findViewById(R.id.logout);
+        button.performClick();
+        Intent expectedIntent = new Intent(login, LoginActivity.class);
+        assertEquals(expectedIntent.getClass(), shadowOf(main).getNextStartedActivity().getClass());
+    }
+
+    @Test
+    public void logoutButtonClearSharedPreferencesTest() throws Exception {
+        main.editor = main.preferences.edit();
+
+        main.editor.putString(USERNAME, "testUsername");
+        main.editor.putString(PASSWORD, "testPassword");
+        main.editor.apply();
+
+        Button button = (Button) main.findViewById(R.id.logout);
+        button.performClick();
+
+        assertThat(null, is(main.preferences.getString(USERNAME, null)));
+        assertThat(null, is(main.preferences.getString(PASSWORD, null)));
+    }
+
 }
