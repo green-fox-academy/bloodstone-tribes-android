@@ -27,13 +27,13 @@ public class LoginActivity extends AppCompatActivity {
     SharedPreferences preferences;
     SharedPreferences.Editor editor;
 
-    @Inject
-    LoginService loginService;
+    @Inject ObjectManager objectManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+        MyApp.app().basicComponent().inject(this);
         preferences = PreferenceManager.getDefaultSharedPreferences(this);
         editor = preferences.edit();
     }

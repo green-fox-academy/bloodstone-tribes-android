@@ -12,12 +12,16 @@ import android.view.MenuItem;
 import android.text.TextUtils;
 import android.widget.Toast;
 
+import javax.inject.Inject;
+
 public class MainActivity extends AppCompatActivity {
 
     public static final String USERNAME = "Username";
     public static final String PASSWORD = "Password";
 
     SharedPreferences preferences;
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
