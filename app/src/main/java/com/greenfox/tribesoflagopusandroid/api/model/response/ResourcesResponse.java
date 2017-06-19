@@ -1,6 +1,7 @@
 package com.greenfox.tribesoflagopusandroid.api.model.response;
 
-import com.greenfox.tribesoflagopusandroid.model.Resource;
+
+import com.greenfox.tribesoflagopusandroid.api.model.gameobject.Resource;
 
 import java.util.List;
 
@@ -10,7 +11,7 @@ import java.util.List;
 
 public class ResourcesResponse extends BaseResponse {
 
-    private List <Resource> resources;
+    private List<Resource> resources;
 
     public ResourcesResponse(List<Resource> resources) {
         this.resources = resources;
