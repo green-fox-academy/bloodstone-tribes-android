@@ -35,4 +35,5 @@ dependencies {
 
     testCompile 'com.squareup.okhttp3:mockwebserver:3.7.0'
     compile 'javax.inject:javax.inject:1'
+    compile 'org.apache.ant:ant:1.8.0'
 }
