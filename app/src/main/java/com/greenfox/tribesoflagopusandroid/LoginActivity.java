@@ -28,6 +28,7 @@ public class LoginActivity extends AppCompatActivity {
     SharedPreferences.Editor editor;
 
     @Inject ObjectManager objectManager;
+    @Inject LoginService loginService;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
