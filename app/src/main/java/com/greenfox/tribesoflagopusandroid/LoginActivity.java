@@ -58,7 +58,7 @@ public class LoginActivity extends AppCompatActivity {
             toast.setGravity(Gravity.CENTER, 0, 0);
             toast.show();
         } else {
-            LoginService service = ServiceFactory.createRetrofitService(LoginService.class, "https://tribes-of-lagopus.herokuapp.com/");
+            LoginService service = ServiceFactory.createMockService(LoginService.class, "https://tribes-of-lagopus.herokuapp.com/");
             service.loginWithUser("username", "password").enqueue(new Callback<User>() {
                 @Override
                 public void onResponse(Call<User> call, Response<User> response) {
@@ -81,15 +81,11 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     protected void addUsername(String username) {
-//        EditText editText = (EditText) findViewById(R.id.editText3);
-//        String username = editText.getText().toString();
         editor.putString(USERNAME, username);
         editor.apply();
     }
 
     protected void addPassword(String password) {
-//        EditText editText = (EditText) findViewById(R.id.editText2);
-//        String password = editText.getText().toString();
         editor.putString(PASSWORD, password);
         editor.apply();
     }
