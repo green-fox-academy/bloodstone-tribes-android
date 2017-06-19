@@ -1,6 +1,6 @@
 package com.greenfox.tribesoflagopusandroid.api.service;
 
-import com.greenfox.tribesoflagopusandroid.api.model.User;
+import com.greenfox.tribesoflagopusandroid.api.model.gameobject.User;
 
 import retrofit2.Callback;
 import retrofit2.Response;
