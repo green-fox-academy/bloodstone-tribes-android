@@ -52,7 +52,7 @@ public class AppModule {
     }
 
     @Singleton @Provides
-    public LoginService provideLoginService(LoginService loginService) {
+    public LoginService provideLoginService() {
         if (switchLoginOrMockService == true) {
             return new LoginService() {
                 @Override
