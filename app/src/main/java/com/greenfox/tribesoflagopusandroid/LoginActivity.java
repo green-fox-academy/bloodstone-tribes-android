@@ -2,15 +2,18 @@ package com.greenfox.tribesoflagopusandroid;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
-import com.greenfox.tribesoflagopusandroid.api.model.User;
+
+import com.greenfox.tribesoflagopusandroid.api.model.gameobject.User;
 import com.greenfox.tribesoflagopusandroid.api.service.LoginService;
 import com.greenfox.tribesoflagopusandroid.api.service.ServiceFactory;
+
+
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
