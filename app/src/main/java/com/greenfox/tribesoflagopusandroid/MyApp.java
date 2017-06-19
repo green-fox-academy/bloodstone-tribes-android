@@ -2,7 +2,6 @@ package com.greenfox.tribesoflagopusandroid;
 
 import android.app.Application;
 
-import dagger.internal.DaggerCollections;
 
 /**
  * Created by georgezsiga on 6/18/17.
