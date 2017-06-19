@@ -30,23 +30,21 @@ public class LoginActivity extends AppCompatActivity {
     SharedPreferences preferences;
     SharedPreferences.Editor editor;
 
-    @Inject
-    LoginService loginservice;
+    @Inject ObjectManager objectManager;
+    @Inject LoginService loginService;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+        MyApp.app().basicComponent().inject(this);
         preferences = PreferenceManager.getDefaultSharedPreferences(this);
         editor = preferences.edit();
     }
 
     public void login(View view) {
         checkFieldsNotEmpty();
-//        addUserInfoToPreferences();
-
-
-
     }
 
     private void checkFieldsNotEmpty() {
@@ -60,7 +58,7 @@ public class LoginActivity extends AppCompatActivity {
             toast.setGravity(Gravity.CENTER, 0, 0);
             toast.show();
         } else {
-            LoginService service = ServiceFactory.createMockService(LoginService.class, "https://tribes-of-lagopus.herokuapp.com/");
+            LoginService service = ServiceFactory.createRetrofitService(LoginService.class, "https://tribes-of-lagopus.herokuapp.com/");
             service.loginWithUser("username", "password").enqueue(new Callback<User>() {
                 @Override
                 public void onResponse(Call<User> call, Response<User> response) {
