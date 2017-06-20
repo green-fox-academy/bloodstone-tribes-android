@@ -22,7 +22,7 @@ import dagger.Provides;
 public class AppModule {
 
     private Context context;
-    private static Boolean isLoginServiceActive = true;
+    private static final Boolean LOGINSERVICE_IS_ACTIVE = true;
     ServiceFactory serviceFactory;
 
     public AppModule(Context context) {
@@ -52,13 +52,10 @@ public class AppModule {
 
     @Singleton @Provides
     public LoginService provideLoginService() {
-        if (isLoginServiceActive) {
-            return serviceFactory.createRetrofitService(LoginService.class, "https://tribes-of-lagopus.herokuapp.com/");
+        if (LOGINSERVICE_IS_ACTIVE) {
+            return serviceFactory.createRetrofitService();
         }
-        return serviceFactory.createMockService(MockLoginService.class, "https://tribes-of-lagopus.herokuapp.com/");
+        return serviceFactory.createMockService();
     }
 
-    public void setSwitchLoginOrMockService(Boolean switchLoginOrMockService) {
-        this.isLoginServiceActive = switchLoginOrMockService;
-    }
 }
