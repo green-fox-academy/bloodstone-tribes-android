@@ -54,8 +54,7 @@ public class LoginActivity extends AppCompatActivity {
             toast.setGravity(Gravity.CENTER, 0, 0);
             toast.show();
         } else {
-            LoginService service = ServiceFactory.createMockService(LoginService.class, "https://tribes-of-lagopus.herokuapp.com/");
-            service.loginWithUser("username", "password").enqueue(new Callback<User>() {
+            appModule.provideLoginService().loginWithUser("username", "password").enqueue(new Callback<User>() {
                 @Override
                 public void onResponse(Call<User> call, Response<User> response) {
                     User user = response.body();
