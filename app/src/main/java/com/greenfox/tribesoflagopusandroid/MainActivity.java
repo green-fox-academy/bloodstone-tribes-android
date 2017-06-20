@@ -39,6 +39,7 @@ public class MainActivity extends AppCompatActivity {
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.game_menu, menu);
+        getMenuInflater().inflate(R.menu.navigation_drawer, menu);
         return true;
     }
     @Override
