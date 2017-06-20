@@ -1,10 +1,9 @@
 package com.greenfox.tribesoflagopusandroid;
 
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
-import android.view.View;
 import android.support.design.widget.NavigationView;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -13,6 +12,8 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.Window;
+
+import com.greenfox.tribesoflagopusandroid.fragments.BuildingsFragment;
 
 public class NavigationDrawerActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -68,26 +69,54 @@ public class NavigationDrawerActivity extends AppCompatActivity
         return super.onOptionsItemSelected(item);
     }
 
+    private void displaySelectedScreen(int id) {
+        Fragment fragment = null;
+
+        switch (id) {
+            case R.id.nav_buildings:
+                fragment = new BuildingsFragment();
+                break;
+            case R.id.nav_kingdom:
+                break;
+            case R.id.nav_battle:
+                break;
+            case R.id.nav_settings:
+                break;
+            case R.id.nav_troops:
+                break;
+        }
+        if (fragment != null) {
+            FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+            transaction.replace(R.id.constraintLayout, fragment);
+            transaction.commit();
+        }
+
+        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        drawer.closeDrawer(GravityCompat.START);
+    }
+
+
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
         // Handle navigation view item clicks here.
         int id = item.getItemId();
 
-        if (id == R.id.nav_kingdom) {
-            // Handle the camera action
-        } else if (id == R.id.nav_buildings) {
+//        if (id == R.id.nav_kingdom) {
+//            // Handle the camera action
+//        } else if (id == R.id.nav_buildings) {
+//
+//        } else if (id == R.id.nav_troops) {
+//
+//        } else if (id == R.id.nav_battle) {
+//
+//        } else if (id == R.id.nav_settings) {
+//
+//        }
 
-        } else if (id == R.id.nav_troops) {
+        displaySelectedScreen(id);
 
-        } else if (id == R.id.nav_battle) {
 
-        } else if (id == R.id.nav_settings) {
-
-        }
-
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        drawer.closeDrawer(GravityCompat.START);
         return true;
     }
 }
