@@ -9,4 +9,6 @@
     <string name="user_password">Password</string>
     <string name="login_button">Login</string>
     <string name="string_loginMessage">Please fill in your username and password to enter the game</string>
+    <string name="enable_notifications">Enable notifications</string>
+    <string name="enable_sync">Enable background sync</string>
 </resources>
