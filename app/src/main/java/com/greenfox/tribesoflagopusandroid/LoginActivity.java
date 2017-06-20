@@ -26,10 +26,13 @@ import static com.greenfox.tribesoflagopusandroid.MainActivity.USERNAME;
 
 public class LoginActivity extends AppCompatActivity {
 
-    @Inject SharedPreferences preferences;
+    @Inject
+    SharedPreferences preferences;
     SharedPreferences.Editor editor;
-    @Inject ObjectManager objectManager;
-    @Inject LoginService loginService;
+    @Inject
+    ObjectManager objectManager;
+    @Inject
+    LoginService loginService;
 
 
     @Override
@@ -45,28 +48,37 @@ public class LoginActivity extends AppCompatActivity {
         checkFieldsNotEmpty();
     }
 
-    private void checkFieldsNotEmpty() {
+    public void checkFieldsNotEmpty() {
         String username = ((EditText) findViewById(R.id.usernameText)).getText().toString();
         String password = ((EditText) findViewById(R.id.passwordText)).getText().toString();
         if (TextUtils.isEmpty(username) || TextUtils.isEmpty(password)) {
-            Toast toast = Toast.makeText(LoginActivity.this, "Please fill in all the fields", Toast.LENGTH_SHORT);
-            toast.setGravity(Gravity.CENTER, 0, 0);
-            toast.show();
+            showToastFillAllFields();
         } else {
-            loginService.loginWithUser(username, password).enqueue(new Callback<User>() {
-                @Override
-                public void onResponse(Call<User> call, Response<User> response) {
-                    User user = response.body();
-                    addUserInfoToPreferences(user.getUsername(), user.getPassword());
-                    Intent intent = new Intent(LoginActivity.this, MainActivity.class);
-                    startActivity(intent);
-                }
-                @Override
-                public void onFailure(Call<User> call, Throwable t) {
-                    Toast.makeText(LoginActivity.this, "error getting login information from server", Toast.LENGTH_SHORT).show();
-                }
-            });
+            loginWithAPIService(username, password);
         }
+    }
+
+    public void showToastFillAllFields() {
+        Toast toast = Toast.makeText(LoginActivity.this, "Please fill in all the fields", Toast.LENGTH_SHORT);
+        toast.setGravity(Gravity.CENTER, 0, 0);
+        toast.show();
+    }
+
+    protected void loginWithAPIService(String username, String password) {
+        loginService.loginWithUser(username, password).enqueue(new Callback<User>() {
+            @Override
+            public void onResponse(Call<User> call, Response<User> response) {
+                User user = response.body();
+                addUserInfoToPreferences(user.getUsername(), user.getPassword());
+                Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+                startActivity(intent);
+            }
+
+            @Override
+            public void onFailure(Call<User> call, Throwable t) {
+                Toast.makeText(LoginActivity.this, "error getting login information from server", Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 
     protected void addUserInfoToPreferences(String username, String password) {
