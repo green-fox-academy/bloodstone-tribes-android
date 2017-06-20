@@ -2,23 +2,19 @@ package com.greenfox.tribesoflagopusandroid;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
-import com.greenfox.tribesoflagopusandroid.api.model.User;
+import com.greenfox.tribesoflagopusandroid.api.model.gameobject.User;
 import com.greenfox.tribesoflagopusandroid.api.service.LoginService;
 import com.greenfox.tribesoflagopusandroid.api.service.ServiceFactory;
-
 import javax.inject.Inject;
-
-import dagger.Provides;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
-
 import static com.greenfox.tribesoflagopusandroid.MainActivity.PASSWORD;
 import static com.greenfox.tribesoflagopusandroid.MainActivity.USERNAME;
 
@@ -40,6 +36,7 @@ public class LoginActivity extends AppCompatActivity {
         appModule.provideSharedPreferences(this);
         preferences = PreferenceManager.getDefaultSharedPreferences(this);
         editor = preferences.edit();
+        getSupportActionBar().hide();
     }
 
     public void login(View view) {
@@ -66,14 +63,14 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     protected void addUsername() {
-        EditText editText = (EditText) findViewById(R.id.editText3);
+        EditText editText = (EditText) findViewById(R.id.usernameText);
         String username = editText.getText().toString();
         editor.putString(USERNAME, username);
         editor.apply();
     }
 
     protected void addPassword() {
-        EditText editText = (EditText) findViewById(R.id.editText2);
+        EditText editText = (EditText) findViewById(R.id.passwordText);
         String password = editText.getText().toString();
         editor.putString(PASSWORD, password);
         editor.apply();

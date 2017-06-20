@@ -10,6 +10,8 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.text.TextUtils;
+import android.view.View;
+import android.widget.Button;
 import android.widget.Toast;
 
 import javax.inject.Inject;
@@ -20,6 +22,7 @@ public class MainActivity extends AppCompatActivity {
     public static final String PASSWORD = "Password";
 
     SharedPreferences preferences;
+    SharedPreferences.Editor editor;
 
 
 
@@ -28,6 +31,13 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         checkUsernameAndPassword();
+
+        Button button = (Button) findViewById(R.id.logout);
+        button.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                logout();
+            }
+        });
     }
 
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -55,6 +65,14 @@ public class MainActivity extends AppCompatActivity {
             Intent intent = new Intent(this, LoginActivity.class);
             startActivity(intent);
         }
+    }
+
+    public void logout() {
+        preferences = PreferenceManager.getDefaultSharedPreferences(this);
+        editor = preferences.edit();
+        editor.clear();
+        editor.apply();
+        finish();
     }
 
 }

@@ -1,12 +1,10 @@
 package com.greenfox.tribesoflagopusandroid.api.model.response;
 
-import com.greenfox.tribesoflagopusandroid.model.Building;
+
+import com.greenfox.tribesoflagopusandroid.api.model.gameobject.Building;
 
 import java.util.List;
 
-/**
- * Created by User on 2017. 06. 15..
- */
 
 public class BuildingsResponse extends BaseResponse {
 
