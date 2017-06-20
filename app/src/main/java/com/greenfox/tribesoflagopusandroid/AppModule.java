@@ -5,7 +5,6 @@ import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 
 import com.google.gson.Gson;
-import com.greenfox.tribesoflagopusandroid.api.model.User;
 import com.greenfox.tribesoflagopusandroid.api.service.LoginService;
 import com.greenfox.tribesoflagopusandroid.api.service.MockLoginService;
 import com.greenfox.tribesoflagopusandroid.api.service.ServiceFactory;
@@ -14,8 +13,6 @@ import javax.inject.Singleton;
 
 import dagger.Module;
 import dagger.Provides;
-import retrofit2.Call;
-import retrofit2.http.Field;
 
 /**
  * Created by georgezsiga on 6/18/17.
