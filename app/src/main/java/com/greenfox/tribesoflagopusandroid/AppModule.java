@@ -22,7 +22,7 @@ import dagger.Provides;
 public class AppModule {
 
     private Context context;
-    private static Boolean isLoginServiceActive = true;
+    private static Boolean isLoginServiceActive = false;
     ServiceFactory serviceFactory;
 
     public AppModule(Context context) {

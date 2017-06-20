@@ -26,18 +26,17 @@ import static com.greenfox.tribesoflagopusandroid.MainActivity.USERNAME;
 
 public class LoginActivity extends AppCompatActivity {
 
-    SharedPreferences preferences;
+    @Inject SharedPreferences preferences;
     SharedPreferences.Editor editor;
     @Inject ObjectManager objectManager;
     @Inject LoginService loginService;
-    AppModule appModule = new AppModule(this);
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
-        preferences = appModule.provideSharedPreferences(this);
+        TribesApplication.app().basicComponent().inject(this);
         editor = preferences.edit();
         getSupportActionBar().hide();
     }
@@ -54,7 +53,7 @@ public class LoginActivity extends AppCompatActivity {
             toast.setGravity(Gravity.CENTER, 0, 0);
             toast.show();
         } else {
-            appModule.provideLoginService().loginWithUser("username", "password").enqueue(new Callback<User>() {
+            loginService.loginWithUser(username, password).enqueue(new Callback<User>() {
                 @Override
                 public void onResponse(Call<User> call, Response<User> response) {
                     User user = response.body();
