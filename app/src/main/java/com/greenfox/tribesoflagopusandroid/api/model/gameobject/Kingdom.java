@@ -8,7 +8,7 @@ import java.util.List;
  * Created by User on 2017. 06. 14..
  */
 
-public class Kingdom extends BaseResponse{
+public class    Kingdom extends BaseResponse{
 
 
     private long id;
