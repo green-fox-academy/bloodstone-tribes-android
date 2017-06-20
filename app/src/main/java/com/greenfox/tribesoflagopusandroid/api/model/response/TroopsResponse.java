@@ -1,6 +1,7 @@
 package com.greenfox.tribesoflagopusandroid.api.model.response;
 
-import com.greenfox.tribesoflagopusandroid.model.Troop;
+
+import com.greenfox.tribesoflagopusandroid.api.model.gameobject.Troop;
 
 import java.util.List;
 

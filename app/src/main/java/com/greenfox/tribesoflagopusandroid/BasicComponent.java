@@ -6,6 +6,7 @@ import com.greenfox.tribesoflagopusandroid.MainActivity;
 import javax.inject.Singleton;
 
 import dagger.Component;
+import dagger.Provides;
 
 /**
  * Created by georgezsiga on 6/18/17.

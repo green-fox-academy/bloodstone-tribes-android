@@ -2,16 +2,15 @@ package com.greenfox.tribesoflagopusandroid;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.preference.PreferenceManager;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
-import com.greenfox.tribesoflagopusandroid.api.model.User;
+
+import com.greenfox.tribesoflagopusandroid.api.model.gameobject.User;
 import com.greenfox.tribesoflagopusandroid.api.service.LoginService;
 import com.greenfox.tribesoflagopusandroid.api.service.ServiceFactory;
 
@@ -29,18 +28,20 @@ public class LoginActivity extends AppCompatActivity {
 
     SharedPreferences preferences;
     SharedPreferences.Editor editor;
-
+    private String username = ((EditText) findViewById(R.id.usernameText)).getText().toString();
+    private String password = ((EditText) findViewById(R.id.passwordText)).getText().toString();
     @Inject ObjectManager objectManager;
     @Inject LoginService loginService;
+    AppModule appModule = new AppModule(this);
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
-        MyApp.app().basicComponent().inject(this);
-        preferences = PreferenceManager.getDefaultSharedPreferences(this);
+        preferences = appModule.provideSharedPreferences(this);
         editor = preferences.edit();
+        getSupportActionBar().hide();
     }
 
     public void login(View view) {
@@ -48,10 +49,6 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     private void checkFieldsNotEmpty() {
-        EditText editText = (EditText) findViewById(R.id.editText3);
-        String username = editText.getText().toString();
-        EditText editText2 = (EditText) findViewById(R.id.editText2);
-        String password = editText2.getText().toString();
 
         if (TextUtils.isEmpty(username) || TextUtils.isEmpty(password)) {
             Toast toast = Toast.makeText(LoginActivity.this, "Please fill in all the fields", Toast.LENGTH_SHORT);

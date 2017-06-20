@@ -8,14 +8,14 @@ import android.app.Application;
  */
 
 
-public class MyApp extends Application {
-    private static MyApp app;
+public class TribesApplication extends Application {
+    private static TribesApplication tribesApplication;
     private BasicComponent basicComponent;
 
     @Override
     public void onCreate() {
         super.onCreate();
-        app = this;
+        tribesApplication = this;
 
         basicComponent = DaggerBasicComponent.builder()
                 .appModule(new AppModule(getApplicationContext()))
@@ -23,8 +23,8 @@ public class MyApp extends Application {
 
     }
 
-    public static MyApp app() {
-        return app;
+    public static TribesApplication app() {
+        return tribesApplication;
     }
 
     public BasicComponent basicComponent() {
