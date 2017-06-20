@@ -33,6 +33,7 @@ public class LoginActivity extends AppCompatActivity {
         setContentView(R.layout.activity_login);
         preferences = PreferenceManager.getDefaultSharedPreferences(this);
         editor = preferences.edit();
+        getSupportActionBar().hide();
     }
 
     public void login(View view) {
@@ -59,14 +60,14 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     protected void addUsername() {
-        EditText editText = (EditText) findViewById(R.id.editText3);
+        EditText editText = (EditText) findViewById(R.id.usernameText);
         String username = editText.getText().toString();
         editor.putString(USERNAME, username);
         editor.apply();
     }
 
     protected void addPassword() {
-        EditText editText = (EditText) findViewById(R.id.editText2);
+        EditText editText = (EditText) findViewById(R.id.passwordText);
         String password = editText.getText().toString();
         editor.putString(PASSWORD, password);
         editor.apply();
