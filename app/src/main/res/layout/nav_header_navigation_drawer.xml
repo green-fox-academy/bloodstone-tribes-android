@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="@dimen/nav_header_height"
     android:background="@drawable/side_nav_bar"
@@ -17,7 +18,9 @@
         android:layout_width="70dp"
         android:layout_height="68dp"
         android:paddingTop="@dimen/nav_header_vertical_spacing"
-        app:srcCompat="@drawable/user_crown" />
+        app:srcCompat="@drawable/user_crown"
+        tools:ignore="ContentDescription,VectorDrawableCompat"
+        android:contentDescription="" />
 
     <TextView
         android:layout_width="match_parent"
