@@ -21,18 +21,17 @@ import static com.greenfox.tribesoflagopusandroid.MainActivity.USERNAME;
 
 public class LoginActivity extends AppCompatActivity {
 
-    SharedPreferences preferences;
+    @Inject SharedPreferences preferences;
     SharedPreferences.Editor editor;
-
     @Inject ObjectManager objectManager;
     @Inject LoginService loginService;
-    AppModule appModule = new AppModule(this);
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
-        preferences = appModule.provideSharedPreferences(this);
+        TribesApplication.app().basicComponent().inject(this);
         editor = preferences.edit();
         getSupportActionBar().hide();
     }
