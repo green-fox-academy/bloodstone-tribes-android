@@ -8,6 +8,7 @@ import com.google.gson.Gson;
 import com.greenfox.tribesoflagopusandroid.api.model.User;
 import com.greenfox.tribesoflagopusandroid.api.service.LoginService;
 import com.greenfox.tribesoflagopusandroid.api.service.MockLoginService;
+import com.greenfox.tribesoflagopusandroid.api.service.ServiceFactory;
 
 import javax.inject.Singleton;
 
@@ -24,7 +25,8 @@ import retrofit2.http.Field;
 public class AppModule {
 
     private Context context;
-    private Boolean switchLoginOrMockService = true;
+    private static Boolean isLoginServiceActive = true;
+    ServiceFactory serviceFactory;
 
     public AppModule(Context context) {
         this.context = context;
@@ -53,22 +55,13 @@ public class AppModule {
 
     @Singleton @Provides
     public LoginService provideLoginService() {
-        if (switchLoginOrMockService == true) {
-            return new LoginService() {
-                @Override
-                public Call<User> loginWithUser(@Field("username") String username, @Field("password") String password) {
-                    return null;
-                }
-            };
+        if (isLoginServiceActive) {
+            return serviceFactory.createRetrofitService(LoginService.class, "https://tribes-of-lagopus.herokuapp.com/");
         }
-        return new MockLoginService();
-    }
-
-    public Boolean getSwitchLoginOrMockService() {
-        return switchLoginOrMockService;
+        return serviceFactory.createMockService(MockLoginService.class, "https://tribes-of-lagopus.herokuapp.com/");
     }
 
     public void setSwitchLoginOrMockService(Boolean switchLoginOrMockService) {
-        this.switchLoginOrMockService = switchLoginOrMockService;
+        this.isLoginServiceActive = switchLoginOrMockService;
     }
 }
