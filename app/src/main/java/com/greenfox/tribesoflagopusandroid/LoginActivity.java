@@ -26,15 +26,13 @@ public class LoginActivity extends AppCompatActivity {
 
     @Inject ObjectManager objectManager;
     @Inject LoginService loginService;
-    AppModule appModule;
+    AppModule appModule = new AppModule(this);
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
-        TribesApplication.app().basicComponent().inject(this);
-        appModule.provideSharedPreferences(this);
-        preferences = PreferenceManager.getDefaultSharedPreferences(this);
+        preferences = appModule.provideSharedPreferences(this);
         editor = preferences.edit();
         getSupportActionBar().hide();
     }
