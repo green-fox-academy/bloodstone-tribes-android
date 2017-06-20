@@ -5,6 +5,8 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -34,6 +36,12 @@ public class MainActivity extends AppCompatActivity {
                 logout();
             }
         });
+
+        MainFragment mainFragment = new MainFragment();
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        fragmentTransaction.add(R.id.main_activity_layout, mainFragment);
+        fragmentTransaction.commit();
     }
 
     public boolean onCreateOptionsMenu(Menu menu) {

@@ -10,6 +10,7 @@ android {
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+        vectorDrawables.useSupportLibrary = true
     }
     buildTypes {
         release {
@@ -32,6 +33,6 @@ dependencies {
     compile 'com.squareup.retrofit2:retrofit:2.2.0'
     compile 'com.squareup.retrofit2:converter-gson:2.2.0'
     compile 'com.squareup.okhttp3:okhttp:3.7.0'
-
+    compile 'com.android.support:support-v4:25.3.1'
     testCompile 'com.squareup.okhttp3:mockwebserver:3.7.0'
 }
