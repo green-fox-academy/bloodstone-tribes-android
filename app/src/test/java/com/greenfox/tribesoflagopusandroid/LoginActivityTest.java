@@ -32,16 +32,16 @@ public class LoginActivityTest {
 
     @Test
     public void addUsername() throws Exception {
-        EditText username = (EditText) login.findViewById(R.id.usernameText);
-        login.addUsername();
-        assertEquals(username.getText().toString(), login.preferences.getString("Username", ""));
+        String username = "Username";
+        login.addUsername(username);
+        assertEquals(username, login.preferences.getString("Username", ""));
     }
 
     @Test
     public void addPassword() throws Exception {
-        EditText password = (EditText) login.findViewById(R.id.passwordText);
-        login.addPassword();
-        assertEquals(password.getText().toString(), login.preferences.getString("Password", ""));
+        String password = "password";
+        login.addPassword(password);
+        assertEquals(password, login.preferences.getString("Password", ""));
     }
 
     @Test

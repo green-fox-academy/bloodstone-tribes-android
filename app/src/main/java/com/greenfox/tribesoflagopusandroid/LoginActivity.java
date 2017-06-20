@@ -28,8 +28,6 @@ public class LoginActivity extends AppCompatActivity {
 
     SharedPreferences preferences;
     SharedPreferences.Editor editor;
-    private String username = ((EditText) findViewById(R.id.usernameText)).getText().toString();
-    private String password = ((EditText) findViewById(R.id.passwordText)).getText().toString();
     @Inject ObjectManager objectManager;
     @Inject LoginService loginService;
     AppModule appModule = new AppModule(this);
@@ -49,7 +47,8 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     private void checkFieldsNotEmpty() {
-
+        String username = ((EditText) findViewById(R.id.usernameText)).getText().toString();
+        String password = ((EditText) findViewById(R.id.passwordText)).getText().toString();
         if (TextUtils.isEmpty(username) || TextUtils.isEmpty(password)) {
             Toast toast = Toast.makeText(LoginActivity.this, "Please fill in all the fields", Toast.LENGTH_SHORT);
             toast.setGravity(Gravity.CENTER, 0, 0);
