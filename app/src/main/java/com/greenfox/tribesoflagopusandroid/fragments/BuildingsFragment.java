@@ -15,16 +15,18 @@ import com.greenfox.tribesoflagopusandroid.R;
 
 public class BuildingsFragment extends Fragment {
 
+    public BuildingsFragment() {
+    }
+
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-
         getActivity().setTitle("Buildings");
     }
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.buildings_fragment, container, false);
+        return inflater.inflate(R.layout.fragment_buildings, container, false);
     }
 }

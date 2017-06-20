@@ -13,6 +13,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.Window;
 
+import com.greenfox.tribesoflagopusandroid.fragments.BattleFragment;
 import com.greenfox.tribesoflagopusandroid.fragments.BuildingsFragment;
 
 public class NavigationDrawerActivity extends AppCompatActivity
@@ -73,6 +74,7 @@ public class NavigationDrawerActivity extends AppCompatActivity
             case R.id.nav_kingdom:
                 break;
             case R.id.nav_battle:
+                fragment = new BattleFragment();
                 break;
             case R.id.nav_settings:
                 break;
@@ -81,7 +83,7 @@ public class NavigationDrawerActivity extends AppCompatActivity
         }
         if (fragment != null) {
             FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-            transaction.replace(R.id.constraintLayout, fragment);
+            transaction.replace(R.id.imageView, fragment);
             transaction.commit();
         }
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
