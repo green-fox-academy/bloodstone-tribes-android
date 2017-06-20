@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">TribesOfLagopus</string>
+    <string name="app_name">Tribes of Lagopus</string>
     <string name="edit_message">Enter a message</string>
     <string name="button_send">Send</string>
     <string name="help">Help</string>
@@ -8,5 +8,13 @@
     <string name="login_username">Username</string>
     <string name="user_password">Password</string>
     <string name="login_button">Login</string>
+    <string name="kingdom_name">Your kingdom</string>
     <string name="string_loginMessage">Please fill in your username and password to enter the game</string>
+
+    <string name="title_activity_navigation_drawer">NavigationDrawerActivity</string>
+
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+
+    <string name="action_settings">Settings</string>
 </resources>

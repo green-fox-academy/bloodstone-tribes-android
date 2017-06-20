@@ -1,0 +1,7 @@
+<resources xmlns:android="http://schemas.android.com/apk/res/android">
+    <item name="menu_kingdom" type="drawable">C:\Users\User\Greenfox\androidproject\bloodstone-tribes-android\app\src\main\res\drawable\town.xml</item>
+    <item name="menu_buildings" type="drawable">@android:drawable/ic_menu_gallery</item>
+    <item name="menu_troops" type="drawable">@android:drawable/ic_menu_slideshow</item>
+    <item name="menu_battle" type="drawable">@android:drawable/ic_menu_manage</item>
+    <item name="menu_settings" type="drawable">@android:drawable/ic_menu_share</item>
+</resources>
