@@ -1,6 +1,5 @@
 package com.greenfox.tribesoflagopusandroid.fragments;
 
-
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -11,15 +10,10 @@ import com.greenfox.tribesoflagopusandroid.R;
 
 public class NavigationDrawerFragment extends Fragment {
 
-
-    public NavigationDrawerFragment() {
-    }
-
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_navigation_drawer, container, false);
+        return inflater.inflate(R.layout.activity_navigation_drawer, container, false);
     }
 
 }
