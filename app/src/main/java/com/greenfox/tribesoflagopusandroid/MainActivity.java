@@ -16,6 +16,8 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
 
+import javax.inject.Inject;
+
 public class MainActivity extends AppCompatActivity {
 
     public static final String USERNAME = "Username";
@@ -23,6 +25,8 @@ public class MainActivity extends AppCompatActivity {
 
     SharedPreferences preferences;
     SharedPreferences.Editor editor;
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
