@@ -5,7 +5,6 @@ import com.greenfox.tribesoflagopusandroid.api.model.gameobject.Kingdom;
 import com.greenfox.tribesoflagopusandroid.api.model.gameobject.Location;
 import com.greenfox.tribesoflagopusandroid.api.model.gameobject.Resource;
 import com.greenfox.tribesoflagopusandroid.api.model.gameobject.Troop;
-import com.greenfox.tribesoflagopusandroid.api.model.gameobject.User;
 import com.greenfox.tribesoflagopusandroid.api.model.response.BuildingsResponse;
 
 import java.util.ArrayList;
