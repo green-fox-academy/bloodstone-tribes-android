@@ -14,6 +14,7 @@ import org.robolectric.RuntimeEnvironment;
 import org.robolectric.annotation.Config;
 import org.robolectric.shadows.ShadowToast;
 
+import static com.greenfox.tribesoflagopusandroid.MainActivity.USERNAME;
 import static org.assertj.core.api.Java6Assertions.assertThat;
 import static org.junit.Assert.*;
 import static org.robolectric.Shadows.shadowOf;
@@ -38,14 +39,7 @@ public class LoginActivityTest {
     public void addUsername() throws Exception {
         String username = "Username";
         loginActivity.addUsername(username);
-        assertEquals(username, loginActivity.preferences.getString("Username", ""));
-    }
-
-    @Test
-    public void addPassword() throws Exception {
-        String password = "password";
-        loginActivity.addPassword(password);
-        assertEquals(password, loginActivity.preferences.getString("Password", ""));
+        assertEquals(username, loginActivity.preferences.getString(USERNAME, ""));
     }
 
     @Test
@@ -55,21 +49,13 @@ public class LoginActivityTest {
         EditText password = (EditText) loginActivity.findViewById(R.id.passwordText);
         button.performClick();
         assertEquals(username.getText().toString(), loginActivity.preferences.getString("Username", ""));
-        assertEquals(password.getText().toString(), loginActivity.preferences.getString("Password", ""));
-    }
-
-    @Test
-    public void startMainActivity() {
-        loginActivity.findViewById(R.id.button2).performClick();
-        Intent expectedIntent = new Intent(loginActivity, MainActivity.class);
-        assertEquals(expectedIntent.getClass(), shadowOf(loginActivity).getNextStartedActivity().getClass());
     }
 
     @Test
     public void checkFieldsEmpty() {
         Toast toast = Toast.makeText(RuntimeEnvironment.application, "Please fill in all the fields", Toast.LENGTH_SHORT);
         toast.show();
-        loginActivity.checkFieldsNotEmpty();
+        loginActivity.checkFieldsNotEmpty(null, null);
         assertThat(ShadowToast.getTextOfLatestToast()).isEqualTo("Please fill in all the fields");
         assertThat(ShadowToast.showedToast("Please fill in all the fields")).isTrue();
     }
@@ -79,8 +65,7 @@ public class LoginActivityTest {
         String username = "Username";
         String password = "Password";
         loginActivity.loginWithAPIService(username, password);
-        assertEquals(username, loginActivity.preferences.getString("Username", ""));
-        assertEquals(password, loginActivity.preferences.getString("Password", ""));
+        assertEquals(username, loginActivity.preferences.getString(USERNAME, ""));
         Intent expectedIntent = new Intent(loginActivity, MainActivity.class);
         assertEquals(expectedIntent.getClass(), shadowOf(loginActivity).getNextStartedActivity().getClass());
     }
