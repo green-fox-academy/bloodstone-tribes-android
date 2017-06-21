@@ -26,14 +26,11 @@ import static com.greenfox.tribesoflagopusandroid.MainActivity.USERNAME;
 
 public class LoginActivity extends AppCompatActivity {
 
-    @Inject
-    SharedPreferences preferences;
-    SharedPreferences.Editor editor;
-    @Inject
-    ObjectManager objectManager;
-    @Inject
-    LoginService loginService;
+    @Inject SharedPreferences preferences;
+    @Inject ObjectManager objectManager;
+    @Inject LoginService loginService;
 
+    SharedPreferences.Editor editor;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
