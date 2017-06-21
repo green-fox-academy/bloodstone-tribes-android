@@ -9,4 +9,7 @@
     <string name="user_password">Enter your login password</string>
     <string name="login_button">Login</string>
     <string name="string_loginMessage">Please fill in your username and password to enter the game</string>
+    <string name="string_HP">HP:</string>
+    <string name="string_AP">AP:</string>
+    <string name="string_DP">DP:</string>
 </resources>
