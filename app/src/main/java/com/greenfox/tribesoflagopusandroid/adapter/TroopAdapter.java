@@ -12,14 +12,16 @@ import android.widget.TextView;
 import com.greenfox.tribesoflagopusandroid.R;
 import com.greenfox.tribesoflagopusandroid.api.model.gameobject.Troop;
 
+import java.util.ArrayList;
+
 /**
  * Created by hegyi on 2017-06-21.
  */
 
 public class TroopAdapter extends ArrayAdapter<Troop> {
 
-    public TroopAdapter(@NonNull Context context) {
-        super(context, 0);
+    public TroopAdapter(@NonNull Context context, ArrayList<Troop> troops) {
+        super(context, 0, troops);
     }
 
     @NonNull
@@ -32,13 +34,12 @@ public class TroopAdapter extends ArrayAdapter<Troop> {
         }
 
         TextView hp = (TextView) convertView.findViewById(R.id.HP_amount);
-        hp.setText("5");
+        hp.setText(Integer.toString(current.getHp()));
         TextView ap = (TextView) convertView.findViewById(R.id.AP_amount);
-        ap.setText("5");
+        ap.setText(Integer.toString(current.getAttack()));
         TextView dp = (TextView) convertView.findViewById(R.id.DP_amount);
-        dp.setText("5");
+        dp.setText(Integer.toString(current.getDefense()));
 
-
-        return super.getView(position, convertView, parent);
+        return convertView;
     }
 }

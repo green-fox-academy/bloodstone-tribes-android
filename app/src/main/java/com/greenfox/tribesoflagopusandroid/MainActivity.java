@@ -5,6 +5,8 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -13,6 +15,8 @@ import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
+
+import com.greenfox.tribesoflagopusandroid.fragments.TroopsFragment;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -34,6 +38,12 @@ public class MainActivity extends AppCompatActivity {
                 logout();
             }
         });
+
+        TroopsFragment troopsFragment = new TroopsFragment();
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        fragmentTransaction.add(R.id.main_activity_layout, troopsFragment);
+        fragmentTransaction.commit();
     }
 
     public boolean onCreateOptionsMenu(Menu menu) {
