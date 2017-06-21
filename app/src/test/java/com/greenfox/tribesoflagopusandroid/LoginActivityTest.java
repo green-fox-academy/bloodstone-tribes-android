@@ -32,14 +32,14 @@ public class LoginActivityTest {
 
     @Test
     public void addUsername() throws Exception {
-        EditText username = (EditText) login.findViewById(R.id.editText3);
+        EditText username = (EditText) login.findViewById(R.id.usernameText);
         login.addUsername();
         assertEquals(username.getText().toString(), login.preferences.getString("Username", ""));
     }
 
     @Test
     public void addPassword() throws Exception {
-        EditText password = (EditText) login.findViewById(R.id.editText2);
+        EditText password = (EditText) login.findViewById(R.id.passwordText);
         login.addPassword();
         assertEquals(password.getText().toString(), login.preferences.getString("Password", ""));
     }
@@ -47,8 +47,8 @@ public class LoginActivityTest {
     @Test
     public void onClick() throws Exception {
         Button button = (Button) login.findViewById(R.id.button2);
-        EditText username = (EditText) login.findViewById(R.id.editText3);
-        EditText password = (EditText) login.findViewById(R.id.editText2);
+        EditText username = (EditText) login.findViewById(R.id.usernameText);
+        EditText password = (EditText) login.findViewById(R.id.passwordText);
         button.performClick();
         assertEquals(username.getText().toString(), login.preferences.getString("Username", ""));
         assertEquals(password.getText().toString(), login.preferences.getString("Password", ""));

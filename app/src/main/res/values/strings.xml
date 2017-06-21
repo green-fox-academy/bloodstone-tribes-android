@@ -5,8 +5,8 @@
     <string name="help">Help</string>
     <string name="refreshing">Refreshing</string>
     <string name="title_activity_login">Tribes Of Lagopus - Sign in</string>
-    <string name="login_username">Username</string>
-    <string name="user_password">Password</string>
+    <string name="login_username">Enter your login name</string>
+    <string name="user_password">Enter your login password</string>
     <string name="login_button">Login</string>
     <string name="kingdom_name">Your kingdom</string>
     <string name="string_loginMessage">Please fill in your username and password to enter the game</string>
