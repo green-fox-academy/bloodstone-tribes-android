@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CompoundButton;
 import android.widget.Switch;
 import android.widget.TextView;
 
@@ -14,8 +15,8 @@ import android.widget.TextView;
 
 public class SettingsFragment extends Fragment {
 
-    TextView notification_status;
-    Switch notification;
+    TextView notification_status, background_sync_status;
+    Switch notification, background_sync;
 
     public SettingsFragment() {
 
@@ -30,11 +31,14 @@ public class SettingsFragment extends Fragment {
 
         notification_status = (TextView) rootView.findViewById(R.id.notification_status);
         notification = (Switch) rootView.findViewById(R.id.notification);
+        background_sync_status = (TextView) rootView.findViewById(R.id.background_sync_status);
+        background_sync = (Switch) rootView.findViewById(R.id.background_sync);
 
         //set the switch to ON
         notification.setChecked(true);
+        background_sync.setChecked(true);
         //attach a listener to check for changes in state
-        notification.setOnCheckedChangeListener(new OnCheckedChangeListener() {
+        notification.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
 
             @Override
             public void onCheckedChanged(CompoundButton buttonView,
@@ -49,12 +53,34 @@ public class SettingsFragment extends Fragment {
             }
         });
 
+        background_sync.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView,
+                                         boolean isChecked) {
+
+                if(isChecked){
+                    background_sync_status.setText("Switch is currently ON");
+                }else{
+                    background_sync_status.setText("Switch is currently OFF");
+                }
+
+            }
+        });
+
         //check the current state before we display the screen
         if(notification.isChecked()){
             notification_status.setText("Switch is currently ON");
         }
         else {
             notification_status.setText("Switch is currently OFF");
+        }
+
+        if(background_sync.isChecked()){
+            background_sync_status.setText("Switch is currently ON");
+        }
+        else {
+            background_sync_status.setText("Switch is currently OFF");
         }
 
         return rootView;
