@@ -20,6 +20,8 @@ public class MainActivity extends AppCompatActivity {
 
     public static final String USERNAME = "Username";
     public static final String PASSWORD = "Password";
+    public static Boolean NOTIFICATION;
+    public static Boolean BACKGROUND_SYNC;
 
     SharedPreferences preferences;
     SharedPreferences.Editor editor;
