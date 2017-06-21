@@ -19,7 +19,6 @@ import javax.inject.Inject;
 public class MainActivity extends AppCompatActivity {
 
     public static final String USERNAME = "Username";
-    public static final String PASSWORD = "Password";
 
     SharedPreferences preferences;
     SharedPreferences.Editor editor;
@@ -30,7 +29,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        checkUsernameAndPassword();
+        checkUsername();
 
         Button button = (Button) findViewById(R.id.logout);
         button.setOnClickListener(new View.OnClickListener() {
@@ -55,13 +54,10 @@ public class MainActivity extends AppCompatActivity {
         return false;
     }
 
-    public void checkUsernameAndPassword() {
+    public void checkUsername() {
         preferences = PreferenceManager.getDefaultSharedPreferences(this);
 
-        String username = preferences.getString(USERNAME, null);
-        String password = preferences.getString(PASSWORD, null);
-
-        if (TextUtils.isEmpty(username) || TextUtils.isEmpty(password)) {
+        if (TextUtils.isEmpty(preferences.getString(USERNAME, null))) {
             Intent intent = new Intent(this, LoginActivity.class);
             startActivity(intent);
         }
