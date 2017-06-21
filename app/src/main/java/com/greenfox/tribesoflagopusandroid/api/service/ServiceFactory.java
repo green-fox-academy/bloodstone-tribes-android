@@ -11,7 +11,10 @@ public class ServiceFactory {
 
 
 
-    public static <T> T createRetrofitService(Class serviceClass, String url) {
+    public static <T> T createRetrofitService() {
+
+        Class serviceClass = LoginService.class;
+        String url = "https://tribes-of-lagopus.herokuapp.com/";
 
         Retrofit.Builder builder = new Retrofit.Builder()
                 .baseUrl(url)
@@ -22,7 +25,7 @@ public class ServiceFactory {
         return (T) retrofit.create(serviceClass);
     }
 
-    public static LoginService createMockService(Class serviceClass, String url) {
+    public static LoginService createMockService() {
 
         return new MockLoginService();
     }
