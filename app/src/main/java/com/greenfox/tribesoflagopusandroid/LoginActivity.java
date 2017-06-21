@@ -20,7 +20,6 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-import static com.greenfox.tribesoflagopusandroid.MainActivity.PASSWORD;
 import static com.greenfox.tribesoflagopusandroid.MainActivity.USERNAME;
 
 
@@ -42,12 +41,14 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     public void login(View view) {
-        checkFieldsNotEmpty();
-    }
 
-    public void checkFieldsNotEmpty() {
         String username = ((EditText) findViewById(R.id.usernameText)).getText().toString();
         String password = ((EditText) findViewById(R.id.passwordText)).getText().toString();
+
+        checkFieldsNotEmpty(username, password);
+    }
+
+    public void checkFieldsNotEmpty(String username, String password) {
         if (TextUtils.isEmpty(username) || TextUtils.isEmpty(password)) {
             showToastFillAllFields();
         } else {
@@ -66,7 +67,7 @@ public class LoginActivity extends AppCompatActivity {
             @Override
             public void onResponse(Call<User> call, Response<User> response) {
                 User user = response.body();
-                addUserInfoToPreferences(user.getUsername(), user.getPassword());
+                addUserInfoToPreferences(user.getUsername());
                 Intent intent = new Intent(LoginActivity.this, MainActivity.class);
                 startActivity(intent);
             }
@@ -77,18 +78,12 @@ public class LoginActivity extends AppCompatActivity {
         });
     }
 
-    protected void addUserInfoToPreferences(String username, String password) {
+    protected void addUserInfoToPreferences(String username) {
         addUsername(username);
-        addPassword(password);
     }
 
     protected void addUsername(String username) {
         editor.putString(USERNAME, username);
-        editor.apply();
-    }
-
-    protected void addPassword(String password) {
-        editor.putString(PASSWORD, password);
         editor.apply();
     }
 }
