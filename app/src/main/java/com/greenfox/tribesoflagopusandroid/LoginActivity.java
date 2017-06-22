@@ -36,7 +36,7 @@ public class LoginActivity extends AppCompatActivity {
         setContentView(R.layout.activity_login);
         TribesApplication.app().basicComponent().inject(this);
         editor = preferences.edit();
-        getSupportActionBar().hide();
+//        getSupportActionBar().hide();
     }
 
     public void login(View view) {

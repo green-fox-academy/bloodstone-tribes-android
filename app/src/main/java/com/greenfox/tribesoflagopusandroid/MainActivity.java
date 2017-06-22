@@ -12,34 +12,24 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.text.TextUtils;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.text.TextUtils;
-import android.view.View;
-import android.widget.Button;
 import android.widget.Toast;
-import javax.inject.Inject;
 
-import com.greenfox.tribesoflagopusandroid.fragments.MainFragment;
 import com.greenfox.tribesoflagopusandroid.fragments.BattleFragment;
 import com.greenfox.tribesoflagopusandroid.fragments.BuildingsFragment;
+import com.greenfox.tribesoflagopusandroid.fragments.MainFragment;
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
-
-
     public static final String USERNAME = "Username";
     public static final String PASSWORD = "Password";
-
     SharedPreferences preferences;
     SharedPreferences.Editor editor;
-
-
     private DrawerLayout mDrawer;
 
     @Override
@@ -48,21 +38,12 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         setContentView(R.layout.activity_main);
         checkUsernameAndPassword();
 
-
-        Button button = (Button) findViewById(R.id.logout);
-        button.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                logout();
-            }
-        });
-
         MainFragment mainFragment = new MainFragment();
         FragmentManager fragmentManager = getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-        fragmentTransaction.add(R.id.main_activity_layout, mainFragment);
+        fragmentTransaction.add(R.id.flContent, mainFragment);
         fragmentTransaction.commit();
 
-        setContentView(R.layout.activity_navigation_drawer);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
@@ -71,11 +52,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.setDrawerListener(toggle);
         toggle.syncState();
-        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+        NavigationView navigationView = (NavigationView) findViewById(R.id.nvView);
         navigationView.setNavigationItemSelectedListener(this); }
-
-
-
 
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
@@ -90,9 +68,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         switch (item.getItemId()) {
             case R.id.refreshing:
                 Toast.makeText(MainActivity.this, "Refreshing", Toast.LENGTH_SHORT).show();
-            case R.id.home:
-                mDrawer.openDrawer(GravityCompat.START);
-                return true;
+//            case R.id.home:
+//                mDrawer.openDrawer(GravityCompat.START);
+//                return true;
         }
         return false;
     }
@@ -114,6 +92,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         editor = preferences.edit();
         editor.clear();
         editor.apply();
+        Intent intent = new Intent(this, LoginActivity.class);
+        startActivity(intent);
         finish();
     }
 
@@ -139,7 +119,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         }
         if (fragment != null) {
             FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-            transaction.replace(R.id.imageView, fragment);
+            transaction.replace(R.id.flContent, fragment);
             transaction.commit();
         }
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
