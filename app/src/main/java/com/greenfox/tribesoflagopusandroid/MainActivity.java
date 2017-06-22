@@ -30,8 +30,6 @@ public class MainActivity extends AppCompatActivity {
 
     SharedPreferences.Editor editor;
 
-
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -48,11 +46,9 @@ public class MainActivity extends AppCompatActivity {
         });
 
         MainFragment mainFragment = new MainFragment();
-        SettingsFragment settingsFragment = new SettingsFragment();
         FragmentManager fragmentManager = getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-//        fragmentTransaction.add(R.id.main_activity_layout, mainFragment);
-        fragmentTransaction.add(R.id.main_activity_layout, settingsFragment);
+        fragmentTransaction.add(R.id.main_activity_layout, mainFragment);
         fragmentTransaction.commit();
     }
 
