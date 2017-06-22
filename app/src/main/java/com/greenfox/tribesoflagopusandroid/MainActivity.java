@@ -16,6 +16,8 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
 
+import com.greenfox.tribesoflagopusandroid.fragments.MainFragment;
+
 public class MainActivity extends AppCompatActivity {
 
     public static final String USERNAME = "Username";
