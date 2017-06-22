@@ -34,7 +34,7 @@ public class BuildingsAdapter extends ArrayAdapter<Building> {
 
         TextView hp = (TextView) convertView.findViewById(R.id.building_type);
         hp.setText(current.getType() + " " + current.getId());
-        TextView ap = (TextView) convertView.findViewById(R.id.AP_amount);
+        TextView ap = (TextView) convertView.findViewById(R.id.building_level);
         ap.setText("level " + Integer.toString(current.getLevel()));
 
         return convertView;
