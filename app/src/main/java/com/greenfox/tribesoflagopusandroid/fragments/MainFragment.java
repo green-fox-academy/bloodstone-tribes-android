@@ -1,4 +1,4 @@
-package com.greenfox.tribesoflagopusandroid.api.service;
+package com.greenfox.tribesoflagopusandroid.fragments;
 
 
 import android.os.Bundle;
