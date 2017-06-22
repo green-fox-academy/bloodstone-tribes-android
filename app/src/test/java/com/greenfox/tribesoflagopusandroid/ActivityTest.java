@@ -24,11 +24,6 @@ public class ActivityTest {
     MainActivity activity;
 
     @Test
-    public void addition_isCorrect() throws Exception {
-        assertEquals(4, 2 + 2);
-    }
-
-    @Test
     public void shouldHaveShortDuration() throws Exception {
         Toast toast = Toast.makeText(RuntimeEnvironment.application, "Refreshing", Toast.LENGTH_SHORT);
         assertThat(toast).isNotNull();
