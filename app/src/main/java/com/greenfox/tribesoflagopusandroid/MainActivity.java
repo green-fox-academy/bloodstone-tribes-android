@@ -12,13 +12,18 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.text.TextUtils;
+import android.view.View;
+import android.widget.Button;
 import android.widget.Toast;
+import javax.inject.Inject;
 
 import com.greenfox.tribesoflagopusandroid.fragments.MainFragment;
 import com.greenfox.tribesoflagopusandroid.fragments.BattleFragment;
@@ -26,11 +31,14 @@ import com.greenfox.tribesoflagopusandroid.fragments.BuildingsFragment;
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
+
+
     public static final String USERNAME = "Username";
     public static final String PASSWORD = "Password";
 
     SharedPreferences preferences;
     SharedPreferences.Editor editor;
+
 
     private DrawerLayout mDrawer;
 
@@ -39,6 +47,14 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         checkUsernameAndPassword();
+
+
+        Button button = (Button) findViewById(R.id.logout);
+        button.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                logout();
+            }
+        });
 
         MainFragment mainFragment = new MainFragment();
         FragmentManager fragmentManager = getSupportFragmentManager();
@@ -57,6 +73,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         toggle.syncState();
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this); }
+
+
+
 
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();

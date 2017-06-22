@@ -6,7 +6,6 @@
     android:layout_height="match_parent"
     tools:context="com.greenfox.tribesoflagopusandroid.fragments.MainFragment"
     android:id="@+id/main_fragment_layout">
-
     <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto"
         xmlns:tools="http://schemas.android.com/tools"
@@ -235,5 +234,5 @@
 
 
     </android.support.constraint.ConstraintLayout>
-
 </FrameLayout>
+

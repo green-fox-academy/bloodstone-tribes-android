@@ -22,9 +22,5 @@
     <string name="go_to_troops">Go to troops</string>
     <string name="goldPicDesc">picture of Gold</string>
     <string name="foodPicDesc">picture of Food</string>
-
     <string name="action_settings">Settings</string>
-
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>
