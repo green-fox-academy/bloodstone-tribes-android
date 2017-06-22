@@ -58,7 +58,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.game_menu, menu);
-        getMenuInflater().inflate(R.menu.navigation_drawer, menu);
         return true;
     }
 
@@ -68,9 +67,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         switch (item.getItemId()) {
             case R.id.refreshing:
                 Toast.makeText(MainActivity.this, "Refreshing", Toast.LENGTH_SHORT).show();
-//            case R.id.home:
-//                mDrawer.openDrawer(GravityCompat.START);
-//                return true;
         }
         return false;
     }
