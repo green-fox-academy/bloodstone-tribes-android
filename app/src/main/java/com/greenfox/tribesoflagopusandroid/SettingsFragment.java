@@ -14,13 +14,13 @@ import javax.inject.Inject;
 
 import static com.greenfox.tribesoflagopusandroid.MainActivity.BACKGROUND_SYNC;
 import static com.greenfox.tribesoflagopusandroid.MainActivity.NOTIFICATION;
-import static com.greenfox.tribesoflagopusandroid.MainActivity.PASSWORD;
+
 
 /**
  * Created by georgezsiga on 6/21/17.
  */
 
-public class SettingsFragment extends Fragment {
+public class SettingsFragment extends android.support.v4.app.Fragment {
 
     @Inject
     SharedPreferences preferences;
@@ -37,7 +37,7 @@ public class SettingsFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        editor = preferences.edit();
+//        editor = preferences.edit();
 
         View rootView = inflater.inflate(R.layout.settings_fragment, container, false);
         notification_status = (TextView) rootView.findViewById(R.id.notification_status);
@@ -50,11 +50,11 @@ public class SettingsFragment extends Fragment {
             public void onCheckedChanged(CompoundButton buttonView,
                                          boolean isChecked) {
                 if(isChecked){
-                    notification_status.setText("You will receive game notifications");
+                    notification_status.setText(getContext().getString(R.string.notification_on));
                     editor.putBoolean(String.valueOf(NOTIFICATION), true);
                     editor.apply();
                 }else{
-                    notification_status.setText("You don`t receive game notifications");
+                    notification_status.setText(getContext().getString(R.string.notification_off));
                     editor.putBoolean(String.valueOf(NOTIFICATION), false);
                     editor.apply();
                 }
@@ -66,11 +66,11 @@ public class SettingsFragment extends Fragment {
             public void onCheckedChanged(CompoundButton buttonView,
                                          boolean isChecked) {
                 if(isChecked){
-                    background_sync_status.setText("Background sync is ON");
+                    background_sync_status.setText(getContext().getString(R.string.background_sync_on));
                     editor.putBoolean(String.valueOf(BACKGROUND_SYNC), true);
                     editor.apply();
                 }else{
-                    background_sync_status.setText("Background sync is OFF");
+                    background_sync_status.setText(getContext().getString(R.string.background_sync_off));
                     editor.putBoolean(String.valueOf(BACKGROUND_SYNC), false);
                     editor.apply();
                 }
@@ -78,17 +78,17 @@ public class SettingsFragment extends Fragment {
         });
 
         if(notification.isChecked()){
-            notification_status.setText("You will receive game notifications");
+            notification_status.setText(getContext().getString(R.string.notification_on));
         }
         else {
-            notification_status.setText("You don`t receive game notifications");
+            notification_status.setText(getContext().getString(R.string.notification_off));
         }
 
         if(background_sync.isChecked()){
-            background_sync_status.setText("Background sync is ON");
+            background_sync_status.setText(getContext().getString(R.string.background_sync_on));
         }
         else {
-            background_sync_status.setText("Background sync is OFF");
+            background_sync_status.setText(getContext().getString(R.string.notification_off));
         }
 
         return rootView;
