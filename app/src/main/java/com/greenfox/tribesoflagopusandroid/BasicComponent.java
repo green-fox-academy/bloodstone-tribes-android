@@ -17,5 +17,5 @@ import dagger.Provides;
 public interface BasicComponent {
     void inject(LoginActivity activity);
     void inject(MainActivity activity);
+    void inject(SettingsFragment fragment);
 }
-
