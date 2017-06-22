@@ -1,6 +1,5 @@
 package com.greenfox.tribesoflagopusandroid;
 
-import android.app.Fragment;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -37,7 +36,8 @@ public class SettingsFragment extends android.support.v4.app.Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-//        editor = preferences.edit();
+        TribesApplication.app().basicComponent().inject(this);
+        editor = preferences.edit();
 
         View rootView = inflater.inflate(R.layout.settings_fragment, container, false);
         notification_status = (TextView) rootView.findViewById(R.id.notification_status);
@@ -51,11 +51,11 @@ public class SettingsFragment extends android.support.v4.app.Fragment {
                                          boolean isChecked) {
                 if(isChecked){
                     notification_status.setText(getContext().getString(R.string.notification_on));
-                    editor.putBoolean(String.valueOf(NOTIFICATION), true);
+                    editor.putString(NOTIFICATION, "true");
                     editor.apply();
                 }else{
                     notification_status.setText(getContext().getString(R.string.notification_off));
-                    editor.putBoolean(String.valueOf(NOTIFICATION), false);
+                    editor.putString(NOTIFICATION, "false");
                     editor.apply();
                 }
             }
@@ -67,11 +67,11 @@ public class SettingsFragment extends android.support.v4.app.Fragment {
                                          boolean isChecked) {
                 if(isChecked){
                     background_sync_status.setText(getContext().getString(R.string.background_sync_on));
-                    editor.putBoolean(String.valueOf(BACKGROUND_SYNC), true);
+                    editor.putString(BACKGROUND_SYNC, "true");
                     editor.apply();
                 }else{
                     background_sync_status.setText(getContext().getString(R.string.background_sync_off));
-                    editor.putBoolean(String.valueOf(BACKGROUND_SYNC), false);
+                    editor.putString(BACKGROUND_SYNC, "false");
                     editor.apply();
                 }
             }
