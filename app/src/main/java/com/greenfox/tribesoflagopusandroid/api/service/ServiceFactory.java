@@ -9,7 +9,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class ServiceFactory {
 
-private static final String SERVER_URL = "https://tribes-of-lagopus.herokuapp.com/";
+private static final String SERVER_URL = "https://tribes-of-lagopus.herokuapp.com";
 
     public static <T> T createRetrofitService() {
 
