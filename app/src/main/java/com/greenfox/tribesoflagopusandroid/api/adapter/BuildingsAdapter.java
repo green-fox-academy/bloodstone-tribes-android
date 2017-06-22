@@ -33,6 +33,7 @@ public class BuildingsAdapter extends ArrayAdapter<Building> {
         }
 
         ImageView buildingImage = (ImageView) convertView.findViewById(R.id.building_image);
+        ImageView upArrow = (ImageView) convertView.findViewById(R.id.up);
         TextView type = (TextView) convertView.findViewById(R.id.building_type);
         TextView buildingLevel = (TextView) convertView.findViewById(R.id.building_level);
         if (current.getType().equals("townhall")) {
