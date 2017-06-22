@@ -22,10 +22,12 @@ public class MainActivity extends AppCompatActivity {
 
     public static final String USERNAME = "Username";
     public static final String PASSWORD = "Password";
-    public static Boolean NOTIFICATION;
-    public static Boolean BACKGROUND_SYNC;
+    public static String NOTIFICATION = "";
+    public static String BACKGROUND_SYNC = "";
 
+    @Inject
     SharedPreferences preferences;
+
     SharedPreferences.Editor editor;
 
 
@@ -34,6 +36,8 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        TribesApplication.app().basicComponent().inject(this);
+        editor = preferences.edit();
         checkUsernameAndPassword();
 
         Button button = (Button) findViewById(R.id.logout);
@@ -44,9 +48,11 @@ public class MainActivity extends AppCompatActivity {
         });
 
         MainFragment mainFragment = new MainFragment();
+        SettingsFragment settingsFragment = new SettingsFragment();
         FragmentManager fragmentManager = getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-        fragmentTransaction.add(R.id.main_activity_layout, mainFragment);
+//        fragmentTransaction.add(R.id.main_activity_layout, mainFragment);
+        fragmentTransaction.add(R.id.main_activity_layout, settingsFragment);
         fragmentTransaction.commit();
     }
 
