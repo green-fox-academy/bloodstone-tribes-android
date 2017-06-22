@@ -51,15 +51,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         drawer.setDrawerListener(toggle);
         toggle.syncState();
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
-        navigationView.setNavigationItemSelectedListener(this);
-
-        Button button = (Button) findViewById(R.id.logout);
-        button.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                logout();
-            }
-        });
-    }
+        navigationView.setNavigationItemSelectedListener(this); }
 
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
@@ -116,6 +108,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             case R.id.nav_settings:
                 break;
             case R.id.nav_troops:
+                break;
+            case R.id.nav_logout:
+                logout();
                 break;
         }
         if (fragment != null) {
