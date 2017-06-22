@@ -3,6 +3,7 @@
     package="com.greenfox.tribesoflagopusandroid">
     <uses-permission android:name="android.permission.INTERNET" />
     <application
+        android:name=".TribesApplication"
         android:allowBackup="true"
         android:icon="@mipmap/tribeslogo"
         android:label="@string/app_name"

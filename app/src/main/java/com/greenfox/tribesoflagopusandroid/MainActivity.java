@@ -16,8 +16,6 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
 
-import com.greenfox.tribesoflagopusandroid.fragments.TroopsFragment;
-
 public class MainActivity extends AppCompatActivity {
 
     public static final String USERNAME = "Username";
@@ -25,6 +23,8 @@ public class MainActivity extends AppCompatActivity {
 
     SharedPreferences preferences;
     SharedPreferences.Editor editor;
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,10 +39,10 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        TroopsFragment troopsFragment = new TroopsFragment();
+        MainFragment mainFragment = new MainFragment();
         FragmentManager fragmentManager = getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-        fragmentTransaction.add(R.id.main_activity_layout, troopsFragment);
+        fragmentTransaction.add(R.id.main_activity_layout, mainFragment);
         fragmentTransaction.commit();
     }
 
