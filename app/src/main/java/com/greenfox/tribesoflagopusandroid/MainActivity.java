@@ -22,8 +22,8 @@ public class MainActivity extends AppCompatActivity {
 
     public static final String USERNAME = "Username";
     public static final String PASSWORD = "Password";
-    public static String NOTIFICATION = "Notification";
-    public static String BACKGROUND_SYNC = "BackgroundSync";
+    public static final String NOTIFICATION = "Notification";
+    public static final String BACKGROUND_SYNC = "BackgroundSync";
 
     @Inject
     SharedPreferences preferences;
