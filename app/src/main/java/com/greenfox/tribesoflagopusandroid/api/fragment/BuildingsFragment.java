@@ -26,18 +26,22 @@ public class BuildingsFragment extends Fragment {
                              Bundle savedInstanceState) {
 
         ArrayList<Building> buildings = new ArrayList<>();
-        Building farm1 = new Building(1, "farm", 1, 2);
-        Building farm2 = new Building(2, "farm", 1, 2);
         Building townhall = new Building(1, "townhall", 1, 10);
-        Building mine1 = new Building(1, "mine", 1, 2);
-        Building barrack1 = new Building(1, "barrack", 1, 5);
+        Building farm1 = new Building(2, "farm", 1, 2);
+        Building farm2 = new Building(3, "farm", 1, 2);
+        Building mine1 = new Building(4, "mine", 1, 2);
+        Building mine2 = new Building(5, "mine", 1, 2);
+        Building barrack1 = new Building(6, "barrack", 1, 5);
+        Building barrack2 = new Building(7, "barrack", 1, 5);
 
         buildingsAdapter = new BuildingsAdapter(this.getContext(), buildings);
         buildingsAdapter.add(farm1);
         buildingsAdapter.add(farm2);
         buildingsAdapter.add(townhall);
         buildingsAdapter.add(mine1);
+        buildingsAdapter.add(mine2);
         buildingsAdapter.add(barrack1);
+        buildingsAdapter.add(barrack2);
 
         View rootView = inflater.inflate(R.layout.fragment_buildings, container, false);
 

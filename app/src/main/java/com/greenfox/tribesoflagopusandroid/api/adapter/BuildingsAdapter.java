@@ -12,7 +12,6 @@ import android.widget.TextView;
 
 import com.greenfox.tribesoflagopusandroid.R;
 import com.greenfox.tribesoflagopusandroid.api.model.gameobject.Building;
-import com.greenfox.tribesoflagopusandroid.api.model.gameobject.Troop;
 
 import java.util.ArrayList;
 
@@ -29,7 +28,7 @@ public class BuildingsAdapter extends ArrayAdapter<Building> {
         Building current = getItem(position);
 
         if (convertView == null) {
-            convertView = LayoutInflater.from(getContext()).inflate(R.layout.list_item, parent, false);
+            convertView = LayoutInflater.from(getContext()).inflate(R.layout.building_list_item, parent, false);
         }
 
         ImageView buildingImage = (ImageView) convertView.findViewById(R.id.building_image);
