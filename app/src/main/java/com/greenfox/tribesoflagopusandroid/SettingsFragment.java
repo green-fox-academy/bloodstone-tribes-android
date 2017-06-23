@@ -45,6 +45,9 @@ public class SettingsFragment extends android.support.v4.app.Fragment {
         background_sync_status = (TextView) rootView.findViewById(R.id.background_sync_status);
         background_sync = (Switch) rootView.findViewById(R.id.background_sync);
 
+        notification.setChecked(Boolean.parseBoolean(preferences.getString(NOTIFICATION, "")));
+        background_sync.setChecked(Boolean.parseBoolean(preferences.getString(BACKGROUND_SYNC, "")));
+
         notification.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView,
@@ -69,12 +72,12 @@ public class SettingsFragment extends android.support.v4.app.Fragment {
             public void onCheckedChanged(CompoundButton buttonView,
                                          boolean isChecked) {
                 if(isChecked){
-                    notification.setChecked(true);
+                    background_sync.setChecked(true);
                     background_sync_status.setText(getContext().getString(R.string.background_sync_on));
                     editor.putString(BACKGROUND_SYNC, "true");
                     editor.apply();
                 }else{
-                    notification.setChecked(false);
+                    background_sync.setChecked(false);
                     background_sync_status.setText(getContext().getString(R.string.background_sync_off));
                     editor.putString(BACKGROUND_SYNC, "false");
                     editor.apply();
