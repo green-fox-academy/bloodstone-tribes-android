@@ -13,6 +13,8 @@
     <string name="arrowUpDesc">Picture of arrow up icon</string>
     <string name="goldDesc">Picture of gold</string>
     <string name="foodDesc">Picture of food</string>
+    <string name="enable_notifications">Enable notifications</string>
+    <string name="enable_sync">Enable background sync</string>
     <string name="logout_btn">Logout</string>
     <string name="buildings">Buildings</string>
     <string name="go_to_buildings">Go to buildings</string>
@@ -22,4 +24,8 @@
     <string name="go_to_troops">Go to troops</string>
     <string name="goldPicDesc">picture of Gold</string>
     <string name="foodPicDesc">picture of Food</string>
+    <string name="notification_off">You don`t receive game notifications</string>
+    <string name="notification_on">You will receive game notifications</string>
+    <string name="background_sync_on">Background sync is ON</string>
+    <string name="background_sync_off">Background sync is OFF</string>
 </resources>
