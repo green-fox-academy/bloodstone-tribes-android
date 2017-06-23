@@ -50,10 +50,13 @@ public class SettingsFragment extends android.support.v4.app.Fragment {
             public void onCheckedChanged(CompoundButton buttonView,
                                          boolean isChecked) {
                 if(isChecked){
+                    notification.setChecked(false);
                     notification_status.setText(getContext().getString(R.string.notification_on));
+
                     editor.putString(NOTIFICATION, "true");
                     editor.apply();
                 }else{
+                    notification.setChecked(true);
                     notification_status.setText(getContext().getString(R.string.notification_off));
                     editor.putString(NOTIFICATION, "false");
                     editor.apply();
@@ -66,10 +69,12 @@ public class SettingsFragment extends android.support.v4.app.Fragment {
             public void onCheckedChanged(CompoundButton buttonView,
                                          boolean isChecked) {
                 if(isChecked){
+                    notification.setChecked(true);
                     background_sync_status.setText(getContext().getString(R.string.background_sync_on));
                     editor.putString(BACKGROUND_SYNC, "true");
                     editor.apply();
                 }else{
+                    notification.setChecked(false);
                     background_sync_status.setText(getContext().getString(R.string.background_sync_off));
                     editor.putString(BACKGROUND_SYNC, "false");
                     editor.apply();
