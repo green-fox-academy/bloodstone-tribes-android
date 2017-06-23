@@ -18,6 +18,8 @@ import android.widget.Toast;
 
 import com.greenfox.tribesoflagopusandroid.fragments.MainFragment;
 
+import javax.inject.Inject;
+
 public class MainActivity extends AppCompatActivity {
 
     public static final String USERNAME = "Username";
