@@ -21,16 +21,20 @@ import javax.inject.Inject;
 public class MainActivity extends AppCompatActivity {
 
     public static final String USERNAME = "Username";
+    public static final String NOTIFICATION = "Notification";
+    public static final String BACKGROUND_SYNC = "BackgroundSync";
 
+    @Inject
     SharedPreferences preferences;
+
     SharedPreferences.Editor editor;
-
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        TribesApplication.app().basicComponent().inject(this);
+        editor = preferences.edit();
         checkUsername();
 
         Button button = (Button) findViewById(R.id.logout);
