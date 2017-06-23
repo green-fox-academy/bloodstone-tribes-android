@@ -56,7 +56,7 @@ public class SettingsFragment extends android.support.v4.app.Fragment {
                     notification.setChecked(true);
                     notification_status.setText(getContext().getString(R.string.notification_on));
 
-                    editor.putString(NOTIFICATION, "false");
+                    editor.putString(NOTIFICATION, "true");
                     editor.apply();
                 }else{
                     notification.setChecked(true);
