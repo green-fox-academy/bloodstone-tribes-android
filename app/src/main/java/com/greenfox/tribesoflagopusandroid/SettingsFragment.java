@@ -53,10 +53,10 @@ public class SettingsFragment extends android.support.v4.app.Fragment {
             public void onCheckedChanged(CompoundButton buttonView,
                                          boolean isChecked) {
                 if(isChecked){
-                    notification.setChecked(false);
+                    notification.setChecked(true);
                     notification_status.setText(getContext().getString(R.string.notification_on));
 
-                    editor.putString(NOTIFICATION, "true");
+                    editor.putString(NOTIFICATION, "false");
                     editor.apply();
                 }else{
                     notification.setChecked(true);
