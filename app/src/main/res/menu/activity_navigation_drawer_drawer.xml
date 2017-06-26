@@ -1,29 +1,29 @@
 <?xml version="1.0" encoding="utf-8"?>
-<menu xmlns:android="http://schemas.android.com/apk/res/android">
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
 
     <group android:checkableBehavior="single">
         <item
             android:id="@+id/nav_kingdom"
-            android:icon="@drawable/user_crown"
+            android:icon="@drawable/kingdom"
             android:title="Kingdom" />
         <item
             android:id="@+id/nav_buildings"
-            android:icon="@drawable/town"
+            android:icon="@drawable/building"
             android:title="Buildings" />
         <item
             android:id="@+id/nav_troops"
-            android:icon="@drawable/troop"
-            android:title="Troops"/>
+            android:icon="@drawable/troopicon"
+            android:title="Troops" />
         <item
             android:id="@+id/nav_battle"
-            android:icon="@drawable/ic_menu_manage"
+            android:icon="@drawable/battle"
             android:title="Battle" />
-
         <item
             android:id="@+id/nav_settings"
             android:icon="@android:drawable/ic_menu_preferences"
             android:title="Settings" />
-
         <item
             android:id="@+id/nav_logout"
             android:icon="@android:drawable/ic_lock_power_off"

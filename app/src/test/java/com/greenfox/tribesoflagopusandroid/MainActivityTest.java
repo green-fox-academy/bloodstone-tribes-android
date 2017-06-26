@@ -38,28 +38,4 @@ public class MainActivityTest {
         Intent expectedIntent = new Intent(login, LoginActivity.class);
         assertEquals(expectedIntent.getClass(), shadowOf(main).getNextStartedActivity().getClass());
     }
-
-//    @Test
-//    public void logoutButtonIsClickedIsGoingToLoginActivityTest() throws Exception {
-//        Button button = (Button) main.findViewById(R.id.logout);
-//        button.performClick();
-//        Intent expectedIntent = new Intent(login, LoginActivity.class);
-//        assertEquals(expectedIntent.getClass(), shadowOf(main).getNextStartedActivity().getClass());
-//    }
-//
-//    @Test
-//    public void logoutButtonClearSharedPreferencesTest() throws Exception {
-//        main.editor = main.preferences.edit();
-//
-//        main.editor.putString(USERNAME, "testUsername");
-//        main.editor.putString(PASSWORD, "testPassword");
-//        main.editor.apply();
-//
-//        Button button = (Button) main.findViewById(R.id.logout);
-//        button.performClick();
-//
-//        assertThat(null, is(main.preferences.getString(USERNAME, null)));
-//        assertThat(null, is(main.preferences.getString(PASSWORD, null)));
-//    }
-
 }

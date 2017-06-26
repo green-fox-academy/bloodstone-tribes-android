@@ -101,6 +101,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 fragment = new BuildingsFragment();
                 break;
             case R.id.nav_kingdom:
+                fragment = new MainFragment();
                 break;
             case R.id.nav_battle:
                 fragment = new BattleFragment();
