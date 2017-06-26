@@ -15,7 +15,6 @@ public class MockLoginService implements LoginService {
     @Override
     public MockCall<User> loginWithUser(@Field("username") final String username, @Field("password") final String password) {
         return new MockCall<User>() {
-
             @Override
             public void enqueue(Callback callback) {
                 callback.onResponse(null, Response.success(new User(username, password)));
