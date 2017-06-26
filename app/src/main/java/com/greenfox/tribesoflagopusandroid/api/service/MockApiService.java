@@ -18,7 +18,7 @@ public class MockApiService implements ApiService {
         return new MockCall<Building>() {
             @Override
             public void enqueue(Callback callback) {
-                callback.onResponse(null, Response.success(new Building(type)));
+                callback.onResponse(null, Response.success(new Building(1L, type, 1, 1)));
             }
         };
     }
