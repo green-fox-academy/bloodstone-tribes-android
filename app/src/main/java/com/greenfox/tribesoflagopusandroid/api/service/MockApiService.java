@@ -1,27 +1,30 @@
 package com.greenfox.tribesoflagopusandroid.api.service;
 
-import com.greenfox.tribesoflagopusandroid.api.model.gameobject.Building;
-import com.greenfox.tribesoflagopusandroid.api.model.gameobject.Kingdom;
-import com.greenfox.tribesoflagopusandroid.api.model.gameobject.Location;
-import com.greenfox.tribesoflagopusandroid.api.model.gameobject.Resource;
 import com.greenfox.tribesoflagopusandroid.api.model.gameobject.Troop;
-import com.greenfox.tribesoflagopusandroid.api.model.response.BuildingsResponse;
+import com.greenfox.tribesoflagopusandroid.api.model.response.TroopsResponse;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import com.greenfox.tribesoflagopusandroid.api.model.gameobject.Building;
+import com.greenfox.tribesoflagopusandroid.api.model.gameobject.Kingdom;
+import com.greenfox.tribesoflagopusandroid.api.model.gameobject.Location;
+import com.greenfox.tribesoflagopusandroid.api.model.gameobject.Resource;
+import com.greenfox.tribesoflagopusandroid.api.model.response.BuildingsResponse;
 
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 import retrofit2.http.Path;
-
 import retrofit2.http.Field;
+/**
+ * Created by hegyi on 2017-06-22.
+ */
 
-
-public class MockApiService implements ApiService {
+public class MockApiService implements ApiService{
 
     private long id = 1;
+
     private String name = "kingdomname";
     private long idOfUser = 1;
     private Building farm1 = new Building(1, "farm", 1, 2);
@@ -38,6 +41,16 @@ public class MockApiService implements ApiService {
     private String type = "farm";
     private int level = 1;
     private int hp = 10;
+
+    @Override
+    public Call<TroopsResponse> getTroops(@Path("userId") int userId) {
+        return new MockCall<TroopsResponse>() {
+            @Override
+            public void enqueue(Callback callback) {
+                callback.onResponse(null, Response.success(new TroopsResponse(troops)));
+            }
+        };
+    }
 
     @Override
     public Call<BuildingsResponse> getBuildings(@Path("userId") int userId) {
@@ -78,4 +91,5 @@ public class MockApiService implements ApiService {
             }
         };
     }
+
 }
