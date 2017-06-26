@@ -6,6 +6,7 @@ import com.greenfox.tribesoflagopusandroid.api.model.gameobject.Location;
 import com.greenfox.tribesoflagopusandroid.api.model.gameobject.Resource;
 import com.greenfox.tribesoflagopusandroid.api.model.gameobject.Troop;
 import com.greenfox.tribesoflagopusandroid.api.model.response.BuildingsResponse;
+import com.greenfox.tribesoflagopusandroid.api.model.response.ResourcesResponse;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -75,6 +76,16 @@ public class MockApiService implements ApiService {
             @Override
             public void enqueue(Callback callback) {
                 callback.onResponse(null, Response.success(new Building(1L, type, 1, 1)));
+            }
+        };
+    }
+
+    @Override
+    public Call<Resource> getResource(@Path("userId") int userId) {
+        return new MockCall<ResourcesResponse>() {
+            @Override
+            public void enqueue(Callback callback) {
+                callback.onResponse(null, Response.success(new ResourcesResponse(resources)));
             }
         };
     }
