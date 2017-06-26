@@ -9,10 +9,11 @@
     <string name="user_password">Enter your login password</string>
     <string name="login_button">Login</string>
     <string name="kingdom_name">Your kingdom</string>
-    <string name="string_loginMessage">Please fill in your username and password to enter the game</string>
     <string name="title_activity_navigation_drawer">NavigationDrawerActivity</string>
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="enable_notifications">Enable notifications</string>
+    <string name="enable_sync">Enable background sync</string>
     <string name="logout_btn">Logout</string>
     <string name="buildings">Buildings</string>
     <string name="go_to_buildings">Go to buildings</string>
@@ -23,4 +24,19 @@
     <string name="goldPicDesc">picture of Gold</string>
     <string name="foodPicDesc">picture of Food</string>
     <string name="action_settings">Settings</string>
+    <string name="string_loginMessage">Please fill in your username and password to enter the game</string>
+    <string name="string_HP">HP:</string>
+    <string name="string_AP">AP:</string>
+    <string name="string_DP">DP:</string>
+    <string name="troopDesc">Picture of troop</string>
+    <string name="arrowUpDesc">Picture of arrow up icon</string>
+    <string name="goldDesc">Picture of gold</string>
+    <string name="foodDesc">Picture of food</string>
+    <string name="townhall">Picture of townhall</string>
+    <string name="building_type">Townhall</string>
+    <string name="building_level">Level 1</string>
+    <string name="notification_off">You don`t receive game notifications</string>
+    <string name="notification_on">You will receive game notifications</string>
+    <string name="background_sync_on">Background sync is ON</string>
+    <string name="background_sync_off">Background sync is OFF</string>
 </resources>

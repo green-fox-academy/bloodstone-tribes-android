@@ -1,11 +1,10 @@
-<?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/buildings_fragment_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.greenfox.tribesoflagopusandroid.fragments.BuildingsFragment">
+    tools:context="com.greenfox.tribesoflagopusandroid.fragments.TroopsFragment"
+    android:id="@+id/troops_fragment_layout">
 
     <android.support.constraint.ConstraintLayout
         android:layout_width="match_parent"
@@ -47,7 +46,6 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="8dp"
                 android:layout_marginStart="8dp"
-                android:textColor="@color/colorPrimaryDark"
                 android:text="120"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintLeft_toRightOf="@+id/gold_icon"
@@ -62,7 +60,6 @@
                 android:layout_marginLeft="8dp"
                 android:layout_marginStart="8dp"
                 android:layout_marginTop="8dp"
-                android:textColor="@color/colorPrimaryDark"
                 android:text="20"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintLeft_toRightOf="@+id/food_icon"
@@ -86,7 +83,7 @@
         </android.support.constraint.ConstraintLayout>
 
         <ListView
-            android:id="@+id/buildings_list"
+            android:id="@+id/troops_listView"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginEnd="24dp"
@@ -94,12 +91,12 @@
             android:layout_marginRight="24dp"
             android:layout_marginStart="24dp"
             android:layout_marginTop="16dp"
-            android:divider="@android:color/transparent"
-            android:dividerHeight="16dp"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/goldAndFoodBox" />
+            app:layout_constraintTop_toBottomOf="@+id/goldAndFoodBox"
+            android:divider="@android:color/transparent"
+            android:dividerHeight="16dp" />
 
     </android.support.constraint.ConstraintLayout>
 
