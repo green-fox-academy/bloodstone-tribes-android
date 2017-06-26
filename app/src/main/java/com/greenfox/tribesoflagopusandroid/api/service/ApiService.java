@@ -7,6 +7,12 @@ import com.greenfox.tribesoflagopusandroid.api.model.response.BuildingsResponse;
 import retrofit2.Call;
 import retrofit2.http.GET;
 import retrofit2.http.Path;
+import retrofit2.http.Field;
+import retrofit2.http.POST;
+
+/**
+ * Created by hegyi on 2017-06-22.
+ */
 
 public interface ApiService {
 
@@ -18,5 +24,8 @@ public interface ApiService {
 
     @GET("/{userId}/kingdom")
     Call<Kingdom> getKingdom(@Path("userId") int userId);
+
+    @POST("/{userId}/kingdom/buildings")
+    Call<Building> postBuilding (@Field("type") String type);
 
 }

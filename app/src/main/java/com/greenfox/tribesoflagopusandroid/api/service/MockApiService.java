@@ -11,15 +11,13 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import okhttp3.Request;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 import retrofit2.http.Path;
 
-/**
- * Created by User on 2017. 06. 20..
- */
+import retrofit2.http.Field;
+
 
 public class MockApiService implements ApiService {
 
@@ -70,5 +68,14 @@ public class MockApiService implements ApiService {
             }
         };
     }
-}
 
+    @Override
+    public Call<Building> postBuilding(@Field("type") final String type) {
+        return new MockCall<Building>() {
+            @Override
+            public void enqueue(Callback callback) {
+                callback.onResponse(null, Response.success(new Building(1L, type, 1, 1)));
+            }
+        };
+    }
+}
