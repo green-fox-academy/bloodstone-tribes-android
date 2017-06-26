@@ -1,5 +1,7 @@
 package com.greenfox.tribesoflagopusandroid;
 
+import com.greenfox.tribesoflagopusandroid.fragments.SettingsFragment;
+
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.robolectric.RobolectricTestRunner;
@@ -27,7 +29,7 @@ public class SettingsFragmentTest extends android.app.Activity {
         settingsFragment.notification.performClick();
         String message = "You will receive game notifications";
         assertEquals(message, settingsFragment.notification_status.getText());
-        assertEquals("true", settingsFragment.preferences.getString(NOTIFICATION, ""));
+        assertEquals(true, settingsFragment.preferences.getBoolean(String.valueOf(NOTIFICATION), true));
     }
 
     @Test
@@ -39,7 +41,7 @@ public class SettingsFragmentTest extends android.app.Activity {
         settingsFragment.notification.performClick();
         String message = "You don`t receive game notifications";
         assertEquals(message, settingsFragment.notification_status.getText());
-        assertEquals("false", settingsFragment.preferences.getString(NOTIFICATION, ""));
+        assertEquals(false, settingsFragment.preferences.getBoolean(String.valueOf(NOTIFICATION), false));
     }
 
     @Test
@@ -51,7 +53,7 @@ public class SettingsFragmentTest extends android.app.Activity {
         settingsFragment.background_sync.performClick();
         String message = "Background sync is ON";
         assertEquals(message, settingsFragment.background_sync_status.getText());
-        assertEquals("true", settingsFragment.preferences.getString(BACKGROUND_SYNC, ""));
+        assertEquals(true, settingsFragment.preferences.getBoolean(String.valueOf(BACKGROUND_SYNC), true));
     }
 
     @Test
@@ -63,6 +65,6 @@ public class SettingsFragmentTest extends android.app.Activity {
         settingsFragment.background_sync.performClick();
         String message = "Background sync is OFF";
         assertEquals(message, settingsFragment.background_sync_status.getText());
-        assertEquals("false", settingsFragment.preferences.getString(BACKGROUND_SYNC, ""));
+        assertEquals(false, settingsFragment.preferences.getBoolean(String.valueOf(BACKGROUND_SYNC), false));
     }
 }

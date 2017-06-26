@@ -23,8 +23,8 @@ import javax.inject.Inject;
 public class MainActivity extends AppCompatActivity {
 
     public static final String USERNAME = "Username";
-    public static final String NOTIFICATION = "Notification";
-    public static final String BACKGROUND_SYNC = "BackgroundSync";
+    public static final Boolean NOTIFICATION = false;
+    public static final Boolean BACKGROUND_SYNC = false;
 
     @Inject
     SharedPreferences preferences;
