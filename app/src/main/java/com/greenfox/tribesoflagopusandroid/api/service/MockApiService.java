@@ -6,12 +6,13 @@ import com.greenfox.tribesoflagopusandroid.api.model.response.TroopsResponse;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import com.greenfox.tribesoflagopusandroid.api.model.gameobject.Building;
 
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 import retrofit2.http.Path;
-
+import retrofit2.http.Field;
 /**
  * Created by hegyi on 2017-06-22.
  */
@@ -28,6 +29,16 @@ public class MockApiService implements ApiService{
             @Override
             public void enqueue(Callback callback) {
                 callback.onResponse(null, Response.success(new TroopsResponse(troops)));
+            }
+        };
+    }
+
+    @Override
+    public Call<Building> postBuilding(@Field("type") final String type) {
+        return new MockCall<Building>() {
+            @Override
+            public void enqueue(Callback callback) {
+                callback.onResponse(null, Response.success(new Building(1L, type, 1, 1)));
             }
         };
     }

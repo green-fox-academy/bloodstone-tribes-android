@@ -10,7 +10,6 @@ import org.robolectric.Robolectric;
 import org.robolectric.RobolectricTestRunner;
 import org.robolectric.annotation.Config;
 
-import static com.greenfox.tribesoflagopusandroid.MainActivity.PASSWORD;
 import static com.greenfox.tribesoflagopusandroid.MainActivity.USERNAME;
 import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertEquals;
@@ -33,7 +32,7 @@ public class MainActivityTest {
 
     @Test
     public void userDoesNotExistAndGoToLoginActivityTest() throws Exception {
-        main.checkUsernameAndPassword();
+        main.checkUsername();
 
         Intent expectedIntent = new Intent(login, LoginActivity.class);
         assertEquals(expectedIntent.getClass(), shadowOf(main).getNextStartedActivity().getClass());
@@ -52,14 +51,12 @@ public class MainActivityTest {
         main.editor = main.preferences.edit();
 
         main.editor.putString(USERNAME, "testUsername");
-        main.editor.putString(PASSWORD, "testPassword");
         main.editor.apply();
 
         Button button = (Button) main.findViewById(R.id.logout);
         button.performClick();
 
         assertThat(null, is(main.preferences.getString(USERNAME, null)));
-        assertThat(null, is(main.preferences.getString(PASSWORD, null)));
     }
 
 }
