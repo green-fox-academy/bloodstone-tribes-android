@@ -6,7 +6,7 @@
     android:id="@+id/buildings_fragment_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.greenfox.tribesoflagopusandroid.api.fragment.BuildingsFragment">
+    tools:context="com.greenfox.tribesoflagopusandroid.fragments.BuildingsFragment">
 
     <android.support.constraint.ConstraintLayout
         android:layout_width="match_parent"

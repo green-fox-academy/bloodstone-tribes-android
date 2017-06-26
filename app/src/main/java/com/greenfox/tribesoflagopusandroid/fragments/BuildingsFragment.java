@@ -1,4 +1,4 @@
-package com.greenfox.tribesoflagopusandroid.api.fragment;
+package com.greenfox.tribesoflagopusandroid.fragments;
 
 
 import android.os.Bundle;
@@ -9,7 +9,7 @@ import android.view.ViewGroup;
 import android.widget.ListView;
 
 import com.greenfox.tribesoflagopusandroid.R;
-import com.greenfox.tribesoflagopusandroid.api.adapter.BuildingsAdapter;
+import com.greenfox.tribesoflagopusandroid.adapter.BuildingsAdapter;
 import com.greenfox.tribesoflagopusandroid.api.model.gameobject.Building;
 
 import java.util.ArrayList;

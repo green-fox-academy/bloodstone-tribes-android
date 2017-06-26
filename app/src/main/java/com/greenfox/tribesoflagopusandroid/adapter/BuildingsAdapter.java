@@ -1,4 +1,4 @@
-package com.greenfox.tribesoflagopusandroid.api.adapter;
+package com.greenfox.tribesoflagopusandroid.adapter;
 
 import android.content.Context;
 import android.support.annotation.NonNull;
