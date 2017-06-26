@@ -4,6 +4,7 @@ import com.greenfox.tribesoflagopusandroid.api.model.gameobject.Building;
 import com.greenfox.tribesoflagopusandroid.api.model.gameobject.Kingdom;
 import com.greenfox.tribesoflagopusandroid.api.model.gameobject.Resource;
 import com.greenfox.tribesoflagopusandroid.api.model.response.BuildingsResponse;
+import com.greenfox.tribesoflagopusandroid.api.model.response.ResourcesResponse;
 
 import retrofit2.Call;
 import retrofit2.http.GET;
@@ -30,6 +31,6 @@ public interface ApiService {
     Call<Building> postBuilding (@Field("type") String type);
 
     @GET("/{userId}/kingdom/resources")
-    Call<Resource> getResource (@Path("userId") int userId);
+    Call<ResourcesResponse> getResource (@Path("userId") int userId);
 
 }

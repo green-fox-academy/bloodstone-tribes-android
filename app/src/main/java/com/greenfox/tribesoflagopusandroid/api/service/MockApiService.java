@@ -81,7 +81,7 @@ public class MockApiService implements ApiService {
     }
 
     @Override
-    public Call<Resource> getResource(@Path("userId") int userId) {
+    public Call<ResourcesResponse> getResource(@Path("userId") int userId) {
         return new MockCall<ResourcesResponse>() {
             @Override
             public void enqueue(Callback callback) {
