@@ -1,11 +1,13 @@
 package com.greenfox.tribesoflagopusandroid;
 
 import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v4.app.NotificationCompat;
+import android.support.v4.app.TaskStackBuilder;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
 import android.view.Gravity;
@@ -50,14 +52,14 @@ public class LoginActivity extends AppCompatActivity {
         String username = ((EditText) findViewById(R.id.usernameText)).getText().toString();
         String password = ((EditText) findViewById(R.id.passwordText)).getText().toString();
 
-        checkFieldsNotEmpty(username, password, view);
+        checkFieldsNotEmpty(username, password);
     }
 
-    public void checkFieldsNotEmpty(String username, String password, View view) {
+    public void checkFieldsNotEmpty(String username, String password) {
         if (TextUtils.isEmpty(username) || TextUtils.isEmpty(password)) {
             showToastFillAllFields();
         } else {
-            loginWithAPIService(username, password, view);
+            loginWithAPIService(username, password);
         }
     }
 
@@ -67,13 +69,13 @@ public class LoginActivity extends AppCompatActivity {
         toast.show();
     }
 
-    protected void loginWithAPIService(String username, String password, final View view) {
+    protected void loginWithAPIService(String username, String password) {
         loginService.loginWithUser(username, password).enqueue(new Callback<User>() {
             @Override
             public void onResponse(Call<User> call, Response<User> response) {
                 User user = response.body();
                 addUserInfoToPreferences(user.getUsername());
-                sendNotification(user.getUsername(), view);
+                sendNotification(user.getUsername());
                 Intent intent = new Intent(LoginActivity.this, MainActivity.class);
                 startActivity(intent);
             }
@@ -85,12 +87,24 @@ public class LoginActivity extends AppCompatActivity {
         });
     }
 
-    public void sendNotification(String username, View view) {
+    public void sendNotification(String username) {
         NotificationCompat.Builder mBuilder =
                 new NotificationCompat.Builder(this)
                         .setSmallIcon(R.drawable.tribes)
                         .setContentTitle("Hi " + username + "!")
                         .setContentText("Welcome to the game, and have fun!");
+        Intent resultIntent = new Intent(this, MainActivity.class);
+        TaskStackBuilder stackBuilder = TaskStackBuilder.create(this);
+        stackBuilder.addParentStack(MainActivity.class);
+        stackBuilder.addNextIntent(resultIntent);
+        PendingIntent resultPendingIntent =
+                stackBuilder.getPendingIntent(
+                        0,
+                        PendingIntent.FLAG_UPDATE_CURRENT
+                );
+
+        mBuilder.setContentIntent(resultPendingIntent);
+
         NotificationManager mNotificationManager =
                 (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
         mNotificationManager.notify(001, mBuilder.build());
