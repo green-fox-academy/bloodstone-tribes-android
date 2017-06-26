@@ -16,6 +16,8 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
 
+import com.greenfox.tribesoflagopusandroid.fragments.MainFragment;
+
 import javax.inject.Inject;
 
 public class MainActivity extends AppCompatActivity {
