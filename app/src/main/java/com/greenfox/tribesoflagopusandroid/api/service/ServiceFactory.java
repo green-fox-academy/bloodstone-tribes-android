@@ -9,15 +9,14 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class ServiceFactory {
 
-
+private static final String SERVER_URL = "https://tribes-of-lagopus.herokuapp.com";
 
     public static <T> T createRetrofitService() {
 
         Class serviceClass = LoginService.class;
-        String url = "https://tribes-of-lagopus.herokuapp.com/";
 
         Retrofit.Builder builder = new Retrofit.Builder()
-                .baseUrl(url)
+                .baseUrl(SERVER_URL)
                 .addConverterFactory(GsonConverterFactory.create());
 
         Retrofit retrofit = builder.build();

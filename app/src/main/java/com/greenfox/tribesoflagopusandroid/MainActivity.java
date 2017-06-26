@@ -16,21 +16,28 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
 
+import com.greenfox.tribesoflagopusandroid.fragments.MainFragment;
+
+import javax.inject.Inject;
+
 public class MainActivity extends AppCompatActivity {
 
     public static final String USERNAME = "Username";
-    public static final String PASSWORD = "Password";
+    public static final String NOTIFICATION = "Notification";
+    public static final String BACKGROUND_SYNC = "BackgroundSync";
 
+    @Inject
     SharedPreferences preferences;
+
     SharedPreferences.Editor editor;
-
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        checkUsernameAndPassword();
+        TribesApplication.app().basicComponent().inject(this);
+        editor = preferences.edit();
+        checkUsername();
 
         Button button = (Button) findViewById(R.id.logout);
         button.setOnClickListener(new View.OnClickListener() {
@@ -61,13 +68,10 @@ public class MainActivity extends AppCompatActivity {
         return false;
     }
 
-    public void checkUsernameAndPassword() {
+    public void checkUsername() {
         preferences = PreferenceManager.getDefaultSharedPreferences(this);
 
-        String username = preferences.getString(USERNAME, null);
-        String password = preferences.getString(PASSWORD, null);
-
-        if (TextUtils.isEmpty(username) || TextUtils.isEmpty(password)) {
+        if (TextUtils.isEmpty(preferences.getString(USERNAME, null))) {
             Intent intent = new Intent(this, LoginActivity.class);
             startActivity(intent);
         }
@@ -80,5 +84,4 @@ public class MainActivity extends AppCompatActivity {
         editor.apply();
         finish();
     }
-
 }

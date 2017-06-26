@@ -23,6 +23,10 @@ public class Building extends BaseResponse{
         this.hp = hp;
     }
 
+    public Building(String type) {
+        this.type = type;
+    }
+
     public String getType() {
         return type;
     }

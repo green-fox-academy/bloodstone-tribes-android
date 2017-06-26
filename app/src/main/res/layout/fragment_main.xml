@@ -3,7 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.greenfox.tribesoflagopusandroid.MainFragment"
+    tools:context="com.greenfox.tribesoflagopusandroid.fragments.MainFragment"
     android:id="@+id/main_fragment_layout">
 
     <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"

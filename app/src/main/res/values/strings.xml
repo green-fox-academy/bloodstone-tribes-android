@@ -5,6 +5,8 @@
     <string name="login_username">Enter your login name</string>
     <string name="user_password">Enter your login password</string>
     <string name="login_button">Login</string>
+    <string name="enable_notifications">Enable notifications</string>
+    <string name="enable_sync">Enable background sync</string>
     <string name="logout_btn">Logout</string>
     <string name="buildings">Buildings</string>
     <string name="go_to_buildings">Go to buildings</string>
@@ -25,4 +27,8 @@
     <string name="townhall">Picture of townhall</string>
     <string name="building_type">Townhall</string>
     <string name="building_level">Level 1</string>
+    <string name="notification_off">You don`t receive game notifications</string>
+    <string name="notification_on">You will receive game notifications</string>
+    <string name="background_sync_on">Background sync is ON</string>
+    <string name="background_sync_off">Background sync is OFF</string>
 </resources>
