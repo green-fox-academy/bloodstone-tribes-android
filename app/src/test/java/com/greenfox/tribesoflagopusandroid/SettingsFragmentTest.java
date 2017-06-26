@@ -29,7 +29,7 @@ public class SettingsFragmentTest extends android.app.Activity {
         settingsFragment.notification.performClick();
         String message = "You will receive game notifications";
         assertEquals(message, settingsFragment.notification_status.getText());
-        assertEquals(true, settingsFragment.preferences.getBoolean(String.valueOf(NOTIFICATION), true));
+        assertEquals(true, settingsFragment.preferences.getBoolean(NOTIFICATION, true));
     }
 
     @Test
@@ -41,7 +41,7 @@ public class SettingsFragmentTest extends android.app.Activity {
         settingsFragment.notification.performClick();
         String message = "You don`t receive game notifications";
         assertEquals(message, settingsFragment.notification_status.getText());
-        assertEquals(false, settingsFragment.preferences.getBoolean(String.valueOf(NOTIFICATION), false));
+        assertEquals(false, settingsFragment.preferences.getBoolean(NOTIFICATION, false));
     }
 
     @Test
@@ -53,7 +53,7 @@ public class SettingsFragmentTest extends android.app.Activity {
         settingsFragment.background_sync.performClick();
         String message = "Background sync is ON";
         assertEquals(message, settingsFragment.background_sync_status.getText());
-        assertEquals(true, settingsFragment.preferences.getBoolean(String.valueOf(BACKGROUND_SYNC), true));
+        assertEquals(true, settingsFragment.preferences.getBoolean(BACKGROUND_SYNC, true));
     }
 
     @Test
@@ -65,6 +65,6 @@ public class SettingsFragmentTest extends android.app.Activity {
         settingsFragment.background_sync.performClick();
         String message = "Background sync is OFF";
         assertEquals(message, settingsFragment.background_sync_status.getText());
-        assertEquals(false, settingsFragment.preferences.getBoolean(String.valueOf(BACKGROUND_SYNC), false));
+        assertEquals(false, settingsFragment.preferences.getBoolean(BACKGROUND_SYNC, false));
     }
 }

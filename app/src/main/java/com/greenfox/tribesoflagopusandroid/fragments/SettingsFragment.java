@@ -48,8 +48,8 @@ public class SettingsFragment extends android.support.v4.app.Fragment {
         background_sync_status = (TextView) rootView.findViewById(R.id.background_sync_status);
         background_sync = (Switch) rootView.findViewById(R.id.background_sync);
 
-        notification.setChecked(preferences.getBoolean(String.valueOf(NOTIFICATION), false));
-        background_sync.setChecked(preferences.getBoolean(String.valueOf(BACKGROUND_SYNC), false));
+        notification.setChecked(preferences.getBoolean(NOTIFICATION, false));
+        background_sync.setChecked(preferences.getBoolean(BACKGROUND_SYNC, false));
 
         notification.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
@@ -58,13 +58,12 @@ public class SettingsFragment extends android.support.v4.app.Fragment {
                 if(isChecked){
                     notification.setChecked(true);
                     notification_status.setText(getContext().getString(R.string.notification_on));
-
-                    editor.putBoolean(String.valueOf(NOTIFICATION), true);
+                    editor.putBoolean(NOTIFICATION, true);
                     editor.apply();
                 }else{
                     notification.setChecked(false);
                     notification_status.setText(getContext().getString(R.string.notification_off));
-                    editor.putBoolean(String.valueOf(NOTIFICATION), false);
+                    editor.putBoolean(NOTIFICATION, false);
                     editor.apply();
                 }
             }
@@ -77,12 +76,12 @@ public class SettingsFragment extends android.support.v4.app.Fragment {
                 if(isChecked){
                     background_sync.setChecked(true);
                     background_sync_status.setText(getContext().getString(R.string.background_sync_on));
-                    editor.putBoolean(String.valueOf(BACKGROUND_SYNC), true);
+                    editor.putBoolean(BACKGROUND_SYNC, true);
                     editor.apply();
                 }else{
                     background_sync.setChecked(false);
                     background_sync_status.setText(getContext().getString(R.string.background_sync_off));
-                    editor.putBoolean(String.valueOf(BACKGROUND_SYNC), false);
+                    editor.putBoolean(BACKGROUND_SYNC, false);
                     editor.apply();
                 }
             }
