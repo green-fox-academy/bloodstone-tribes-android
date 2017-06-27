@@ -33,10 +33,8 @@ private static final String SERVER_URL = "https://tribes-of-lagopus.herokuapp.co
         return (T) retrofit.create(serviceClass);
     }
 
-    public static MockApiService createMockApiService() {
+    public static ApiService createMockApiService() {
         return new MockApiService();
     }
-
-
 }
 

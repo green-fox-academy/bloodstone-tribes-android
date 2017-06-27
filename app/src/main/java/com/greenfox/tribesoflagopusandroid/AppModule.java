@@ -24,7 +24,7 @@ public class AppModule {
 
     private Context context;
     private static final Boolean LOGINSERVICE_IS_ACTIVE = false;
-    private static final Boolean APOSERVICE_IS_ACTIVE = false;
+    private static final Boolean APISERVICE_IS_ACTIVE = false;
     ServiceFactory serviceFactory;
 
     public AppModule(Context context) {
@@ -62,7 +62,7 @@ public class AppModule {
 
     @Singleton @Provides
     public ApiService provideMockApiService() {
-        if (LOGINSERVICE_IS_ACTIVE) {
+        if (APISERVICE_IS_ACTIVE) {
             return serviceFactory.createRetrofitService();
         }
         return serviceFactory.createMockApiService();
