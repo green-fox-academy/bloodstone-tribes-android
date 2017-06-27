@@ -117,8 +117,7 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onStop() {
-        long interval = 600000l;
-        manager.setRepeating(AlarmManager.ELAPSED_REALTIME, System.currentTimeMillis(),interval, pendingIntent);
+        manager.cancel(pendingIntent);
         super.onStop();
     }
 }
