@@ -12,11 +12,9 @@ import android.widget.TextView;
 import com.greenfox.tribesoflagopusandroid.R;
 import com.greenfox.tribesoflagopusandroid.TribesApplication;
 import com.greenfox.tribesoflagopusandroid.api.model.gameobject.Building;
+import com.greenfox.tribesoflagopusandroid.api.model.gameobject.Kingdom;
 import com.greenfox.tribesoflagopusandroid.api.model.gameobject.Resource;
 import com.greenfox.tribesoflagopusandroid.api.model.gameobject.Troop;
-import com.greenfox.tribesoflagopusandroid.api.model.response.BuildingsResponse;
-import com.greenfox.tribesoflagopusandroid.api.model.response.ResourcesResponse;
-import com.greenfox.tribesoflagopusandroid.api.model.response.TroopsResponse;
 import com.greenfox.tribesoflagopusandroid.api.service.ApiService;
 
 import java.util.List;
@@ -45,15 +43,16 @@ public class MainFragment extends Fragment {
 
         TribesApplication.app().basicComponent().inject(this);
 
-        apiService.getResource(1).enqueue(new Callback<ResourcesResponse>() {
+        apiService.getKingdom(1).enqueue(new Callback<Kingdom>() {
             @Override
-            public void onResponse(Call<ResourcesResponse> call, Response<ResourcesResponse> response) {
+            public void onResponse(Call<Kingdom> call, Response<Kingdom> response) {
+                buildings = response.body().getBuildings();
+                troops = response.body().getTroops();
                 resources = response.body().getResources();
             }
 
             @Override
-            public void onFailure(Call<ResourcesResponse> call, Throwable t) {
-
+            public void onFailure(Call<Kingdom> call, Throwable t) {
             }
         });
 
@@ -67,34 +66,8 @@ public class MainFragment extends Fragment {
         food.setText(resources.get(1).getAmount() + " " + resources.get(1).getType());
         goldImage.setImageResource(R.drawable.gold);
         foodImage.setImageResource(R.drawable.food);
-
-        apiService.getBuildings(1).enqueue(new Callback<BuildingsResponse>() {
-            @Override
-            public void onResponse(Call<BuildingsResponse> call, Response<BuildingsResponse> response) {
-                buildings = response.body().getBuildings();
-            }
-
-            @Override
-            public void onFailure(Call<BuildingsResponse> call, Throwable t) {
-
-            }
-        });
-
         TextView totalBuildingNumber = (TextView) rootView.findViewById(R.id.buildings_finished);
         totalBuildingNumber.setText((buildings.size() + " finished"));
-
-        apiService.getTroops(1).enqueue(new Callback<TroopsResponse>() {
-            @Override
-            public void onResponse(Call<TroopsResponse> call, Response<TroopsResponse> response) {
-                troops = response.body().getTroops();
-            }
-
-            @Override
-            public void onFailure(Call<TroopsResponse> call, Throwable t) {
-
-            }
-        });
-
         TextView totalTroopNumber = (TextView) rootView.findViewById(R.id.troops_finished);
         totalTroopNumber.setText((troops.size() + " finished"));
 
