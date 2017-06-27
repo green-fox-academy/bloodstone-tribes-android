@@ -15,6 +15,7 @@ import com.greenfox.tribesoflagopusandroid.TribesApplication;
 import javax.inject.Inject;
 
 import static com.greenfox.tribesoflagopusandroid.MainActivity.BACKGROUND_SYNC;
+import static com.greenfox.tribesoflagopusandroid.MainActivity.MAIN_FRAGMENT_SAVE;
 import static com.greenfox.tribesoflagopusandroid.MainActivity.NOTIFICATION;
 
 
@@ -31,6 +32,8 @@ public class SettingsFragment extends android.support.v4.app.Fragment {
 
     public TextView notification_status, background_sync_status;
     public Switch notification, background_sync;
+
+    String timestamp;
 
     public SettingsFragment() {
 
@@ -102,6 +105,14 @@ public class SettingsFragment extends android.support.v4.app.Fragment {
         }
 
         return rootView;
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        timestamp = String.valueOf(System.currentTimeMillis());
+        editor.putString(MAIN_FRAGMENT_SAVE, timestamp);
+        editor.apply();
     }
 
 }
