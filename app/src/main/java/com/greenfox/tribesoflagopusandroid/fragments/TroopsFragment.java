@@ -2,14 +2,15 @@ package com.greenfox.tribesoflagopusandroid.fragments;
 
 
 import android.os.Bundle;
-import android.support.annotation.Nullable;
-import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
+import android.widget.Toast;
 
+import com.github.clans.fab.FloatingActionMenu;
+import com.github.clans.fab.FloatingActionButton;
 import com.greenfox.tribesoflagopusandroid.R;
 import com.greenfox.tribesoflagopusandroid.adapter.TroopAdapter;
 import com.greenfox.tribesoflagopusandroid.api.model.gameobject.Troop;
@@ -19,7 +20,8 @@ import java.util.ArrayList;
 public class TroopsFragment extends Fragment {
 
     private TroopAdapter troopAdapter;
-    FloatingActionButton fab;
+    FloatingActionMenu troopsFloatingActionMenu;
+    FloatingActionButton addTroopsActionButton;
 
     public TroopsFragment() {
     }
@@ -48,6 +50,15 @@ public class TroopsFragment extends Fragment {
 
         ListView listView = (ListView) rootView.findViewById(R.id.troops_listView);
         listView.setAdapter(troopAdapter);
+
+        troopsFloatingActionMenu = (FloatingActionMenu) rootView.findViewById(R.id.add_troop_menu);
+        addTroopsActionButton = (FloatingActionButton) rootView.findViewById(R.id.add_troop_menu_item);
+        addTroopsActionButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(getContext(),"Mukodik", Toast.LENGTH_SHORT).show();
+            }
+        });
 
         return rootView;
     }

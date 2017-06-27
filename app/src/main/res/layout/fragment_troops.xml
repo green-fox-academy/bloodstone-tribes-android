@@ -110,20 +110,23 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintRight_toRightOf="parent"
             fab:menu_animationDelayPerItem="50"
-            fab:menu_backgroundColor="@android:color/transparent"
             fab:menu_fab_hide_animation="@anim/hide_to_bottom"
             fab:menu_fab_show_animation="@anim/show_from_bottom"
-            fab:menu_icon="@drawable/fab_add">
+            fab:menu_icon="@drawable/fab_add"
+            fab:menu_colorNormal="#FFC400"
+            fab:menu_colorPressed="#dbb023"
+            fab:menu_colorRipple="#ffd866">
 
             <com.github.clans.fab.FloatingActionButton
                 android:id="@+id/add_troop_menu_item"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                fab:fab_label="Menu item 1"
-                fab:fab_size="mini" />
+                fab:fab_label="Troop"
+                fab:fab_size="mini"
+                android:src="@drawable/troop24dp"
+                style="@style/MenuButtonsStyle"/>
 
         </com.github.clans.fab.FloatingActionMenu>
-
 
     </android.support.constraint.ConstraintLayout>
 

@@ -45,7 +45,7 @@ public class BuildingsAdapter extends ArrayAdapter<Building> {
             buildingImage.setImageResource(R.drawable.farm);
         }
         if (current.getType().equals("barrack")) {
-            buildingImage.setImageResource(R.drawable.troop);
+            buildingImage.setImageResource(R.drawable.troopicon);
         }
         type.setText(current.getType());
         buildingLevel.setText(String.valueOf("Level " + current.getLevel()));
