@@ -16,6 +16,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
 
+import com.greenfox.tribesoflagopusandroid.fragments.BuildingsFragment;
 import com.greenfox.tribesoflagopusandroid.fragments.MainFragment;
 
 import javax.inject.Inject;
@@ -46,7 +47,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        MainFragment mainFragment = new MainFragment();
+        BuildingsFragment mainFragment = new BuildingsFragment();
         FragmentManager fragmentManager = getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         fragmentTransaction.add(R.id.main_activity_layout, mainFragment);

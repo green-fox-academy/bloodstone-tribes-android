@@ -9,4 +9,11 @@
         <item name="titleTextColor">@color/colorPrimaryDark</item>
     </style>
 
+    <style name="MenuButtonsStyle">
+        <item name="fab_shadowColor">#444</item>
+        <item name="fab_colorNormal">#47A830</item>
+        <item name="fab_colorPressed">#2e7f1a</item>
+        <item name="fab_colorRipple">#82ff63</item>
+    </style>
+
 </resources>
