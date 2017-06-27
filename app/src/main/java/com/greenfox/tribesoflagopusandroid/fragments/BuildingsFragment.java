@@ -40,8 +40,6 @@ public class BuildingsFragment extends Fragment {
                              Bundle savedInstanceState) {
         TribesApplication.app().basicComponent().inject(this);
 
-
-
         apiService.getBuildings(1).enqueue(new Callback<BuildingsResponse>() {
             @Override
             public void onResponse(Call<BuildingsResponse> call, Response<BuildingsResponse> response) {
@@ -54,11 +52,10 @@ public class BuildingsFragment extends Fragment {
             }
         });
 
-        buildingsAdapter = new BuildingsAdapter(this.getContext(), buildings);
+        buildingsAdapter = new BuildingsAdapter(getContext(), buildings);
+        View rootView = inflater.inflate(R.layout.fragment_buildings, container, false);
 
-        View rootView = inflater.inflate(R.layout.fragment_troops, container, false);
-
-        ListView listView = (ListView) rootView.findViewById(R.id.troops_listView);
+        ListView listView = (ListView) rootView.findViewById(R.id.buildings_list);
         listView.setAdapter(buildingsAdapter);
 
         return rootView;
