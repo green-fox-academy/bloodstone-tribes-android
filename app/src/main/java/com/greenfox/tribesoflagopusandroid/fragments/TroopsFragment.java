@@ -33,18 +33,10 @@ public class TroopsFragment extends Fragment {
 
         ArrayList<Troop> troopArrayList = new ArrayList<>();
         Troop troop = new Troop(1,1,5,5,5);
-        Troop troop1 = new Troop(1,1,10,8,2);
-        Troop troop2 = new Troop(1,2,20,3,7);
 
         troopAdapter = new TroopAdapter(this.getContext(), troopArrayList);
         troopAdapter.add(troop);
-        troopAdapter.add(troop1);
-        troopAdapter.add(troop2);
-        troopAdapter.add(troop1);
-        troopAdapter.add(troop1);
-        troopAdapter.add(troop1);
-        troopAdapter.add(troop1);
-        troopAdapter.add(troop1);
+
 
         View rootView = inflater.inflate(R.layout.fragment_troops, container, false);
 
@@ -56,7 +48,9 @@ public class TroopsFragment extends Fragment {
         addTroopsActionButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(getContext(),"Mukodik", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getContext(),"Troop added", Toast.LENGTH_SHORT).show();
+                troopAdapter.add(new Troop(1,1,1,1,1));
+
             }
         });
 
