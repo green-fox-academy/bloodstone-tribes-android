@@ -1,6 +1,8 @@
 package com.greenfox.tribesoflagopusandroid;
 
 
+import android.app.AlarmManager;
+import android.app.PendingIntent;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -8,10 +10,10 @@ import android.preference.PreferenceManager;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
+import android.text.TextUtils;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
@@ -30,11 +32,16 @@ public class MainActivity extends AppCompatActivity {
     SharedPreferences preferences;
 
     SharedPreferences.Editor editor;
+    private PendingIntent pendingIntent;
+    private AlarmManager manager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        startAlarm();
+//        Intent alarmIntent = new Intent(this, AlarmReceiver.class);
+//        pendingIntent = PendingIntent.getBroadcast(this, 0, alarmIntent, 0);
         TribesApplication.app().basicComponent().inject(this);
         editor = preferences.edit();
         checkUsername();
@@ -78,10 +85,40 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void logout() {
+        cancelAlarm();
         preferences = PreferenceManager.getDefaultSharedPreferences(this);
         editor = preferences.edit();
         editor.clear();
         editor.apply();
         finish();
+    }
+
+    public void startAlarm() {
+        manager = (AlarmManager)getApplicationContext().getSystemService(MainActivity.ALARM_SERVICE);
+        long interval = 60000l;
+        Intent alarmIntent = new Intent(this, AlarmReceiver.class);
+        pendingIntent = PendingIntent.getBroadcast(this, 0,  alarmIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+        manager.setRepeating(AlarmManager.RTC_WAKEUP, System.currentTimeMillis(),interval, pendingIntent);
+        Toast.makeText(this, "Alarm Set", Toast.LENGTH_SHORT).show();
+    }
+
+    public void cancelAlarm() {
+        long interval = 600000l;
+        manager.setRepeating(AlarmManager.ELAPSED_REALTIME, System.currentTimeMillis(),interval, pendingIntent);
+        Toast.makeText(this, "Alarm Canceled", Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    protected void onPause() {
+        long interval = 600000l;
+        manager.setRepeating(AlarmManager.ELAPSED_REALTIME, System.currentTimeMillis(),interval, pendingIntent);
+        super.onPause();
+    }
+
+    @Override
+    protected void onStop() {
+        long interval = 600000l;
+        manager.setRepeating(AlarmManager.ELAPSED_REALTIME, System.currentTimeMillis(),interval, pendingIntent);
+        super.onStop();
     }
 }
