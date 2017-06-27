@@ -25,6 +25,8 @@ public class MainActivity extends AppCompatActivity {
     public static final String USERNAME = "Username";
     public static final String NOTIFICATION = "Notification";
     public static final String BACKGROUND_SYNC = "BackgroundSync";
+    public static final String APP_SAVE = "appSave";
+    String timestamp;
 
     @Inject
     SharedPreferences preferences;
@@ -83,5 +85,21 @@ public class MainActivity extends AppCompatActivity {
         editor.clear();
         editor.apply();
         finish();
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        timestamp = String.valueOf(System.currentTimeMillis());
+        editor.putString(APP_SAVE, timestamp);
+        editor.apply();
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        timestamp = String.valueOf(System.currentTimeMillis());
+        editor.putString(APP_SAVE, timestamp);
+        editor.apply();
     }
 }
