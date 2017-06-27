@@ -1,4 +1,4 @@
-package com.greenfox.tribesoflagopusandroid;
+package com.greenfox.tribesoflagopusandroid.fragments;
 
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -8,6 +8,9 @@ import android.view.ViewGroup;
 import android.widget.CompoundButton;
 import android.widget.Switch;
 import android.widget.TextView;
+
+import com.greenfox.tribesoflagopusandroid.R;
+import com.greenfox.tribesoflagopusandroid.TribesApplication;
 
 import javax.inject.Inject;
 
@@ -22,12 +25,12 @@ import static com.greenfox.tribesoflagopusandroid.MainActivity.NOTIFICATION;
 public class SettingsFragment extends android.support.v4.app.Fragment {
 
     @Inject
-    SharedPreferences preferences;
+    public SharedPreferences preferences;
 
-    SharedPreferences.Editor editor;
+    public SharedPreferences.Editor editor;
 
-    TextView notification_status, background_sync_status;
-    Switch notification, background_sync;
+    public TextView notification_status, background_sync_status;
+    public Switch notification, background_sync;
 
     public SettingsFragment() {
 
@@ -45,17 +48,22 @@ public class SettingsFragment extends android.support.v4.app.Fragment {
         background_sync_status = (TextView) rootView.findViewById(R.id.background_sync_status);
         background_sync = (Switch) rootView.findViewById(R.id.background_sync);
 
+        notification.setChecked(preferences.getBoolean(NOTIFICATION, false));
+        background_sync.setChecked(preferences.getBoolean(BACKGROUND_SYNC, false));
+
         notification.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView,
                                          boolean isChecked) {
                 if(isChecked){
+                    notification.setChecked(true);
                     notification_status.setText(getContext().getString(R.string.notification_on));
-                    editor.putString(NOTIFICATION, "true");
+                    editor.putBoolean(NOTIFICATION, true);
                     editor.apply();
                 }else{
+                    notification.setChecked(false);
                     notification_status.setText(getContext().getString(R.string.notification_off));
-                    editor.putString(NOTIFICATION, "false");
+                    editor.putBoolean(NOTIFICATION, false);
                     editor.apply();
                 }
             }
@@ -66,12 +74,14 @@ public class SettingsFragment extends android.support.v4.app.Fragment {
             public void onCheckedChanged(CompoundButton buttonView,
                                          boolean isChecked) {
                 if(isChecked){
+                    background_sync.setChecked(true);
                     background_sync_status.setText(getContext().getString(R.string.background_sync_on));
-                    editor.putString(BACKGROUND_SYNC, "true");
+                    editor.putBoolean(BACKGROUND_SYNC, true);
                     editor.apply();
                 }else{
+                    background_sync.setChecked(false);
                     background_sync_status.setText(getContext().getString(R.string.background_sync_off));
-                    editor.putString(BACKGROUND_SYNC, "false");
+                    editor.putBoolean(BACKGROUND_SYNC, false);
                     editor.apply();
                 }
             }
@@ -88,7 +98,7 @@ public class SettingsFragment extends android.support.v4.app.Fragment {
             background_sync_status.setText(getContext().getString(R.string.background_sync_on));
         }
         else {
-            background_sync_status.setText(getContext().getString(R.string.notification_off));
+            background_sync_status.setText(getContext().getString(R.string.background_sync_off));
         }
 
         return rootView;

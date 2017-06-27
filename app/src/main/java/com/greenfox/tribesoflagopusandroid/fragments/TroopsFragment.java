@@ -51,7 +51,7 @@ public class TroopsFragment extends Fragment {
             }
         });
 
-        troopAdapter = new TroopAdapter(this.getContext(), troopArrayList);
+        troopAdapter = new TroopAdapter(getContext(), troopArrayList);
 
         View rootView = inflater.inflate(R.layout.fragment_troops, container, false);
 
