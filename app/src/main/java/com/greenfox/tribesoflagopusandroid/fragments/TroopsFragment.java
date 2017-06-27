@@ -46,8 +46,6 @@ public class TroopsFragment extends Fragment {
 
         View rootView = inflater.inflate(R.layout.fragment_troops, container, false);
 
-        fab = (FloatingActionButton) rootView.findViewById(R.id.fab_addtroop);
-
         ListView listView = (ListView) rootView.findViewById(R.id.troops_listView);
         listView.setAdapter(troopAdapter);
 

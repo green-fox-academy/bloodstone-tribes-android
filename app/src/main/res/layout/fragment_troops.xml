@@ -3,6 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:fab="http://schemas.android.com/apk/res-auto"
     tools:context="com.greenfox.tribesoflagopusandroid.fragments.TroopsFragment"
     android:id="@+id/troops_fragment_layout">
 
@@ -82,20 +83,6 @@
 
         </android.support.constraint.ConstraintLayout>
 
-        <android.support.design.widget.FloatingActionButton
-            android:id="@+id/fab_addtroop"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="bottom|end"
-            android:layout_margin="@dimen/fab_margin"
-            android:layout_marginBottom="16dp"
-            android:layout_marginRight="16dp"
-            android:src="@android:drawable/ic_input_add"
-            app:backgroundTint="?attr/colorPrimaryDark"
-            app:elevation="6dp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintRight_toRightOf="parent" />
-
         <ListView
             android:id="@+id/troops_listView"
             android:layout_width="0dp"
@@ -111,6 +98,32 @@
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/goldAndFoodBox" />
+
+        <com.github.clans.fab.FloatingActionMenu
+            android:id="@+id/add_troop_menu"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentRight="true"
+            android:layout_marginBottom="16dp"
+            android:layout_marginRight="16dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            fab:menu_animationDelayPerItem="50"
+            fab:menu_backgroundColor="@android:color/transparent"
+            fab:menu_fab_hide_animation="@anim/hide_to_bottom"
+            fab:menu_fab_show_animation="@anim/show_from_bottom"
+            fab:menu_icon="@drawable/fab_add">
+
+            <com.github.clans.fab.FloatingActionButton
+                android:id="@+id/add_troop_menu_item"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                fab:fab_label="Menu item 1"
+                fab:fab_size="mini" />
+
+        </com.github.clans.fab.FloatingActionMenu>
+
 
     </android.support.constraint.ConstraintLayout>
 
