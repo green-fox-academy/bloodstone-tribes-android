@@ -33,7 +33,7 @@ public class SettingsFragment extends android.support.v4.app.Fragment {
     public TextView notification_status, background_sync_status;
     public Switch notification, background_sync;
 
-    String timestamp;
+    public String timestamp;
 
     public SettingsFragment() {
 
