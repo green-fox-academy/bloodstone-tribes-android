@@ -7,7 +7,6 @@ import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -20,10 +19,10 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.widget.Toast;
 
-
 import com.greenfox.tribesoflagopusandroid.fragments.BattleFragment;
 import com.greenfox.tribesoflagopusandroid.fragments.BuildingsFragment;
 import com.greenfox.tribesoflagopusandroid.fragments.MainFragment;
+import com.greenfox.tribesoflagopusandroid.fragments.TroopsFragment;
 
 import javax.inject.Inject;
 
@@ -49,11 +48,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         editor = preferences.edit();
         checkUsername();
 
-        MainFragment mainFragment = new MainFragment();
-        FragmentManager fragmentManager = getSupportFragmentManager();
-        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-        fragmentTransaction.add(R.id.flContent, mainFragment);
-        fragmentTransaction.commit();
+        displaySelectedScreen(R.id.nav_kingdom);
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -63,8 +58,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.setDrawerListener(toggle);
         toggle.syncState();
-        NavigationView navigationView = (NavigationView) findViewById(R.id.nvView);
-        navigationView.setNavigationItemSelectedListener(this); }
+        NavigationView navigationView = (NavigationView) findViewById(R.id.navigation_view);
+        navigationView.setNavigationItemSelectedListener(this);
+    }
 
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
@@ -115,8 +111,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 fragment = new BattleFragment();
                 break;
             case R.id.nav_settings:
+                fragment = new SettingsFragment();
                 break;
             case R.id.nav_troops:
+                fragment = new TroopsFragment();
                 break;
             case R.id.nav_logout:
                 logout();
@@ -124,7 +122,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         }
         if (fragment != null) {
             FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-            transaction.replace(R.id.flContent, fragment);
+            transaction.replace(R.id.layout_content, fragment);
             transaction.commit();
         }
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
