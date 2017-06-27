@@ -3,6 +3,7 @@ package com.greenfox.tribesoflagopusandroid.fragments;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -18,6 +19,7 @@ import java.util.ArrayList;
 public class TroopsFragment extends Fragment {
 
     private TroopAdapter troopAdapter;
+    FloatingActionButton fab;
 
     public TroopsFragment() {
     }
@@ -25,6 +27,7 @@ public class TroopsFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+
 
         ArrayList<Troop> troopArrayList = new ArrayList<>();
         Troop troop = new Troop(1,1,5,5,5);
@@ -42,6 +45,8 @@ public class TroopsFragment extends Fragment {
         troopAdapter.add(troop1);
 
         View rootView = inflater.inflate(R.layout.fragment_troops, container, false);
+
+        fab = (FloatingActionButton) rootView.findViewById(R.id.fab_addtroop);
 
         ListView listView = (ListView) rootView.findViewById(R.id.troops_listView);
         listView.setAdapter(troopAdapter);
