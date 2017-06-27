@@ -1,8 +1,8 @@
 package com.greenfox.tribesoflagopusandroid.fragments;
 
 
+import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,12 +10,24 @@ import android.view.ViewGroup;
 import android.widget.ListView;
 
 import com.greenfox.tribesoflagopusandroid.R;
+import com.greenfox.tribesoflagopusandroid.TribesApplication;
 import com.greenfox.tribesoflagopusandroid.adapter.TroopAdapter;
 import com.greenfox.tribesoflagopusandroid.api.model.gameobject.Troop;
 
 import java.util.ArrayList;
 
+import javax.inject.Inject;
+
+import static com.greenfox.tribesoflagopusandroid.MainActivity.TROOPS_FRAGMENT_SAVE;
+
 public class TroopsFragment extends Fragment {
+
+    @Inject
+    SharedPreferences preferences;
+
+    SharedPreferences.Editor editor;
+
+    String timestamp;
 
     private TroopAdapter troopAdapter;
 
@@ -25,6 +37,8 @@ public class TroopsFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        TribesApplication.app().basicComponent().inject(this);
+        editor = preferences.edit();
 
         ArrayList<Troop> troopArrayList = new ArrayList<>();
         Troop troop = new Troop(1,1,5,5,5);
@@ -47,6 +61,14 @@ public class TroopsFragment extends Fragment {
         listView.setAdapter(troopAdapter);
 
         return rootView;
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        timestamp = String.valueOf(System.currentTimeMillis());
+        editor.putString(TROOPS_FRAGMENT_SAVE, timestamp);
+        editor.apply();
     }
 
 }
