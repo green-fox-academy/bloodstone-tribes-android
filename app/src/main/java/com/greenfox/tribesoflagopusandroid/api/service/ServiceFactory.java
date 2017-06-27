@@ -28,5 +28,22 @@ private static final String SERVER_URL = "https://tribes-of-lagopus.herokuapp.co
 
         return new MockLoginService();
     }
+
+    public static <T> T createRetrofitApiService() {
+
+        Class serviceClass = ApiService.class;
+
+        Retrofit.Builder builder = new Retrofit.Builder()
+                .baseUrl(SERVER_URL)
+                .addConverterFactory(GsonConverterFactory.create());
+
+        Retrofit retrofit = builder.build();
+
+        return (T) retrofit.create(serviceClass);
+    }
+
+    public static ApiService createMockApiService() {
+        return new MockApiService();
+    }
 }
 
