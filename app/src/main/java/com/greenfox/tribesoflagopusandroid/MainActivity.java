@@ -26,9 +26,15 @@ public class MainActivity extends AppCompatActivity {
     public static final String NOTIFICATION = "Notification";
     public static final String BACKGROUND_SYNC = "BackgroundSync";
     public static final String APP_SAVE = "appSave";
+    public static final String BUILDINGS_FRAGMENT_SAVE = "appSave";
+    public static final String TROOPS_FRAGMENT_SAVE = "appSave";
+    public static final String SETTINGS_FRAGMENT_SAVE = "appSave";
+    public static final String MAIN_FRAGMENT_SAVE = "appSave";
+
     String timestamp;
 
     @Inject
+    public
     SharedPreferences preferences;
 
     SharedPreferences.Editor editor;
