@@ -10,6 +10,7 @@ import org.robolectric.Robolectric;
 import org.robolectric.RobolectricTestRunner;
 import org.robolectric.annotation.Config;
 
+import static com.greenfox.tribesoflagopusandroid.MainActivity.APP_SAVE;
 import static com.greenfox.tribesoflagopusandroid.MainActivity.USERNAME;
 import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertEquals;
@@ -59,4 +60,15 @@ public class MainActivityTest {
         assertThat(null, is(main.preferences.getString(USERNAME, null)));
     }
 
+    @Test
+    public void saveStatusOnPause() {
+        main.onStop();
+        assertEquals(main.timestamp, main.preferences.getString(APP_SAVE, ""));
+    }
+
+    @Test
+    public void saveStatusOnExit() {
+        main.onStop();
+        assertEquals(main.timestamp, main.preferences.getString(APP_SAVE, ""));
+    }
 }
