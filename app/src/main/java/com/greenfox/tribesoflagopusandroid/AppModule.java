@@ -5,8 +5,9 @@ import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 
 import com.google.gson.Gson;
+import com.greenfox.tribesoflagopusandroid.api.service.ApiService;
 import com.greenfox.tribesoflagopusandroid.api.service.LoginService;
-import com.greenfox.tribesoflagopusandroid.api.service.MockLoginService;
+import com.greenfox.tribesoflagopusandroid.api.service.MockApiService;
 import com.greenfox.tribesoflagopusandroid.api.service.ServiceFactory;
 
 import javax.inject.Singleton;
@@ -23,6 +24,7 @@ public class AppModule {
 
     private Context context;
     private static final Boolean LOGINSERVICE_IS_ACTIVE = false;
+    private static final Boolean APOSERVICE_IS_ACTIVE = false;
     ServiceFactory serviceFactory;
 
     public AppModule(Context context) {
@@ -55,7 +57,14 @@ public class AppModule {
         if (LOGINSERVICE_IS_ACTIVE) {
             return serviceFactory.createRetrofitService();
         }
-        return serviceFactory.createMockService();
+        return serviceFactory.createMockLoginService();
     }
 
+    @Singleton @Provides
+    public ApiService provideMockApiService() {
+        if (LOGINSERVICE_IS_ACTIVE) {
+            return serviceFactory.createRetrofitService();
+        }
+        return serviceFactory.createMockApiService();
+    }
 }

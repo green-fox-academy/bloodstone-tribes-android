@@ -8,6 +8,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.greenfox.tribesoflagopusandroid.R;
@@ -29,17 +30,19 @@ public class ResourceAdapter extends ArrayAdapter<Resource> {
     @NonNull
     @Override
     public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
-        Resource current = getItem(position);
-
+        Resource resource = getItem(position);
         if (convertView == null) {
-            convertView = LayoutInflater.from(getContext()).inflate(R.layout.fragment_main, parent, false);
+            convertView = LayoutInflater.from(getContext()).inflate(R.layout.resources_list, parent, false);
         }
-
-        TextView gold = (TextView) convertView.findViewById(R.id.gold_amount);
-        gold.setText(Integer.toString(current.getAmount()));
-        TextView food = (TextView) convertView.findViewById(R.id.food_amount);
-        food.setText(Integer.toString(current.getAmount()));
-
+        ImageView resourceImage = (ImageView) convertView.findViewById(R.id.resource_image);
+        TextView type = (TextView) convertView.findViewById(R.id.type);
+        if (resource.getType().equals("gold")) {
+            resourceImage.setImageResource(R.drawable.gold);
+        }
+        if (resource.getType().equals("food")) {
+            resourceImage.setImageResource(R.drawable.food);
+        }
+        type.setText(String.valueOf((resource.getAmount() + " ") + resource.getType()));
         return convertView;
     }
 }
