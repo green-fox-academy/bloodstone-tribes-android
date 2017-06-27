@@ -1,6 +1,5 @@
 package com.greenfox.tribesoflagopusandroid.fragments;
 
-
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -48,13 +47,11 @@ public class BuildingsFragment extends Fragment {
 
             @Override
             public void onFailure(Call<BuildingsResponse> call, Throwable t) {
-
             }
         });
 
         buildingsAdapter = new BuildingsAdapter(getContext(), buildings);
         View rootView = inflater.inflate(R.layout.fragment_buildings, container, false);
-
         ListView listView = (ListView) rootView.findViewById(R.id.buildings_list);
         listView.setAdapter(buildingsAdapter);
 
