@@ -1,6 +1,7 @@
 package com.greenfox.tribesoflagopusandroid.fragments;
 
 
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -9,14 +10,25 @@ import android.view.ViewGroup;
 import android.widget.ListView;
 
 import com.greenfox.tribesoflagopusandroid.R;
+import com.greenfox.tribesoflagopusandroid.TribesApplication;
 import com.greenfox.tribesoflagopusandroid.adapter.BuildingsAdapter;
 import com.greenfox.tribesoflagopusandroid.api.model.gameobject.Building;
 
 import java.util.ArrayList;
 
+import javax.inject.Inject;
+
+import static com.greenfox.tribesoflagopusandroid.MainActivity.BUILDINGS_FRAGMENT_SAVE;
+
 public class BuildingsFragment extends Fragment {
 
+    @Inject
+    SharedPreferences preferences;
+
+    SharedPreferences.Editor editor;
+
     private BuildingsAdapter buildingsAdapter;
+    String timestamp;
 
     public BuildingsFragment() {
     }
@@ -24,6 +36,8 @@ public class BuildingsFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        TribesApplication.app().basicComponent().inject(this);
+        editor = preferences.edit();
 
         ArrayList<Building> buildings = new ArrayList<>();
         Building townhall = new Building(1, "townhall", 1, 10);
@@ -49,5 +63,13 @@ public class BuildingsFragment extends Fragment {
         listView.setAdapter(buildingsAdapter);
 
         return rootView;
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        timestamp = String.valueOf(System.currentTimeMillis());
+        editor.putString(BUILDINGS_FRAGMENT_SAVE, timestamp);
+        editor.apply();
     }
 }
