@@ -2,13 +2,18 @@ package com.greenfox.tribesoflagopusandroid;
 
 import com.greenfox.tribesoflagopusandroid.fragments.SettingsFragment;
 
+import junit.framework.Assert;
+
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.robolectric.Robolectric;
 import org.robolectric.RobolectricTestRunner;
 import org.robolectric.annotation.Config;
 
 import static com.greenfox.tribesoflagopusandroid.MainActivity.BACKGROUND_SYNC;
 import static com.greenfox.tribesoflagopusandroid.MainActivity.NOTIFICATION;
+import static com.greenfox.tribesoflagopusandroid.MainActivity.SETTINGS_FRAGMENT_SAVE;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.robolectric.shadows.support.v4.SupportFragmentTestUtil.startFragment;
@@ -19,6 +24,12 @@ import static org.robolectric.shadows.support.v4.SupportFragmentTestUtil.startFr
 @Config(constants = BuildConfig.class)
 @RunWith(RobolectricTestRunner.class)
 public class SettingsFragmentTest extends android.app.Activity {
+
+    MainActivity mainActivity;
+    @Before
+    public void setup() {
+        mainActivity = Robolectric.setupActivity(MainActivity.class);
+    }
 
     @Test
     public void turnNotificationSwitchOn() {
@@ -66,5 +77,14 @@ public class SettingsFragmentTest extends android.app.Activity {
         String message = "Background sync is OFF";
         assertEquals(message, settingsFragment.background_sync_status.getText());
         assertEquals(false, settingsFragment.preferences.getBoolean(BACKGROUND_SYNC, false));
+    }
+
+    @Test
+    public void saveStatusOnExit() {
+        SettingsFragment settingsFragment = new SettingsFragment();
+        startFragment(settingsFragment);
+        Assert.assertNotNull(settingsFragment);
+        settingsFragment.onStop();
+        Assert.assertEquals(settingsFragment.timestamp, mainActivity.preferences.getString(SETTINGS_FRAGMENT_SAVE, ""));
     }
 }
