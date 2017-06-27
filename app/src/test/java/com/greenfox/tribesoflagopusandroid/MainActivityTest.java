@@ -21,7 +21,6 @@ import static org.robolectric.Shadows.shadowOf;
 public class MainActivityTest {
 
     MainActivity main;
-
     LoginActivity login;
 
     @Before
