@@ -58,12 +58,12 @@ public class SettingsFragment extends BaseFragment {
             @Override
             public void onCheckedChanged(CompoundButton buttonView,
                                          boolean isChecked) {
-                if(isChecked){
+                if (isChecked) {
                     notification.setChecked(true);
                     notification_status.setText(getContext().getString(R.string.notification_on));
                     editor.putBoolean(NOTIFICATION, true);
                     editor.apply();
-                }else{
+                } else {
                     notification.setChecked(false);
                     notification_status.setText(getContext().getString(R.string.notification_off));
                     editor.putBoolean(NOTIFICATION, false);
@@ -76,12 +76,12 @@ public class SettingsFragment extends BaseFragment {
             @Override
             public void onCheckedChanged(CompoundButton buttonView,
                                          boolean isChecked) {
-                if(isChecked){
+                if (isChecked) {
                     background_sync.setChecked(true);
                     background_sync_status.setText(getContext().getString(R.string.background_sync_on));
                     editor.putBoolean(BACKGROUND_SYNC, true);
                     editor.apply();
-                }else{
+                } else {
                     background_sync.setChecked(false);
                     background_sync_status.setText(getContext().getString(R.string.background_sync_off));
                     editor.putBoolean(BACKGROUND_SYNC, false);
@@ -90,17 +90,15 @@ public class SettingsFragment extends BaseFragment {
             }
         });
 
-        if(notification.isChecked()){
+        if (notification.isChecked()) {
             notification_status.setText(getContext().getString(R.string.notification_on));
-        }
-        else {
+        } else {
             notification_status.setText(getContext().getString(R.string.notification_off));
         }
 
-        if(background_sync.isChecked()){
+        if (background_sync.isChecked()) {
             background_sync_status.setText(getContext().getString(R.string.background_sync_on));
-        }
-        else {
+        } else {
             background_sync_status.setText(getContext().getString(R.string.background_sync_off));
         }
 

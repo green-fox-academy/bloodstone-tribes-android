@@ -1,8 +1,8 @@
 package com.greenfox.tribesoflagopusandroid.fragments;
 
-
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -35,7 +35,8 @@ public class TroopsFragment extends BaseFragment {
     String timestamp;
 
     private TroopAdapter troopAdapter;
-    @Inject ApiService apiService;
+    @Inject
+    ApiService apiService;
 
     public TroopsFragment() {
     }
@@ -67,13 +68,17 @@ public class TroopsFragment extends BaseFragment {
         return rootView;
     }
 
-
-
     @Override
     public void onStop() {
         super.saveOnExit(TROOPS_FRAGMENT_SAVE);
         timestamp = BaseFragment.timestamp;
         super.onStop();
+    }
+
+    @Override
+    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        getActivity().setTitle("Troops");
     }
 
 }

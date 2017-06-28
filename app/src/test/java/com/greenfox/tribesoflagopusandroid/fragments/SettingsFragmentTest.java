@@ -81,12 +81,5 @@ public class SettingsFragmentTest extends android.app.Activity {
         assertEquals(false, settingsFragment.preferences.getBoolean(BACKGROUND_SYNC, false));
     }
 
-    @Test
-    public void saveStatusOnExit() {
-        SettingsFragment settingsFragment = new SettingsFragment();
-        startFragment(settingsFragment);
-        Assert.assertNotNull(settingsFragment);
-        settingsFragment.onStop();
-        Assert.assertEquals(settingsFragment.timestamp, mainActivity.preferences.getString(SETTINGS_FRAGMENT_SAVE, ""));
-    }
 }
+

@@ -1,13 +1,21 @@
 package com.greenfox.tribesoflagopusandroid;
 
 import android.content.Intent;
+import android.support.design.widget.NavigationView;
+import android.support.v4.view.GravityCompat;
+import android.support.v4.widget.DrawerLayout;
+import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ListView;
+import android.widget.TextView;
 
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.robolectric.Robolectric;
 import org.robolectric.RobolectricTestRunner;
+import org.robolectric.RuntimeEnvironment;
+import org.robolectric.Shadows;
 import org.robolectric.annotation.Config;
 
 import static com.greenfox.tribesoflagopusandroid.MainActivity.APP_SAVE;
@@ -21,14 +29,21 @@ import static org.robolectric.Shadows.shadowOf;
 @RunWith(RobolectricTestRunner.class)
 public class MainActivityTest {
 
-    MainActivity main;
+    private static final int MP = ViewGroup.LayoutParams.MATCH_PARENT;
 
+    MainActivity main;
     LoginActivity login;
+    DrawerLayout drawerLayout;
 
     @Before
     public void setup() {
         main = Robolectric.setupActivity(MainActivity.class);
         login = Robolectric.setupActivity(LoginActivity.class);
+        drawerLayout = new DrawerLayout(RuntimeEnvironment.application);
+        drawerLayout.addView(
+                new TextView(RuntimeEnvironment.application),
+                0,
+                new DrawerLayout.LayoutParams(MP, MP, GravityCompat.START));
     }
 
     @Test
@@ -40,35 +55,20 @@ public class MainActivityTest {
     }
 
     @Test
-    public void logoutButtonIsClickedIsGoingToLoginActivityTest() throws Exception {
-        Button button = (Button) main.findViewById(R.id.logout);
-        button.performClick();
-        Intent expectedIntent = new Intent(login, LoginActivity.class);
-        assertEquals(expectedIntent.getClass(), shadowOf(main).getNextStartedActivity().getClass());
+    public void testDrawerIsClosedByDefault() throws Exception {
+        assertThat(drawerLayout.isDrawerOpen(GravityCompat.START), is(false));
     }
 
     @Test
-    public void logoutButtonClearSharedPreferencesTest() throws Exception {
-        main.editor = main.preferences.edit();
-
-        main.editor.putString(USERNAME, "testUsername");
-        main.editor.apply();
-
-        Button button = (Button) main.findViewById(R.id.logout);
-        button.performClick();
-
-        assertThat(null, is(main.preferences.getString(USERNAME, null)));
+    public void testDrawerOpens() throws Exception {
+        drawerLayout.openDrawer(GravityCompat.START);
+        assertThat(drawerLayout.isDrawerOpen(GravityCompat.START), is(true));
     }
 
     @Test
-    public void saveStatusOnPause() {
-        main.onStop();
-        assertEquals(main.timestamp, main.preferences.getString(APP_SAVE, ""));
-    }
-
-    @Test
-    public void saveStatusOnExit() {
-        main.onStop();
-        assertEquals(main.timestamp, main.preferences.getString(APP_SAVE, ""));
+    public void testKingdomMenuClickedRedirectsToMain() throws Exception {
+        drawerLayout.openDrawer(GravityCompat.START);
+        main.findViewById(R.id.nav_kingdom);
+        assertEquals("Tribes of Lagopus", main.getTitle().toString());
     }
 }
