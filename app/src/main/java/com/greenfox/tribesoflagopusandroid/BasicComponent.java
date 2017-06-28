@@ -1,5 +1,6 @@
 package com.greenfox.tribesoflagopusandroid;
 
+import com.greenfox.tribesoflagopusandroid.fragments.BaseFragment;
 import com.greenfox.tribesoflagopusandroid.fragments.BuildingsFragment;
 import com.greenfox.tribesoflagopusandroid.fragments.MainFragment;
 import com.greenfox.tribesoflagopusandroid.fragments.SettingsFragment;
@@ -22,4 +23,5 @@ public interface BasicComponent {
     void inject(MainFragment fragment);
     void inject(BuildingsFragment fragment);
     void inject(TroopsFragment fragment);
+    void inject(BaseFragment fragment);
 }
