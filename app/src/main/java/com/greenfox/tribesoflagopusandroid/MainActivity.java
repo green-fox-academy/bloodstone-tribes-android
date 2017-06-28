@@ -85,11 +85,15 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         super.onOptionsItemSelected(item);
         switch (item.getItemId()) {
             case R.id.refreshing:
-                FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-                transaction.replace(R.id.layout_content, fragment);
-                transaction.commit();
+                refreshActiveFragment();
         }
         return false;
+    }
+
+    public void refreshActiveFragment() {
+        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+        transaction.replace(R.id.layout_content, fragment);
+        transaction.commit();
     }
 
     public void checkUsername() {

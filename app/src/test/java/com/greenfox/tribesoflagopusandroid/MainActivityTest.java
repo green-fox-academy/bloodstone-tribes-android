@@ -1,13 +1,13 @@
 package com.greenfox.tribesoflagopusandroid;
 
 import android.content.Intent;
-import android.support.design.widget.NavigationView;
+import android.support.v4.app.Fragment;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.view.ViewGroup;
-import android.widget.Button;
-import android.widget.ListView;
 import android.widget.TextView;
+
+import com.greenfox.tribesoflagopusandroid.fragments.BattleFragment;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -15,11 +15,8 @@ import org.junit.runner.RunWith;
 import org.robolectric.Robolectric;
 import org.robolectric.RobolectricTestRunner;
 import org.robolectric.RuntimeEnvironment;
-import org.robolectric.Shadows;
 import org.robolectric.annotation.Config;
 
-import static com.greenfox.tribesoflagopusandroid.MainActivity.APP_SAVE;
-import static com.greenfox.tribesoflagopusandroid.MainActivity.USERNAME;
 import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertThat;
@@ -70,5 +67,13 @@ public class MainActivityTest {
         drawerLayout.openDrawer(GravityCompat.START);
         main.findViewById(R.id.nav_kingdom);
         assertEquals("Tribes of Lagopus", main.getTitle().toString());
+    }
+
+    @Test
+    public void refreshActiveFragment() throws Exception {
+        Fragment fragmentTest = new BattleFragment();
+        main.fragment = fragmentTest;
+        main.refreshActiveFragment();
+        assertEquals(fragmentTest, main.fragment);
     }
 }
