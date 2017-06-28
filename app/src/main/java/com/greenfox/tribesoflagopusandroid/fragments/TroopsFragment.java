@@ -13,12 +13,18 @@ import com.greenfox.tribesoflagopusandroid.R;
 import com.greenfox.tribesoflagopusandroid.TribesApplication;
 import com.greenfox.tribesoflagopusandroid.adapter.TroopAdapter;
 import com.greenfox.tribesoflagopusandroid.api.model.gameobject.Troop;
+import com.greenfox.tribesoflagopusandroid.api.model.response.TroopsResponse;
+import com.greenfox.tribesoflagopusandroid.api.service.ApiService;
 
 import java.util.ArrayList;
 
 import javax.inject.Inject;
 
 import static com.greenfox.tribesoflagopusandroid.MainActivity.TROOPS_FRAGMENT_SAVE;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class TroopsFragment extends Fragment {
 
@@ -30,6 +36,7 @@ public class TroopsFragment extends Fragment {
     String timestamp;
 
     private TroopAdapter troopAdapter;
+    @Inject ApiService apiService;
 
     public TroopsFragment() {
     }
@@ -40,20 +47,18 @@ public class TroopsFragment extends Fragment {
         TribesApplication.app().basicComponent().inject(this);
         editor = preferences.edit();
 
-        ArrayList<Troop> troopArrayList = new ArrayList<>();
-        Troop troop = new Troop(1,1,5,5,5);
-        Troop troop1 = new Troop(1,1,10,8,2);
-        Troop troop2 = new Troop(1,2,20,3,7);
+        apiService.getTroops(1).enqueue(new Callback<TroopsResponse>() {
+            @Override
+            public void onResponse(Call<TroopsResponse> call, Response<TroopsResponse> response) {
+                troopAdapter.addAll(response.body().getTroops());
+            }
 
-        troopAdapter = new TroopAdapter(this.getContext(), troopArrayList);
-        troopAdapter.add(troop);
-        troopAdapter.add(troop1);
-        troopAdapter.add(troop2);
-        troopAdapter.add(troop1);
-        troopAdapter.add(troop1);
-        troopAdapter.add(troop1);
-        troopAdapter.add(troop1);
-        troopAdapter.add(troop1);
+            @Override
+            public void onFailure(Call<TroopsResponse> call, Throwable t) {
+
+            }
+        });
+        troopAdapter = new TroopAdapter(getContext(), new ArrayList<Troop>());
 
         View rootView = inflater.inflate(R.layout.fragment_troops, container, false);
 
@@ -63,10 +68,12 @@ public class TroopsFragment extends Fragment {
         return rootView;
     }
 
+
+
     @Override
     public void onStop() {
         super.onStop();
-        timestamp = String.valueOf(System.currentTimeMillis());
+        timestamp = BaseFragment.timestamp;
         editor.putString(TROOPS_FRAGMENT_SAVE, timestamp);
         editor.apply();
     }

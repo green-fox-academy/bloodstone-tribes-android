@@ -16,7 +16,7 @@ import org.robolectric.shadows.ShadowToast;
 
 import static com.greenfox.tribesoflagopusandroid.MainActivity.USERNAME;
 import static org.assertj.core.api.Java6Assertions.assertThat;
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 import static org.robolectric.Shadows.shadowOf;
 
 /**
@@ -46,7 +46,6 @@ public class LoginActivityTest {
     public void onClick() throws Exception {
         Button button = (Button) loginActivity.findViewById(R.id.button2);
         EditText username = (EditText) loginActivity.findViewById(R.id.usernameText);
-        EditText password = (EditText) loginActivity.findViewById(R.id.passwordText);
         button.performClick();
         assertEquals(username.getText().toString(), loginActivity.preferences.getString("Username", ""));
     }
