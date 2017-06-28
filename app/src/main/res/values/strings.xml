@@ -39,4 +39,6 @@
     <string name="notification_on">You will receive game notifications</string>
     <string name="background_sync_on">Background sync is ON</string>
     <string name="background_sync_off">Background sync is OFF</string>
+    <string name="gold_amount">1</string>
+    <string name="food_amount">1</string>
 </resources>

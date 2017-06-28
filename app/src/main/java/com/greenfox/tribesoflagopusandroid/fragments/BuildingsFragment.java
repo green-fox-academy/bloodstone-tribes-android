@@ -54,6 +54,7 @@ public class BuildingsFragment extends BaseFragment {
         TribesApplication.app().basicComponent().inject(this);
         editor = preferences.edit();
 
+        buildingsAdapter = new BuildingsAdapter(getContext(), new ArrayList<Building>());
         apiService.getBuildings(1).enqueue(new Callback<BuildingsResponse>() {
             @Override
             public void onResponse(Call<BuildingsResponse> call, Response<BuildingsResponse> response) {
@@ -65,7 +66,6 @@ public class BuildingsFragment extends BaseFragment {
             }
         });
 
-        buildingsAdapter = new BuildingsAdapter(getContext(), new ArrayList<Building>());
         View rootView = inflater.inflate(R.layout.fragment_buildings, container, false);
         ListView listView = (ListView) rootView.findViewById(R.id.buildings_list);
         listView.setAdapter(buildingsAdapter);

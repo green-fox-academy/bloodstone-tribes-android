@@ -12,9 +12,7 @@ public class ServiceFactory {
 private static final String SERVER_URL = "https://tribes-of-lagopus.herokuapp.com";
 
     public static <T> T createRetrofitService() {
-
         Class serviceClass = LoginService.class;
-
         Retrofit.Builder builder = new Retrofit.Builder()
                 .baseUrl(SERVER_URL)
                 .addConverterFactory(GsonConverterFactory.create());
@@ -22,12 +20,11 @@ private static final String SERVER_URL = "https://tribes-of-lagopus.herokuapp.co
         return (T) retrofit.create(serviceClass);
     }
 
-    public static LoginService createMockService() {
+    public static LoginService createMockLoginService() {
         return new MockLoginService();
     }
 
     public static <T> T createRetrofitApiService() {
-
         Class serviceClass = ApiService.class;
         Retrofit.Builder builder = new Retrofit.Builder()
                 .baseUrl(SERVER_URL)
