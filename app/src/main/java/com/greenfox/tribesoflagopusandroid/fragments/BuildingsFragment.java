@@ -29,7 +29,6 @@ public class BuildingsFragment extends Fragment {
     ApiService apiService;
 
     private BuildingsAdapter buildingsAdapter;
-    List<Building> buildings;
 
     public BuildingsFragment() {
     }
@@ -42,7 +41,7 @@ public class BuildingsFragment extends Fragment {
         apiService.getBuildings(1).enqueue(new Callback<BuildingsResponse>() {
             @Override
             public void onResponse(Call<BuildingsResponse> call, Response<BuildingsResponse> response) {
-                buildings = response.body().getBuildings();
+                buildingsAdapter.addAll(response.body().getBuildings());
             }
 
             @Override
@@ -50,7 +49,7 @@ public class BuildingsFragment extends Fragment {
             }
         });
 
-        buildingsAdapter = new BuildingsAdapter(getContext(), buildings);
+        buildingsAdapter = new BuildingsAdapter(getContext(), new ArrayList<Building>());
         View rootView = inflater.inflate(R.layout.fragment_buildings, container, false);
         ListView listView = (ListView) rootView.findViewById(R.id.buildings_list);
         listView.setAdapter(buildingsAdapter);
