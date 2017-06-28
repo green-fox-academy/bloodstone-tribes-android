@@ -31,8 +31,11 @@ public class BuildingsFragmentTest {
     @Test
     public void saveStatusOnExit() {
         BuildingsFragment buildingsFragment = new BuildingsFragment();
+//        BaseFragment baseFragment = new BaseFragment();
         startFragment(buildingsFragment);
         assertNotNull(buildingsFragment);
+//        startFragment(baseFragment);
+//        assertNotNull(baseFragment);
         buildingsFragment.onStop();
         assertEquals(buildingsFragment.timestamp, mainActivity.preferences.getString(BUILDINGS_FRAGMENT_SAVE, ""));
     }

@@ -3,7 +3,6 @@ package com.greenfox.tribesoflagopusandroid.fragments;
 
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,7 +19,7 @@ import javax.inject.Inject;
 
 import static com.greenfox.tribesoflagopusandroid.MainActivity.BUILDINGS_FRAGMENT_SAVE;
 
-public class BuildingsFragment extends Fragment {
+public class BuildingsFragment extends BaseFragment {
 
     @Inject
     SharedPreferences preferences;
@@ -67,9 +66,8 @@ public class BuildingsFragment extends Fragment {
 
     @Override
     public void onStop() {
+        super.saveOnExit(BUILDINGS_FRAGMENT_SAVE);
+        timestamp = BaseFragment.timestamp;
         super.onStop();
-        timestamp = String.valueOf(System.currentTimeMillis());
-        editor.putString(BUILDINGS_FRAGMENT_SAVE, timestamp);
-        editor.apply();
     }
 }
