@@ -14,9 +14,8 @@ import com.greenfox.tribesoflagopusandroid.adapter.TroopAdapter;
 import com.greenfox.tribesoflagopusandroid.api.model.gameobject.Troop;
 import com.greenfox.tribesoflagopusandroid.api.model.response.TroopsResponse;
 import com.greenfox.tribesoflagopusandroid.api.service.ApiService;
-import com.greenfox.tribesoflagopusandroid.api.service.MockApiService;
 
-import java.util.List;
+import java.util.ArrayList;
 
 import javax.inject.Inject;
 
@@ -28,8 +27,6 @@ public class TroopsFragment extends Fragment {
 
     private TroopAdapter troopAdapter;
     @Inject ApiService apiService;
-    List<Troop> troopArrayList;
-
 
     public TroopsFragment() {
     }
@@ -42,7 +39,7 @@ public class TroopsFragment extends Fragment {
         apiService.getTroops(1).enqueue(new Callback<TroopsResponse>() {
             @Override
             public void onResponse(Call<TroopsResponse> call, Response<TroopsResponse> response) {
-                troopArrayList = response.body().getTroops();
+                troopAdapter.addAll(response.body().getTroops());
             }
 
             @Override
@@ -50,8 +47,7 @@ public class TroopsFragment extends Fragment {
 
             }
         });
-
-        troopAdapter = new TroopAdapter(getContext(), troopArrayList);
+        troopAdapter = new TroopAdapter(getContext(), new ArrayList<Troop>());
 
         View rootView = inflater.inflate(R.layout.fragment_troops, container, false);
 
