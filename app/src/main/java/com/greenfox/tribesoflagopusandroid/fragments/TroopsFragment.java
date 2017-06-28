@@ -1,6 +1,5 @@
 package com.greenfox.tribesoflagopusandroid.fragments;
 
-
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -10,14 +9,24 @@ import android.view.ViewGroup;
 import android.widget.ListView;
 
 import com.greenfox.tribesoflagopusandroid.R;
+import com.greenfox.tribesoflagopusandroid.TribesApplication;
 import com.greenfox.tribesoflagopusandroid.adapter.TroopAdapter;
 import com.greenfox.tribesoflagopusandroid.api.model.gameobject.Troop;
+import com.greenfox.tribesoflagopusandroid.api.model.response.TroopsResponse;
+import com.greenfox.tribesoflagopusandroid.api.service.ApiService;
 
 import java.util.ArrayList;
+
+import javax.inject.Inject;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class TroopsFragment extends Fragment {
 
     private TroopAdapter troopAdapter;
+    @Inject ApiService apiService;
 
     public TroopsFragment() {
     }
@@ -25,21 +34,20 @@ public class TroopsFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        TribesApplication.app().basicComponent().inject(this);
 
-        ArrayList<Troop> troopArrayList = new ArrayList<>();
-        Troop troop = new Troop(1,1,5,5,5);
-        Troop troop1 = new Troop(1,1,10,8,2);
-        Troop troop2 = new Troop(1,2,20,3,7);
+        apiService.getTroops(1).enqueue(new Callback<TroopsResponse>() {
+            @Override
+            public void onResponse(Call<TroopsResponse> call, Response<TroopsResponse> response) {
+                troopAdapter.addAll(response.body().getTroops());
+            }
 
-        troopAdapter = new TroopAdapter(this.getContext(), troopArrayList);
-        troopAdapter.add(troop);
-        troopAdapter.add(troop1);
-        troopAdapter.add(troop2);
-        troopAdapter.add(troop1);
-        troopAdapter.add(troop1);
-        troopAdapter.add(troop1);
-        troopAdapter.add(troop1);
-        troopAdapter.add(troop1);
+            @Override
+            public void onFailure(Call<TroopsResponse> call, Throwable t) {
+
+            }
+        });
+        troopAdapter = new TroopAdapter(getContext(), new ArrayList<Troop>());
 
         View rootView = inflater.inflate(R.layout.fragment_troops, container, false);
 
@@ -49,4 +57,9 @@ public class TroopsFragment extends Fragment {
         return rootView;
     }
 
+    @Override
+    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        getActivity().setTitle("Troops");
+    }
 }

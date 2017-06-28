@@ -24,7 +24,7 @@ private static final String SERVER_URL = "https://tribes-of-lagopus.herokuapp.co
         return new MockLoginService();
     }
 
-    public static <T> T createApiService() {
+    public static <T> T createRetrofitApiService() {
         Class serviceClass = ApiService.class;
         Retrofit.Builder builder = new Retrofit.Builder()
                 .baseUrl(SERVER_URL)
