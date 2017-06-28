@@ -10,7 +10,7 @@ import org.robolectric.Robolectric;
 import org.robolectric.RobolectricTestRunner;
 import org.robolectric.annotation.Config;
 
-import static com.greenfox.tribesoflagopusandroid.MainActivity.BUILDINGS_FRAGMENT_SAVE;
+import static com.greenfox.tribesoflagopusandroid.MainActivity.BATTLE_FRAGMENT_SAVE;
 import static junit.framework.TestCase.assertEquals;
 import static junit.framework.TestCase.assertNotNull;
 import static org.robolectric.shadows.support.v4.SupportFragmentTestUtil.startFragment;
@@ -30,10 +30,10 @@ public class FragmentTest {
 
     @Test
     public void saveFragmentStatusOnExit() {
-        BuildingsFragment buildingsFragment = new BuildingsFragment();
-        startFragment(buildingsFragment);
-        assertNotNull(buildingsFragment);
-        buildingsFragment.onStop();
-        assertEquals(buildingsFragment.timestamp, mainActivity.preferences.getString(BUILDINGS_FRAGMENT_SAVE, ""));
+        BattleFragment battleFragment  = new BattleFragment();
+        startFragment(battleFragment);
+        assertNotNull(battleFragment);
+        battleFragment.onStop();
+        assertEquals(battleFragment.timestamp, mainActivity.preferences.getString(BATTLE_FRAGMENT_SAVE, ""));
     }
 }
