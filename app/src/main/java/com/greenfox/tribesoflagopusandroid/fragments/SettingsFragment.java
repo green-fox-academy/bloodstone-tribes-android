@@ -15,15 +15,15 @@ import com.greenfox.tribesoflagopusandroid.TribesApplication;
 import javax.inject.Inject;
 
 import static com.greenfox.tribesoflagopusandroid.MainActivity.BACKGROUND_SYNC;
-import static com.greenfox.tribesoflagopusandroid.MainActivity.MAIN_FRAGMENT_SAVE;
 import static com.greenfox.tribesoflagopusandroid.MainActivity.NOTIFICATION;
+import static com.greenfox.tribesoflagopusandroid.MainActivity.SETTINGS_FRAGMENT_SAVE;
 
 
 /**
  * Created by georgezsiga on 6/21/17.
  */
 
-public class SettingsFragment extends android.support.v4.app.Fragment {
+public class SettingsFragment extends BaseFragment {
 
     @Inject
     public SharedPreferences preferences;
@@ -109,10 +109,9 @@ public class SettingsFragment extends android.support.v4.app.Fragment {
 
     @Override
     public void onStop() {
+        super.saveOnExit(SETTINGS_FRAGMENT_SAVE);
+        timestamp = BaseFragment.timestamp;
         super.onStop();
-        timestamp = String.valueOf(System.currentTimeMillis());
-        editor.putString(MAIN_FRAGMENT_SAVE, timestamp);
-        editor.apply();
     }
 
 }

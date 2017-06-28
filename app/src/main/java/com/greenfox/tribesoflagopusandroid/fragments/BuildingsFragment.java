@@ -25,7 +25,6 @@ public class BuildingsFragment extends BaseFragment {
     SharedPreferences preferences;
 
     SharedPreferences.Editor editor;
-
     private BuildingsAdapter buildingsAdapter;
     String timestamp;
 

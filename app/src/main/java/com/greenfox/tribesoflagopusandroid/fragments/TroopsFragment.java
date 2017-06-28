@@ -3,7 +3,6 @@ package com.greenfox.tribesoflagopusandroid.fragments;
 
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,13 +19,13 @@ import java.util.ArrayList;
 
 import javax.inject.Inject;
 
-import static com.greenfox.tribesoflagopusandroid.MainActivity.TROOPS_FRAGMENT_SAVE;
-
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class TroopsFragment extends Fragment {
+import static com.greenfox.tribesoflagopusandroid.MainActivity.TROOPS_FRAGMENT_SAVE;
+
+public class TroopsFragment extends BaseFragment {
 
     @Inject
     SharedPreferences preferences;
@@ -72,10 +71,9 @@ public class TroopsFragment extends Fragment {
 
     @Override
     public void onStop() {
-        super.onStop();
+        super.saveOnExit(TROOPS_FRAGMENT_SAVE);
         timestamp = BaseFragment.timestamp;
-        editor.putString(TROOPS_FRAGMENT_SAVE, timestamp);
-        editor.apply();
+        super.onStop();
     }
 
 }
