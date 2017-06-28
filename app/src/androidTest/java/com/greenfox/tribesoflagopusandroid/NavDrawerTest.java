@@ -22,7 +22,6 @@ import static android.support.test.espresso.matcher.ViewMatchers.withId;
 import static com.greenfox.tribesoflagopusandroid.MainActivity.USERNAME;
 import static org.hamcrest.core.Is.is;
 
-
 @RunWith(AndroidJUnit4.class)
 public class NavDrawerTest {
 
@@ -36,7 +35,6 @@ public class NavDrawerTest {
     public void setup() {
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(mainActivityActivityTestRule.getActivity());
         preferences.edit().putString(USERNAME, "tesUser").commit();
-        Log.i("asd", "jsdblfdblknbkl");
     }
 
     @Test
@@ -48,10 +46,10 @@ public class NavDrawerTest {
     public void testSwitchViewFromSettingsToBuildings() throws Exception {
         onView(withId(R.id.drawer_layout)).perform(DrawerActions.open());
         onView(withId(R.id.navigation_view)).perform(NavigationViewActions.navigateTo(R.id.nav_settings));
-        Thread.sleep(50);
+        Thread.sleep(500);
         onView(withId(R.id.drawer_layout)).perform(DrawerActions.open());
         onView(withId(R.id.navigation_view)).perform(NavigationViewActions.navigateTo(R.id.nav_buildings));
-        Thread.sleep(50);
+        Thread.sleep(500);
         assertThat(mainActivityActivityTestRule.getActivity().getTitle().toString(), is("Buildings"));
     }
 
@@ -59,7 +57,7 @@ public class NavDrawerTest {
     public void testOpenTroopsFragment() throws Exception {
         onView(withId(R.id.drawer_layout)).perform(DrawerActions.open());
         onView(withId(R.id.navigation_view)).perform(NavigationViewActions.navigateTo(R.id.nav_troops));
-        Thread.sleep(50);
+        Thread.sleep(500);
         assertThat(mainActivityActivityTestRule.getActivity().getTitle().toString(), is("Troops"));
     }
 
