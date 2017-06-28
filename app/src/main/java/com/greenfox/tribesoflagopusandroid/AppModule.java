@@ -7,7 +7,6 @@ import android.preference.PreferenceManager;
 import com.google.gson.Gson;
 import com.greenfox.tribesoflagopusandroid.api.service.ApiService;
 import com.greenfox.tribesoflagopusandroid.api.service.LoginService;
-import com.greenfox.tribesoflagopusandroid.api.service.MockLoginService;
 import com.greenfox.tribesoflagopusandroid.api.service.ServiceFactory;
 
 import javax.inject.Singleton;
@@ -23,7 +22,6 @@ import dagger.Provides;
 public class AppModule {
 
     private Context context;
-    private static final Boolean LOGINSERVICE_IS_ACTIVE = false;
     private static final Boolean APISERVICE_IS_ACTIVE = false;
     ServiceFactory serviceFactory;
 
@@ -54,16 +52,16 @@ public class AppModule {
 
     @Singleton @Provides
     public LoginService provideLoginService() {
-        if (LOGINSERVICE_IS_ACTIVE) {
+        if (APISERVICE_IS_ACTIVE) {
             return serviceFactory.createRetrofitService();
         }
-        return serviceFactory.createMockService();
+        return serviceFactory.createMockLoginService();
     }
 
     @Singleton @Provides
-    public ApiService provideApiService() {
+    public ApiService provideMockApiService() {
         if (APISERVICE_IS_ACTIVE) {
-            return serviceFactory.createRetrofitApiService();
+            return serviceFactory.createRetrofitService();
         }
         return serviceFactory.createMockApiService();
     }

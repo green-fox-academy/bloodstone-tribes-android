@@ -2,10 +2,10 @@
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main_fragment_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.greenfox.tribesoflagopusandroid.fragments.MainFragment"
-    android:id="@+id/main_fragment_layout">
+    tools:context="com.greenfox.tribesoflagopusandroid.fragments.MainFragment">
 
     <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -233,8 +233,5 @@
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintRight_toRightOf="parent" />
         </android.support.constraint.ConstraintLayout>
-
-
     </android.support.constraint.ConstraintLayout>
 </FrameLayout>
-
