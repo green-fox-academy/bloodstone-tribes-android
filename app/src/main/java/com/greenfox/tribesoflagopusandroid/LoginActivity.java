@@ -1,8 +1,14 @@
 package com.greenfox.tribesoflagopusandroid;
 
+import android.app.NotificationManager;
+import android.app.PendingIntent;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
+import android.support.v4.app.NotificationCompat;
+import android.support.v4.app.TaskStackBuilder;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
 import android.view.Gravity;
@@ -12,7 +18,6 @@ import android.widget.Toast;
 
 import com.greenfox.tribesoflagopusandroid.api.model.gameobject.User;
 import com.greenfox.tribesoflagopusandroid.api.service.LoginService;
-import com.greenfox.tribesoflagopusandroid.api.service.ServiceFactory;
 
 import javax.inject.Inject;
 
@@ -25,9 +30,12 @@ import static com.greenfox.tribesoflagopusandroid.MainActivity.USERNAME;
 
 public class LoginActivity extends AppCompatActivity {
 
-    @Inject SharedPreferences preferences;
-    @Inject ObjectManager objectManager;
-    @Inject LoginService loginService;
+    @Inject
+    SharedPreferences preferences;
+    @Inject
+    ObjectManager objectManager;
+    @Inject
+    LoginService loginService;
 
     SharedPreferences.Editor editor;
 
@@ -67,14 +75,39 @@ public class LoginActivity extends AppCompatActivity {
             public void onResponse(Call<User> call, Response<User> response) {
                 User user = response.body();
                 addUserInfoToPreferences(user.getUsername());
+                sendNotification(user.getUsername());
                 Intent intent = new Intent(LoginActivity.this, MainActivity.class);
                 startActivity(intent);
             }
+
             @Override
             public void onFailure(Call<User> call, Throwable t) {
                 Toast.makeText(LoginActivity.this, "error getting login information from server", Toast.LENGTH_SHORT).show();
             }
         });
+    }
+
+    public void sendNotification(String username) {
+        NotificationCompat.Builder mBuilder =
+                new NotificationCompat.Builder(this)
+                        .setSmallIcon(R.drawable.tribes)
+                        .setLargeIcon(BitmapFactory.decodeResource(this.getResources(), R.drawable.tribesbig))
+                        .setContentTitle("Hi " + username + "!")
+                        .setContentText("Welcome to the game, and have fun!");
+        Intent resultIntent = new Intent(this, MainActivity.class);
+        TaskStackBuilder stackBuilder = TaskStackBuilder.create(this);
+        stackBuilder.addParentStack(MainActivity.class);
+        stackBuilder.addNextIntent(resultIntent);
+        PendingIntent resultPendingIntent =
+                stackBuilder.getPendingIntent(
+                        0,
+                        PendingIntent.FLAG_UPDATE_CURRENT
+                );
+        mBuilder.setContentIntent(resultPendingIntent);
+
+        NotificationManager mNotificationManager =
+                (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+        mNotificationManager.notify(001, mBuilder.build());
     }
 
     protected void addUserInfoToPreferences(String username) {
