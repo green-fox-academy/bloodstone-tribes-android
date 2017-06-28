@@ -1,8 +1,8 @@
 package com.greenfox.tribesoflagopusandroid.fragments;
 
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,10 +23,20 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class TroopsFragment extends Fragment {
+import static com.greenfox.tribesoflagopusandroid.MainActivity.TROOPS_FRAGMENT_SAVE;
+
+public class TroopsFragment extends BaseFragment {
+
+    @Inject
+    SharedPreferences preferences;
+
+    SharedPreferences.Editor editor;
+
+    String timestamp;
 
     private TroopAdapter troopAdapter;
-    @Inject ApiService apiService;
+    @Inject
+    ApiService apiService;
 
     public TroopsFragment() {
     }
@@ -35,6 +45,7 @@ public class TroopsFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         TribesApplication.app().basicComponent().inject(this);
+        editor = preferences.edit();
 
         troopAdapter = new TroopAdapter(getContext(), new ArrayList<Troop>());
         apiService.getTroops(1).enqueue(new Callback<TroopsResponse>() {
@@ -58,8 +69,16 @@ public class TroopsFragment extends Fragment {
     }
 
     @Override
+    public void onStop() {
+        super.saveOnExit(TROOPS_FRAGMENT_SAVE);
+        timestamp = BaseFragment.timestamp;
+        super.onStop();
+    }
+
+    @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         getActivity().setTitle("Troops");
     }
+
 }

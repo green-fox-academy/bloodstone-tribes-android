@@ -1,22 +1,22 @@
 package com.greenfox.tribesoflagopusandroid.fragments;
 
+
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ListView;
 
 import com.greenfox.tribesoflagopusandroid.R;
 import com.greenfox.tribesoflagopusandroid.TribesApplication;
 import com.greenfox.tribesoflagopusandroid.adapter.BuildingsAdapter;
-import android.widget.ListView;
 import com.greenfox.tribesoflagopusandroid.api.model.gameobject.Building;
 import com.greenfox.tribesoflagopusandroid.api.model.response.BuildingsResponse;
 import com.greenfox.tribesoflagopusandroid.api.service.ApiService;
 
 import java.util.ArrayList;
-import java.util.List;
 
 import javax.inject.Inject;
 
@@ -24,12 +24,19 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class BuildingsFragment extends Fragment {
+import static com.greenfox.tribesoflagopusandroid.MainActivity.BUILDINGS_FRAGMENT_SAVE;
 
+public class BuildingsFragment extends BaseFragment {
+
+    @Inject
+    SharedPreferences preferences;
+
+    SharedPreferences.Editor editor;
     @Inject
     ApiService apiService;
 
     private BuildingsAdapter buildingsAdapter;
+    String timestamp;
 
     public BuildingsFragment() {
     }
@@ -45,6 +52,7 @@ public class BuildingsFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         TribesApplication.app().basicComponent().inject(this);
+        editor = preferences.edit();
 
         buildingsAdapter = new BuildingsAdapter(getContext(), new ArrayList<Building>());
         apiService.getBuildings(1).enqueue(new Callback<BuildingsResponse>() {
@@ -63,5 +71,12 @@ public class BuildingsFragment extends Fragment {
         listView.setAdapter(buildingsAdapter);
 
         return rootView;
+    }
+
+    @Override
+    public void onStop() {
+        super.saveOnExit(BUILDINGS_FRAGMENT_SAVE);
+        timestamp = BaseFragment.timestamp;
+        super.onStop();
     }
 }

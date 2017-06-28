@@ -19,6 +19,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.widget.Toast;
 
+import com.greenfox.tribesoflagopusandroid.fragments.BaseFragment;
 import com.greenfox.tribesoflagopusandroid.fragments.BattleFragment;
 import com.greenfox.tribesoflagopusandroid.fragments.BuildingsFragment;
 import com.greenfox.tribesoflagopusandroid.fragments.MainFragment;
@@ -35,11 +36,21 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     public static final String NOTIFICATION = "Notification";
     public static final String BACKGROUND_SYNC = "BackgroundSync";
+    public static final String APP_SAVE = "appSave";
+    public static final String BUILDINGS_FRAGMENT_SAVE = "buildingsSave";
+    public static final String TROOPS_FRAGMENT_SAVE = "troopsSave";
+    public static final String SETTINGS_FRAGMENT_SAVE = "SettingsSave";
+    public static final String BATTLE_FRAGMENT_SAVE = "battleSave";
+    public static final String MAIN_FRAGMENT_SAVE = "mainSave";
+
+    String timestamp;
 
     @Inject
+    public
     SharedPreferences preferences;
 
     SharedPreferences.Editor editor;
+    BaseFragment baseFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -96,6 +107,20 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         Intent intent = new Intent(this, LoginActivity.class);
         startActivity(intent);
         finish();
+    }
+
+    @Override
+    protected void onPause() {
+        baseFragment.saveOnExit(APP_SAVE);
+        timestamp = BaseFragment.timestamp;
+        super.onPause();
+    }
+
+    @Override
+    protected void onStop() {
+        baseFragment.saveOnExit(APP_SAVE);
+        timestamp = BaseFragment.timestamp;
+        super.onStop();
     }
 
     private void displaySelectedScreen(int id) {

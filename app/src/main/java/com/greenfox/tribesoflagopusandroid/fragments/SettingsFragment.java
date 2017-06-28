@@ -16,13 +16,14 @@ import javax.inject.Inject;
 
 import static com.greenfox.tribesoflagopusandroid.MainActivity.BACKGROUND_SYNC;
 import static com.greenfox.tribesoflagopusandroid.MainActivity.NOTIFICATION;
+import static com.greenfox.tribesoflagopusandroid.MainActivity.SETTINGS_FRAGMENT_SAVE;
 
 
 /**
  * Created by georgezsiga on 6/21/17.
  */
 
-public class SettingsFragment extends android.support.v4.app.Fragment {
+public class SettingsFragment extends BaseFragment {
 
     @Inject
     public SharedPreferences preferences;
@@ -31,6 +32,8 @@ public class SettingsFragment extends android.support.v4.app.Fragment {
 
     public TextView notification_status, background_sync_status;
     public Switch notification, background_sync;
+
+    public String timestamp;
 
     public SettingsFragment() {
 
@@ -100,6 +103,13 @@ public class SettingsFragment extends android.support.v4.app.Fragment {
         }
 
         return rootView;
+    }
+
+    @Override
+    public void onStop() {
+        super.saveOnExit(SETTINGS_FRAGMENT_SAVE);
+        timestamp = BaseFragment.timestamp;
+        super.onStop();
     }
 
 }

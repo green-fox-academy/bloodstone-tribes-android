@@ -1,8 +1,8 @@
 package com.greenfox.tribesoflagopusandroid.fragments;
 
 
+import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -25,7 +25,15 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class MainFragment extends Fragment {
+import static com.greenfox.tribesoflagopusandroid.MainActivity.MAIN_FRAGMENT_SAVE;
+
+public class MainFragment extends BaseFragment {
+
+    @Inject
+    SharedPreferences preferences;
+
+    SharedPreferences.Editor editor;
+    String timestamp;
 
     @Inject
     ApiService apiService;
@@ -40,8 +48,8 @@ public class MainFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-
         TribesApplication.app().basicComponent().inject(this);
+        editor = preferences.edit();
 
         apiService.getKingdom(1).enqueue(new Callback<Kingdom>() {
             @Override
@@ -72,5 +80,12 @@ public class MainFragment extends Fragment {
         totalTroopNumber.setText((troops.size() + " finished"));
 
         return rootView;
+    }
+
+    @Override
+    public void onStop() {
+        super.saveOnExit(MAIN_FRAGMENT_SAVE);
+        timestamp = BaseFragment.timestamp;
+        super.onStop();
     }
 }

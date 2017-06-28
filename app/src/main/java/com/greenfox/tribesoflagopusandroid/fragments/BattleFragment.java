@@ -1,17 +1,18 @@
 package com.greenfox.tribesoflagopusandroid.fragments;
 
-import android.content.Context;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.greenfox.tribesoflagopusandroid.R;
 
-public class BattleFragment extends Fragment {
+import static com.greenfox.tribesoflagopusandroid.MainActivity.BATTLE_FRAGMENT_SAVE;
+
+public class BattleFragment extends BaseFragment {
+
+    String timestamp;
 
     public BattleFragment() {
     }
@@ -28,5 +29,10 @@ public class BattleFragment extends Fragment {
         getActivity().setTitle("Battle");
     }
 
-
+    @Override
+    public void onStop() {
+        super.saveOnExit(BATTLE_FRAGMENT_SAVE);
+        timestamp = BaseFragment.timestamp;
+        super.onStop();
+    }
 }

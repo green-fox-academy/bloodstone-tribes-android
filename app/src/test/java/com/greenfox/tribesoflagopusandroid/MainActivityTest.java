@@ -18,6 +18,7 @@ import org.robolectric.RuntimeEnvironment;
 import org.robolectric.Shadows;
 import org.robolectric.annotation.Config;
 
+import static com.greenfox.tribesoflagopusandroid.MainActivity.APP_SAVE;
 import static com.greenfox.tribesoflagopusandroid.MainActivity.USERNAME;
 import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertEquals;
