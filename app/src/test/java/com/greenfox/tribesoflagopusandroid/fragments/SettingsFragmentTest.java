@@ -1,5 +1,7 @@
-package com.greenfox.tribesoflagopusandroid;
+package com.greenfox.tribesoflagopusandroid.fragments;
 
+import com.greenfox.tribesoflagopusandroid.BuildConfig;
+import com.greenfox.tribesoflagopusandroid.MainActivity;
 import com.greenfox.tribesoflagopusandroid.fragments.SettingsFragment;
 
 import junit.framework.Assert;

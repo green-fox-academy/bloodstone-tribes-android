@@ -20,7 +20,7 @@ import static org.robolectric.shadows.support.v4.SupportFragmentTestUtil.startFr
  */
 @Config(constants = BuildConfig.class)
 @RunWith(RobolectricTestRunner.class)
-public class BuildingsFragmentTest {
+public class FragmentTest {
 
     MainActivity mainActivity;
     @Before
@@ -29,13 +29,10 @@ public class BuildingsFragmentTest {
     }
 
     @Test
-    public void saveStatusOnExit() {
+    public void saveFragmentStatusOnExit() {
         BuildingsFragment buildingsFragment = new BuildingsFragment();
-//        BaseFragment baseFragment = new BaseFragment();
         startFragment(buildingsFragment);
         assertNotNull(buildingsFragment);
-//        startFragment(baseFragment);
-//        assertNotNull(baseFragment);
         buildingsFragment.onStop();
         assertEquals(buildingsFragment.timestamp, mainActivity.preferences.getString(BUILDINGS_FRAGMENT_SAVE, ""));
     }
