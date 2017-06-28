@@ -1,10 +1,12 @@
 package com.greenfox.tribesoflagopusandroid;
 
 import android.content.Intent;
+import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ListView;
 import android.widget.TextView;
 
 import org.junit.Before;
@@ -13,6 +15,7 @@ import org.junit.runner.RunWith;
 import org.robolectric.Robolectric;
 import org.robolectric.RobolectricTestRunner;
 import org.robolectric.RuntimeEnvironment;
+import org.robolectric.Shadows;
 import org.robolectric.annotation.Config;
 
 import static com.greenfox.tribesoflagopusandroid.MainActivity.USERNAME;
@@ -64,7 +67,8 @@ public class MainActivityTest {
 //    @Test
 //    public void testBuildingsMenuClickedRedirectsToBuildings() throws Exception {
 //        drawerLayout.openDrawer(GravityCompat.START);
-//        drawerLayout.findViewById(R.id.nav_buildings).performClick();
+//        NavigationView nav = (NavigationView) main.onCreateOptionsMenu(menu.activity_navigation_drawer);
+//        Shadows.shadowOf(nav).performItemClick(1); //click second item
 //        assertEquals("Buildings", main.getTitle().toString());
 //    }
 }
