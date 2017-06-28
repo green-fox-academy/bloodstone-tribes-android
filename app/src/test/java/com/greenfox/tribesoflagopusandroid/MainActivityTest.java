@@ -64,11 +64,11 @@ public class MainActivityTest {
         assertThat(drawerLayout.isDrawerOpen(GravityCompat.START), is(true));
     }
 
-//    @Test
-//    public void testBuildingsMenuClickedRedirectsToBuildings() throws Exception {
-//        drawerLayout.openDrawer(GravityCompat.START);
-//        NavigationView nav = (NavigationView) main.onCreateOptionsMenu(menu.activity_navigation_drawer);
-//        Shadows.shadowOf(nav).performItemClick(1); //click second item
-//        assertEquals("Buildings", main.getTitle().toString());
-//    }
+    @Test
+    public void testBuildingsMenuClickedRedirectsToBuildings() throws Exception {
+        drawerLayout.openDrawer(GravityCompat.START);
+        main.findViewById(R.id.nav_buildings).performClick();
+        main.onNavigationItemSelected(R.menu.activity_navigation_drawer);
+        assertEquals("Buildings", main.getTitle().toString());
+    }
 }
