@@ -36,6 +36,7 @@ public class TroopsFragment extends Fragment {
                              Bundle savedInstanceState) {
         TribesApplication.app().basicComponent().inject(this);
 
+        troopAdapter = new TroopAdapter(getContext(), new ArrayList<Troop>());
         apiService.getTroops(1).enqueue(new Callback<TroopsResponse>() {
             @Override
             public void onResponse(Call<TroopsResponse> call, Response<TroopsResponse> response) {
@@ -47,7 +48,6 @@ public class TroopsFragment extends Fragment {
 
             }
         });
-        troopAdapter = new TroopAdapter(getContext(), new ArrayList<Troop>());
 
         View rootView = inflater.inflate(R.layout.fragment_troops, container, false);
 
