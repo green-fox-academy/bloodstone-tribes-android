@@ -67,5 +67,4 @@ public class AppModule {
         }
         return serviceFactory.createMockApiService();
     }
-
 }
