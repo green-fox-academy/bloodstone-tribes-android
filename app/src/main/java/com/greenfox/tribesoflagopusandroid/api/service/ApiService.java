@@ -38,6 +38,8 @@ public interface ApiService {
     @GET("/{userId}/kingdom/resources")
     Call<ResourcesResponse> getResource (@Path("userId") int userId);
 
+    void addBuildingToList(Building building);
+
     @POST("/{userId}/kingdom/troops")
     Call<Troop> postTroop(@Path("userId") int userId);
 

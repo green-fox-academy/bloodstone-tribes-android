@@ -28,10 +28,8 @@ public class MockApiService implements ApiService{
 
     private String name = "kingdomname";
     private long idOfUser = 1;
-    private Building farm1 = new Building(1, "farm", 1, 2);
-    private Building mine1 = new Building(2, "mine", 1, 2);
     private Building townhall = new Building(3, "townhall", 1, 10);
-    private List<Building> buildings = new ArrayList<>(Arrays.asList(farm1, mine1, townhall));
+    private List<Building> buildings = new ArrayList<>(Arrays.asList(townhall));
     private Resource gold = new Resource("gold", 100, 1);
     private Resource food = new Resource("food", 20, 1);
     private List<Resource> resources = new ArrayList<>(Arrays.asList(gold, food));
@@ -102,6 +100,10 @@ public class MockApiService implements ApiService{
     }
 
     @Override
+    public void addBuildingToList(Building building) {
+        buildings.add(building);
+    }
+
     public Call<Troop> postTroop(@Path("userId") int userId) {
         return new MockCall<Troop>() {
             @Override
