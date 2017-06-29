@@ -102,4 +102,9 @@ public class MockApiService implements ApiService{
             }
         };
     }
+
+    @Override
+    public void addBuildingToList(Building building) {
+        buildings.add(building);
+    }
 }

@@ -37,4 +37,5 @@ public interface ApiService {
     @GET("/{userId}/kingdom/resources")
     Call<ResourcesResponse> getResource (@Path("userId") int userId);
 
+    void addBuildingToList(Building building);
 }

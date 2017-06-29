@@ -4,6 +4,7 @@ package com.greenfox.tribesoflagopusandroid.fragments;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.app.FragmentTransaction;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -83,7 +84,18 @@ public class BuildingsFragment extends BaseFragment {
             @Override
             public void onClick(View v) {
                 Toast.makeText(getContext(),"Farm added", Toast.LENGTH_SHORT).show();
-                buildingsAdapter.add(new Building(1, "farm", 1, 1));
+                apiService.postBuilding("farm").enqueue(new Callback<Building>() {
+                    @Override
+                    public void onResponse(Call<Building> call, Response<Building> response) {
+                        apiService.addBuildingToList(response.body());
+                        refresh();
+                    }
+
+                    @Override
+                    public void onFailure(Call<Building> call, Throwable t) {
+
+                    }
+                });
             }
         });
 
@@ -92,7 +104,18 @@ public class BuildingsFragment extends BaseFragment {
             @Override
             public void onClick(View v) {
                 Toast.makeText(getContext(),"Mine added", Toast.LENGTH_SHORT).show();
-                buildingsAdapter.add(new Building(1, "mine", 1, 1));
+                apiService.postBuilding("mine").enqueue(new Callback<Building>() {
+                    @Override
+                    public void onResponse(Call<Building> call, Response<Building> response) {
+                        apiService.addBuildingToList(response.body());
+                        refresh();
+                    }
+
+                    @Override
+                    public void onFailure(Call<Building> call, Throwable t) {
+
+                    }
+                });
             }
         });
         return rootView;
@@ -104,4 +127,12 @@ public class BuildingsFragment extends BaseFragment {
         timestamp = BaseFragment.timestamp;
         super.onStop();
     }
+
+    public void refresh() {
+        FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
+        transaction.detach(this);
+        transaction.attach(this);
+        transaction.commit();
+    }
+
 }
