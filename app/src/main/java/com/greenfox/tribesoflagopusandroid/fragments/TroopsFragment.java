@@ -48,7 +48,7 @@ public class TroopsFragment extends BaseFragment {
         editor = preferences.edit();
 
         troopAdapter = new TroopAdapter(getContext(), new ArrayList<Troop>());
-        apiService.getTroops(1).enqueue(new Callback<TroopsResponse>() {
+        apiService.getTroops().enqueue(new Callback<TroopsResponse>() {
             @Override
             public void onResponse(Call<TroopsResponse> call, Response<TroopsResponse> response) {
                 troopAdapter.addAll(response.body().getTroops());
