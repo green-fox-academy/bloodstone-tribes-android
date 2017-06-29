@@ -20,12 +20,6 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 
-import android.view.View;
-import android.widget.Button;
-import android.widget.Toast;
-
-
-import com.greenfox.tribesoflagopusandroid.fragments.BaseFragment;
 import com.greenfox.tribesoflagopusandroid.fragments.BattleFragment;
 import com.greenfox.tribesoflagopusandroid.fragments.BuildingsFragment;
 import com.greenfox.tribesoflagopusandroid.fragments.MainFragment;
@@ -59,16 +53,12 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     SharedPreferences.Editor editor;
     private PendingIntent pendingIntent;
     private AlarmManager manager;
-    BaseFragment baseFragment;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         startAlarm();
-//        Intent alarmIntent = new Intent(this, AlarmReceiver.class);
-//        pendingIntent = PendingIntent.getBroadcast(this, 0, alarmIntent, 0);
         TribesApplication.app().basicComponent().inject(this);
         editor = preferences.edit();
         checkUsername();
@@ -135,30 +125,34 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         Intent alarmIntent = new Intent(this, AlarmReceiver.class);
         pendingIntent = PendingIntent.getBroadcast(this, 0,  alarmIntent, PendingIntent.FLAG_UPDATE_CURRENT);
         manager.setRepeating(AlarmManager.RTC_WAKEUP, System.currentTimeMillis(),interval, pendingIntent);
-        Toast.makeText(this, "Alarm Set", Toast.LENGTH_SHORT).show();
     }
 
     public void cancelAlarm() {
         long interval = 600000l;
         manager.setRepeating(AlarmManager.ELAPSED_REALTIME, System.currentTimeMillis(),interval, pendingIntent);
-        Toast.makeText(this, "Alarm Canceled", Toast.LENGTH_SHORT).show();
     }
 
     @Override
     protected void onPause() {
         long interval = 600000l;
         manager.setRepeating(AlarmManager.ELAPSED_REALTIME, System.currentTimeMillis(),interval, pendingIntent);
-        baseFragment.saveOnExit(APP_SAVE);
-        timestamp = BaseFragment.timestamp;
+        saveOnExit(APP_SAVE);
         super.onPause();
     }
 
     @Override
     protected void onStop() {
         manager.cancel(pendingIntent);
-        baseFragment.saveOnExit(APP_SAVE);
-        timestamp = BaseFragment.timestamp;
+        saveOnExit(APP_SAVE);
         super.onStop();
+    }
+
+    public void saveOnExit(String fragmentName) {
+        TribesApplication.app().basicComponent().inject(this);
+        editor = preferences.edit();
+        timestamp = String.valueOf(System.currentTimeMillis());
+        editor.putString(fragmentName, timestamp);
+        editor.apply();
     }
 
     private void displaySelectedScreen(int id) {
