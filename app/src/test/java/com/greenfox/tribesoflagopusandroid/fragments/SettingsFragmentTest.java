@@ -1,14 +1,21 @@
-package com.greenfox.tribesoflagopusandroid;
+package com.greenfox.tribesoflagopusandroid.fragments;
 
+import com.greenfox.tribesoflagopusandroid.BuildConfig;
+import com.greenfox.tribesoflagopusandroid.MainActivity;
 import com.greenfox.tribesoflagopusandroid.fragments.SettingsFragment;
 
+import junit.framework.Assert;
+
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.robolectric.Robolectric;
 import org.robolectric.RobolectricTestRunner;
 import org.robolectric.annotation.Config;
 
 import static com.greenfox.tribesoflagopusandroid.MainActivity.BACKGROUND_SYNC;
 import static com.greenfox.tribesoflagopusandroid.MainActivity.NOTIFICATION;
+import static com.greenfox.tribesoflagopusandroid.MainActivity.SETTINGS_FRAGMENT_SAVE;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.robolectric.shadows.support.v4.SupportFragmentTestUtil.startFragment;
@@ -19,6 +26,12 @@ import static org.robolectric.shadows.support.v4.SupportFragmentTestUtil.startFr
 @Config(constants = BuildConfig.class)
 @RunWith(RobolectricTestRunner.class)
 public class SettingsFragmentTest extends android.app.Activity {
+
+    MainActivity mainActivity;
+    @Before
+    public void setup() {
+        mainActivity = Robolectric.setupActivity(MainActivity.class);
+    }
 
     @Test
     public void turnNotificationSwitchOn() {
@@ -67,4 +80,6 @@ public class SettingsFragmentTest extends android.app.Activity {
         assertEquals(message, settingsFragment.background_sync_status.getText());
         assertEquals(false, settingsFragment.preferences.getBoolean(BACKGROUND_SYNC, false));
     }
+
 }
+
