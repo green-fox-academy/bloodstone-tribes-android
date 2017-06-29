@@ -18,6 +18,7 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 
+import com.greenfox.tribesoflagopusandroid.api.model.gameobject.Kingdom;
 import com.greenfox.tribesoflagopusandroid.fragments.BaseFragment;
 import com.greenfox.tribesoflagopusandroid.fragments.BattleFragment;
 import com.greenfox.tribesoflagopusandroid.fragments.BuildingsFragment;
@@ -47,6 +48,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     BaseFragment baseFragment;
     String timestamp;
     Fragment fragment = null;
+    Kingdom thisKingdom;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
