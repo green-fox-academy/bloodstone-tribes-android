@@ -19,6 +19,7 @@ import android.text.TextUtils;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.widget.Toast;
 
 import com.greenfox.tribesoflagopusandroid.fragments.BattleFragment;
 import com.greenfox.tribesoflagopusandroid.fragments.BuildingsFragment;
@@ -31,8 +32,6 @@ import javax.inject.Inject;
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
     public static final String USERNAME = "Username";
-    public static final String PASSWORD = "Password";
-    private DrawerLayout mDrawer;
 
     public static final String NOTIFICATION = "Notification";
     public static final String BACKGROUND_SYNC = "BackgroundSync";
@@ -95,8 +94,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     public void refreshActiveFragment() {
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-        transaction.replace(R.id.layout_content, fragment);
+        transaction.detach(fragment);
+        transaction.attach(fragment);
         transaction.commit();
+        Toast.makeText(this,"Refreshing", Toast.LENGTH_SHORT).show();
     }
 
     public void checkUsername() {
