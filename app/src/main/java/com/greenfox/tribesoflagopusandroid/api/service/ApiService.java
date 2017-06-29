@@ -24,7 +24,7 @@ public interface ApiService {
     Call<TroopsResponse> getTroops(@Path("userId") int userId);
 
     @GET("/{userId}/kingdom/buildings")
-    Call<BuildingsEvent> getBuildings(@Path("userId") int userId);
+    Call<BuildingsResponse> getBuildings(@Path("userId") int userId);
 
     @GET("/{userId}/kingdom/buildings/{buildingId}")
     Call<Building> getCertainBuilding(@Path("userId") int userId, @Path("buildingId")int buildingId);

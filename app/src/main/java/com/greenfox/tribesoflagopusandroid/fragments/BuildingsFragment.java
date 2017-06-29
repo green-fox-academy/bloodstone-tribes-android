@@ -8,6 +8,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import com.greenfox.tribesoflagopusandroid.R;
 import com.greenfox.tribesoflagopusandroid.TribesApplication;
@@ -18,6 +19,7 @@ import com.greenfox.tribesoflagopusandroid.api.service.ApiService;
 import com.greenfox.tribesoflagopusandroid.event.BuildingsEvent;
 
 import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
 
 import java.util.ArrayList;
 
@@ -37,6 +39,8 @@ public class BuildingsFragment extends BaseFragment {
     SharedPreferences.Editor editor;
     @Inject
     ApiService apiService;
+
+    private final String createdBuilding = "Building created";
 
     private BuildingsAdapter buildingsAdapter;
     String timestamp;
@@ -58,14 +62,14 @@ public class BuildingsFragment extends BaseFragment {
         editor = preferences.edit();
 
         buildingsAdapter = new BuildingsAdapter(getContext(), new ArrayList<Building>());
-        apiService.getBuildings(1).enqueue(new Callback<BuildingsEvent>() {
+        apiService.getBuildings(1).enqueue(new Callback<BuildingsResponse>() {
             @Override
-            public void onResponse(Call<BuildingsEvent> call, Response<BuildingsEvent> response) {
+            public void onResponse(Call<BuildingsResponse> call, Response<BuildingsResponse> response) {
                 buildingsAdapter.addAll(response.body().getBuildings());
             }
 
             @Override
-            public void onFailure(Call<BuildingsEvent> call, Throwable t) {
+            public void onFailure(Call<BuildingsResponse> call, Throwable t) {
             }
         });
 
@@ -82,5 +86,10 @@ public class BuildingsFragment extends BaseFragment {
         super.saveOnExit(BUILDINGS_FRAGMENT_SAVE);
         timestamp = BaseFragment.timestamp;
         super.onStop();
+    }
+
+    @Subscribe
+    public void onEventBuildingAdded(BuildingsEvent event) {
+        Toast.makeText(getContext(), createdBuilding, Toast.LENGTH_LONG).show();
     }
 }

@@ -1,25 +1,21 @@
 package com.greenfox.tribesoflagopusandroid.event;
 
-import com.greenfox.tribesoflagopusandroid.api.model.gameobject.Building;
-
-import java.util.ArrayList;
-import java.util.List;
-
-/**
- * Created by User on 2017. 06. 28..
- */
-
 public class BuildingsEvent {
 
-    ArrayList<Building> buildings;
+    String message;
 
-    public BuildingsEvent(ArrayList<Building> buildings) {
-        this.buildings = buildings;
+    public BuildingsEvent() {
     }
 
-    public List<Building> getBuildings() {
-        return buildings;
+    public BuildingsEvent(String message) {
+        this.message = message;
     }
 
+    public String getMessage() {
+        return message;
+    }
 
+    public void setMessage(String message) {
+        this.message = message;
+    }
 }

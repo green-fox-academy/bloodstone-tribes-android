@@ -14,6 +14,9 @@ import com.greenfox.tribesoflagopusandroid.api.model.gameobject.Location;
 import com.greenfox.tribesoflagopusandroid.api.model.gameobject.Resource;
 import com.greenfox.tribesoflagopusandroid.event.BuildingsEvent;
 
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -55,11 +58,11 @@ public class MockApiService implements ApiService{
     }
 
     @Override
-    public Call<BuildingsEvent> getBuildings(@Path("userId") int userId) {
+    public Call<BuildingsResponse> getBuildings(@Path("userId") int userId) {
         return new MockCall<BuildingsResponse>() {
             @Override
             public void enqueue(Callback callback) {
-                callback.onResponse(null, Response.success(new BuildingsEvent(buildings)));
+                callback.onResponse(null, Response.success(new BuildingsResponse(buildings)));
             }
         };
     }
@@ -74,6 +77,7 @@ public class MockApiService implements ApiService{
         };
     }
 
+
     @Override
     public Call<Kingdom> getKingdom(@Path("userId") final int userId) {
         return new MockCall<Kingdom>() {
@@ -86,6 +90,7 @@ public class MockApiService implements ApiService{
 
     @Override
     public Call<Building> postBuilding(@Field("type") final String type) {
+        EventBus.getDefault().post(new BuildingsResponse(buildings));
         return new MockCall<Building>() {
             @Override
             public void enqueue(Callback callback) {

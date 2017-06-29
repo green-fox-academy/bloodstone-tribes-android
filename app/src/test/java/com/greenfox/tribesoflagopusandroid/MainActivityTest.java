@@ -17,6 +17,7 @@ import org.robolectric.RobolectricTestRunner;
 import org.robolectric.RuntimeEnvironment;
 import org.robolectric.Shadows;
 import org.robolectric.annotation.Config;
+import org.robolectric.fakes.RoboMenuItem;
 
 import static com.greenfox.tribesoflagopusandroid.MainActivity.APP_SAVE;
 import static com.greenfox.tribesoflagopusandroid.MainActivity.USERNAME;
