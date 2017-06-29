@@ -1,6 +1,8 @@
 package com.greenfox.tribesoflagopusandroid.fragments;
 
 
+import android.app.usage.UsageEvents;
+import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -20,6 +22,7 @@ import com.greenfox.tribesoflagopusandroid.event.BuildingsEvent;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.ArrayList;
 
@@ -65,6 +68,7 @@ public class BuildingsFragment extends BaseFragment {
         apiService.getBuildings(1).enqueue(new Callback<BuildingsResponse>() {
             @Override
             public void onResponse(Call<BuildingsResponse> call, Response<BuildingsResponse> response) {
+                EventBus.getDefault().post(new BuildingsEvent());
                 buildingsAdapter.addAll(response.body().getBuildings());
             }
 
@@ -81,6 +85,18 @@ public class BuildingsFragment extends BaseFragment {
     }
 
     @Override
+    public void onDestroy() {
+        EventBus.getDefault().unregister(this);
+        super.onDestroy();
+    }
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        EventBus.getDefault().register(this);
+        super.onCreate(savedInstanceState);
+    }
+
+    @Override
     public void onStop() {
         EventBus.getDefault().unregister(this);
         super.saveOnExit(BUILDINGS_FRAGMENT_SAVE);
@@ -88,7 +104,7 @@ public class BuildingsFragment extends BaseFragment {
         super.onStop();
     }
 
-    @Subscribe
+    @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEventBuildingAdded(BuildingsEvent event) {
         Toast.makeText(getContext(), createdBuilding, Toast.LENGTH_LONG).show();
     }

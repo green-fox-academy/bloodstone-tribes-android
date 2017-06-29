@@ -48,12 +48,6 @@ public class MainFragment extends BaseFragment {
     }
 
     @Override
-    public void onStart() {
-        super.onStart();
-        EventBus.getDefault().register(this);
-    }
-
-    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         TribesApplication.app().basicComponent().inject(this);
@@ -94,7 +88,6 @@ public class MainFragment extends BaseFragment {
     public void onStop() {
         super.saveOnExit(MAIN_FRAGMENT_SAVE);
         timestamp = BaseFragment.timestamp;
-        EventBus.getDefault().unregister(this);
         super.onStop();
     }
 }

@@ -57,7 +57,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        EventBus.getDefault().register(this);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         TribesApplication.app().basicComponent().inject(this);
@@ -117,15 +116,18 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     protected void onPause() {
         baseFragment.saveOnExit(APP_SAVE);
         timestamp = BaseFragment.timestamp;
-        EventBus.getDefault().unregister(this);
         super.onPause();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
     }
 
     @Override
     protected void onStop() {
         baseFragment.saveOnExit(APP_SAVE);
         timestamp = BaseFragment.timestamp;
-        EventBus.getDefault().unregister(this);
         super.onStop();
     }
 
