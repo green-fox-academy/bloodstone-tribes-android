@@ -1,21 +1,25 @@
 package com.greenfox.tribesoflagopusandroid.event;
 
+import com.greenfox.tribesoflagopusandroid.api.model.gameobject.Building;
+
+import java.util.List;
+
 public class BuildingsEvent {
 
-    String message;
+  List<Building> buildings;
 
     public BuildingsEvent() {
     }
 
-    public BuildingsEvent(String message) {
-        this.message = message;
+    public BuildingsEvent(List<Building> buildings) {
+        this.buildings = buildings;
     }
 
-    public String getMessage() {
-        return message;
+    public List<Building> getBuildings() {
+        return buildings;
     }
 
-    public void setMessage(String message) {
-        this.message = message;
+    public void setBuildings(List<Building> buildings) {
+        this.buildings = buildings;
     }
 }

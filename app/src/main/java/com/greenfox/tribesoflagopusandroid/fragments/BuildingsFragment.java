@@ -68,8 +68,7 @@ public class BuildingsFragment extends BaseFragment {
         apiService.getBuildings(1).enqueue(new Callback<BuildingsResponse>() {
             @Override
             public void onResponse(Call<BuildingsResponse> call, Response<BuildingsResponse> response) {
-                EventBus.getDefault().post(new BuildingsEvent());
-                buildingsAdapter.addAll(response.body().getBuildings());
+                EventBus.getDefault().post(new BuildingsEvent(response.body().getBuildings()));
             }
 
             @Override
@@ -106,6 +105,6 @@ public class BuildingsFragment extends BaseFragment {
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEventBuildingAdded(BuildingsEvent event) {
-        Toast.makeText(getContext(), createdBuilding, Toast.LENGTH_LONG).show();
+        buildingsAdapter.addAll(event.getBuildings());
     }
 }
