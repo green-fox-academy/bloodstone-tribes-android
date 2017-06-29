@@ -138,6 +138,15 @@
                 android:src="@drawable/farm24dp"
                 style="@style/MenuButtonsStyle"/>
 
+            <com.github.clans.fab.FloatingActionButton
+                android:id="@+id/add_barrack_menu_item"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                fab:fab_label="Barrack"
+                fab:fab_size="mini"
+                android:src="@drawable/barrack24dp"
+                style="@style/MenuButtonsStyle"/>
+
         </com.github.clans.fab.FloatingActionMenu>
 
     </android.support.constraint.ConstraintLayout>

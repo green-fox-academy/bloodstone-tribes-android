@@ -44,7 +44,7 @@ public class BuildingsFragment extends BaseFragment {
     String timestamp;
 
     FloatingActionMenu buildingsFloatingMenu;
-    FloatingActionButton addFarmFloatingButton, addMineFloatingButton;
+    FloatingActionButton addFarmFloatingButton, addMineFloatingButton, addBarrackFloatingButton;
 
     public BuildingsFragment() {
     }
@@ -79,6 +79,7 @@ public class BuildingsFragment extends BaseFragment {
         listView.setAdapter(buildingsAdapter);
 
         buildingsFloatingMenu = (FloatingActionMenu) rootView.findViewById(R.id.add_building_menu);
+
         addFarmFloatingButton = (FloatingActionButton) rootView.findViewById(R.id.add_farm_menu_item);
         addFarmFloatingButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -118,6 +119,27 @@ public class BuildingsFragment extends BaseFragment {
                 });
             }
         });
+
+        addBarrackFloatingButton = (FloatingActionButton) rootView.findViewById(R.id.add_barrack_menu_item);
+        addBarrackFloatingButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(getContext(), "Barrack added", Toast.LENGTH_SHORT).show();
+                apiService.postBuilding("barrack").enqueue(new Callback<Building>() {
+                    @Override
+                    public void onResponse(Call<Building> call, Response<Building> response) {
+                        apiService.addBuildingToList(response.body());
+                        refresh();
+                    }
+
+                    @Override
+                    public void onFailure(Call<Building> call, Throwable t) {
+
+                    }
+                });
+            }
+        });
+
         return rootView;
     }
 
