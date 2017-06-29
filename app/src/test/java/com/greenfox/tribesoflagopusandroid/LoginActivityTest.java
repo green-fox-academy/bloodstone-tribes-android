@@ -14,7 +14,7 @@ import org.robolectric.RuntimeEnvironment;
 import org.robolectric.annotation.Config;
 import org.robolectric.shadows.ShadowToast;
 
-import static com.greenfox.tribesoflagopusandroid.MainActivity.USERNAME;
+import static com.greenfox.tribesoflagopusandroid.MainActivity.USER_ACCESS_TOKEN;
 import static org.assertj.core.api.Java6Assertions.assertThat;
 import static org.junit.Assert.assertEquals;
 import static org.robolectric.Shadows.shadowOf;
@@ -36,10 +36,10 @@ public class LoginActivityTest {
     }
 
     @Test
-    public void addUsername() throws Exception {
-        String username = "Username";
-        loginActivity.addUsername(username);
-        assertEquals(username, loginActivity.preferences.getString(USERNAME, ""));
+    public void addUserToken() throws Exception {
+        String token = "lasjdflksajdlkjfalkjd";
+        loginActivity.addUserToken(token);
+        assertEquals(token, loginActivity.preferences.getString(USER_ACCESS_TOKEN, ""));
     }
 
     @Test
@@ -64,7 +64,6 @@ public class LoginActivityTest {
         String username = "Username";
         String password = "Password";
         loginActivity.loginWithAPIService(username, password);
-        assertEquals(username, loginActivity.preferences.getString(USERNAME, ""));
         Intent expectedIntent = new Intent(loginActivity, MainActivity.class);
         assertEquals(expectedIntent.getClass(), shadowOf(loginActivity).getNextStartedActivity().getClass());
     }
