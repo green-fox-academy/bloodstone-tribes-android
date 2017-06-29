@@ -29,10 +29,7 @@ import javax.inject.Inject;
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
-    public static final String USERNAME = "Username";
-    public static final String PASSWORD = "Password";
-    private DrawerLayout mDrawer;
-
+    public static final String USER_ACCESS_TOKEN = "UserToken";
     public static final String NOTIFICATION = "Notification";
     public static final String BACKGROUND_SYNC = "BackgroundSync";
     public static final String APP_SAVE = "appSave";
@@ -42,15 +39,14 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     public static final String BATTLE_FRAGMENT_SAVE = "battleSave";
     public static final String MAIN_FRAGMENT_SAVE = "mainSave";
 
-    String timestamp;
-    Fragment fragment = null;
-
     @Inject
     public
     SharedPreferences preferences;
 
     SharedPreferences.Editor editor;
     BaseFragment baseFragment;
+    String timestamp;
+    Fragment fragment = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,7 +54,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         setContentView(R.layout.activity_main);
         TribesApplication.app().basicComponent().inject(this);
         editor = preferences.edit();
-        checkUsername();
+        checkUserAccessToken();
 
         displaySelectedScreen(R.id.nav_kingdom);
 
@@ -96,10 +92,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         transaction.commit();
     }
 
-    public void checkUsername() {
+    public void checkUserAccessToken() {
         preferences = PreferenceManager.getDefaultSharedPreferences(this);
 
-        if (TextUtils.isEmpty(preferences.getString(USERNAME, null))) {
+        if (TextUtils.isEmpty(preferences.getString(USER_ACCESS_TOKEN, null))) {
             Intent intent = new Intent(this, LoginActivity.class);
             startActivity(intent);
         }
