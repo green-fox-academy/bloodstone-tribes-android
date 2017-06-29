@@ -20,7 +20,7 @@ public interface BasicComponent {
 
     void inject(SettingsFragment fragment);
 
-    void inject(AlarmReceiver BroadcastReceiver);
+    void inject(AlarmReceiver broadcastReceiver);
 
     void inject(MainFragment fragment);
 
