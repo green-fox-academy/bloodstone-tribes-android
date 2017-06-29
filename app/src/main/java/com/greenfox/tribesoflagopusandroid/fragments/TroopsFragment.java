@@ -2,8 +2,8 @@ package com.greenfox.tribesoflagopusandroid.fragments;
 
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
 import android.support.annotation.Nullable;
+import android.support.v4.app.FragmentTransaction;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,7 +18,6 @@ import com.greenfox.tribesoflagopusandroid.adapter.TroopAdapter;
 import com.greenfox.tribesoflagopusandroid.api.model.gameobject.Troop;
 import com.greenfox.tribesoflagopusandroid.api.model.response.TroopsResponse;
 import com.greenfox.tribesoflagopusandroid.api.service.ApiService;
-import com.greenfox.tribesoflagopusandroid.api.service.MockApiService;
 
 import java.util.ArrayList;
 
@@ -81,6 +80,7 @@ public class TroopsFragment extends BaseFragment {
                     @Override
                     public void onResponse(Call<Troop> call, Response<Troop> response) {
                         apiService.addTroopToMockTroops(response.body());
+                        refresh();
                     }
 
                     @Override
@@ -109,6 +109,13 @@ public class TroopsFragment extends BaseFragment {
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         getActivity().setTitle("Troops");
+    }
+
+    public void refresh() {
+        FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
+        transaction.detach(this);
+        transaction.attach(this);
+        transaction.commit();
     }
 
 }
