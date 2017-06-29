@@ -14,11 +14,12 @@ import com.greenfox.tribesoflagopusandroid.R;
 import com.greenfox.tribesoflagopusandroid.api.model.gameobject.Building;
 
 import java.util.ArrayList;
+import java.util.List;
 
 
 public class BuildingsAdapter extends ArrayAdapter<Building> {
 
-    public BuildingsAdapter(@NonNull Context context, ArrayList<Building> buildings) {
+    public BuildingsAdapter(@NonNull Context context, List<Building> buildings) {
         super(context, 0, buildings);
     }
 

@@ -12,7 +12,7 @@ import android.widget.TextView;
 import com.greenfox.tribesoflagopusandroid.R;
 import com.greenfox.tribesoflagopusandroid.api.model.gameobject.Troop;
 
-import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by hegyi on 2017-06-21.
@@ -20,7 +20,7 @@ import java.util.ArrayList;
 
 public class TroopAdapter extends ArrayAdapter<Troop> {
 
-    public TroopAdapter(@NonNull Context context, ArrayList<Troop> troops) {
+    public TroopAdapter(@NonNull Context context, List<Troop> troops) {
         super(context, 0, troops);
     }
 
@@ -30,7 +30,7 @@ public class TroopAdapter extends ArrayAdapter<Troop> {
         Troop current = getItem(position);
 
         if (convertView == null) {
-            convertView = LayoutInflater.from(getContext()).inflate(R.layout.list_item, parent, false);
+            convertView = LayoutInflater.from(getContext()).inflate(R.layout.troop_list_item, parent, false);
         }
 
         TextView hp = (TextView) convertView.findViewById(R.id.HP_amount);
