@@ -55,7 +55,7 @@ public class BuildingsFragment extends BaseFragment {
         editor = preferences.edit();
 
         buildingsAdapter = new BuildingsAdapter(getContext(), new ArrayList<Building>());
-        apiService.getBuildings(1).enqueue(new Callback<BuildingsResponse>() {
+        apiService.getBuildings().enqueue(new Callback<BuildingsResponse>() {
             @Override
             public void onResponse(Call<BuildingsResponse> call, Response<BuildingsResponse> response) {
                 buildingsAdapter.addAll(response.body().getBuildings());
