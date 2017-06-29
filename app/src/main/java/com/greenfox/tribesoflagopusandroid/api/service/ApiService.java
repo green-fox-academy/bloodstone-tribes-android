@@ -6,6 +6,7 @@ import com.greenfox.tribesoflagopusandroid.api.model.gameobject.Kingdom;
 import com.greenfox.tribesoflagopusandroid.api.model.gameobject.Resource;
 import com.greenfox.tribesoflagopusandroid.api.model.response.BuildingsResponse;
 import com.greenfox.tribesoflagopusandroid.api.model.response.ResourcesResponse;
+import com.greenfox.tribesoflagopusandroid.event.BuildingsEvent;
 
 import retrofit2.Call;
 import retrofit2.http.GET;
@@ -23,7 +24,7 @@ public interface ApiService {
     Call<TroopsResponse> getTroops(@Path("userId") int userId);
 
     @GET("/{userId}/kingdom/buildings")
-    Call<BuildingsResponse> getBuildings(@Path("userId") int userId);
+    Call<BuildingsEvent> getBuildings(@Path("userId") int userId);
 
     @GET("/{userId}/kingdom/buildings/{buildingId}")
     Call<Building> getCertainBuilding(@Path("userId") int userId, @Path("buildingId")int buildingId);

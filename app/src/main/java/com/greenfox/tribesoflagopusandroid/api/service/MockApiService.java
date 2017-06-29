@@ -12,6 +12,7 @@ import com.greenfox.tribesoflagopusandroid.api.model.gameobject.Building;
 import com.greenfox.tribesoflagopusandroid.api.model.gameobject.Kingdom;
 import com.greenfox.tribesoflagopusandroid.api.model.gameobject.Location;
 import com.greenfox.tribesoflagopusandroid.api.model.gameobject.Resource;
+import com.greenfox.tribesoflagopusandroid.event.BuildingsEvent;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -31,7 +32,7 @@ public class MockApiService implements ApiService{
     private Building farm1 = new Building(1, "farm", 1, 2);
     private Building mine1 = new Building(2, "mine", 1, 2);
     private Building townhall = new Building(3, "townhall", 1, 10);
-    private List<Building> buildings = new ArrayList<>(Arrays.asList(farm1, mine1, townhall));
+    private ArrayList<Building> buildings = new ArrayList<>(Arrays.asList(farm1, mine1, townhall));
     private Resource gold = new Resource("gold", 100, 1);
     private Resource food = new Resource("food", 20, 1);
     private List<Resource> resources = new ArrayList<>(Arrays.asList(gold, food));
@@ -54,11 +55,11 @@ public class MockApiService implements ApiService{
     }
 
     @Override
-    public Call<BuildingsResponse> getBuildings(@Path("userId") int userId) {
+    public Call<BuildingsEvent> getBuildings(@Path("userId") int userId) {
         return new MockCall<BuildingsResponse>() {
             @Override
             public void enqueue(Callback callback) {
-                callback.onResponse(null, Response.success(new BuildingsResponse(buildings)));
+                callback.onResponse(null, Response.success(new BuildingsEvent(buildings)));
             }
         };
     }

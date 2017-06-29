@@ -15,6 +15,9 @@ import com.greenfox.tribesoflagopusandroid.adapter.BuildingsAdapter;
 import com.greenfox.tribesoflagopusandroid.api.model.gameobject.Building;
 import com.greenfox.tribesoflagopusandroid.api.model.response.BuildingsResponse;
 import com.greenfox.tribesoflagopusandroid.api.service.ApiService;
+import com.greenfox.tribesoflagopusandroid.event.BuildingsEvent;
+
+import org.greenrobot.eventbus.EventBus;
 
 import java.util.ArrayList;
 
@@ -55,14 +58,14 @@ public class BuildingsFragment extends BaseFragment {
         editor = preferences.edit();
 
         buildingsAdapter = new BuildingsAdapter(getContext(), new ArrayList<Building>());
-        apiService.getBuildings(1).enqueue(new Callback<BuildingsResponse>() {
+        apiService.getBuildings(1).enqueue(new Callback<BuildingsEvent>() {
             @Override
-            public void onResponse(Call<BuildingsResponse> call, Response<BuildingsResponse> response) {
+            public void onResponse(Call<BuildingsEvent> call, Response<BuildingsEvent> response) {
                 buildingsAdapter.addAll(response.body().getBuildings());
             }
 
             @Override
-            public void onFailure(Call<BuildingsResponse> call, Throwable t) {
+            public void onFailure(Call<BuildingsEvent> call, Throwable t) {
             }
         });
 
@@ -75,6 +78,7 @@ public class BuildingsFragment extends BaseFragment {
 
     @Override
     public void onStop() {
+        EventBus.getDefault().unregister(this);
         super.saveOnExit(BUILDINGS_FRAGMENT_SAVE);
         timestamp = BaseFragment.timestamp;
         super.onStop();

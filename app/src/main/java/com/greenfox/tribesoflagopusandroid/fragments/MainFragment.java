@@ -17,6 +17,8 @@ import com.greenfox.tribesoflagopusandroid.api.model.gameobject.Resource;
 import com.greenfox.tribesoflagopusandroid.api.model.gameobject.Troop;
 import com.greenfox.tribesoflagopusandroid.api.service.ApiService;
 
+import org.greenrobot.eventbus.EventBus;
+
 import java.util.List;
 
 import javax.inject.Inject;
@@ -43,6 +45,12 @@ public class MainFragment extends BaseFragment {
     List<Troop> troops;
 
     public MainFragment() {
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        EventBus.getDefault().register(this);
     }
 
     @Override
@@ -86,6 +94,7 @@ public class MainFragment extends BaseFragment {
     public void onStop() {
         super.saveOnExit(MAIN_FRAGMENT_SAVE);
         timestamp = BaseFragment.timestamp;
+        EventBus.getDefault().unregister(this);
         super.onStop();
     }
 }
