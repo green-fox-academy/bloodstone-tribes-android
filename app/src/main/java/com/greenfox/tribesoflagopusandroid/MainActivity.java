@@ -17,7 +17,6 @@ import android.text.TextUtils;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.widget.Toast;
 
 import com.greenfox.tribesoflagopusandroid.fragments.BaseFragment;
 import com.greenfox.tribesoflagopusandroid.fragments.BattleFragment;
@@ -44,6 +43,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     public static final String MAIN_FRAGMENT_SAVE = "mainSave";
 
     String timestamp;
+    Fragment fragment = null;
 
     @Inject
     public
@@ -85,9 +85,15 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         super.onOptionsItemSelected(item);
         switch (item.getItemId()) {
             case R.id.refreshing:
-                Toast.makeText(MainActivity.this, "Refreshing", Toast.LENGTH_SHORT).show();
+                refreshActiveFragment();
         }
         return false;
+    }
+
+    public void refreshActiveFragment() {
+        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+        transaction.replace(R.id.layout_content, fragment);
+        transaction.commit();
     }
 
     public void checkUsername() {
@@ -124,7 +130,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     }
 
     private void displaySelectedScreen(int id) {
-        Fragment fragment = null;
 
         switch (id) {
             case R.id.nav_buildings:
