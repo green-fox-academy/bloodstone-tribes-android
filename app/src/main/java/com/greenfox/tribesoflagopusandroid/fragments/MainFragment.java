@@ -51,7 +51,7 @@ public class MainFragment extends BaseFragment {
         TribesApplication.app().basicComponent().inject(this);
         editor = preferences.edit();
 
-        apiService.getKingdom(1).enqueue(new Callback<Kingdom>() {
+        apiService.getKingdom().enqueue(new Callback<Kingdom>() {
             @Override
             public void onResponse(Call<Kingdom> call, Response<Kingdom> response) {
                 buildings = response.body().getBuildings();
