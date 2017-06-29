@@ -102,4 +102,19 @@ public class MockApiService implements ApiService{
             }
         };
     }
+
+    @Override
+    public Call<Troop> postTroop(@Path("userId") int userId) {
+        return new MockCall<Troop>() {
+            @Override
+            public void enqueue(Callback callback) {
+                callback.onResponse(null, Response.success(new Troop(1L,1,1,1,1)));
+            }
+        };
+    }
+
+    public void addTroopToMockTroops(Troop troop) {
+        troops.add(troop);
+    }
+
 }

@@ -18,6 +18,7 @@ import com.greenfox.tribesoflagopusandroid.adapter.TroopAdapter;
 import com.greenfox.tribesoflagopusandroid.api.model.gameobject.Troop;
 import com.greenfox.tribesoflagopusandroid.api.model.response.TroopsResponse;
 import com.greenfox.tribesoflagopusandroid.api.service.ApiService;
+import com.greenfox.tribesoflagopusandroid.api.service.MockApiService;
 
 import java.util.ArrayList;
 
@@ -53,43 +54,46 @@ public class TroopsFragment extends BaseFragment {
         TribesApplication.app().basicComponent().inject(this);
         editor = preferences.edit();
 
+        View rootView = inflater.inflate(R.layout.fragment_troops, container, false);
+
         troopAdapter = new TroopAdapter(getContext(), new ArrayList<Troop>());
+
+        troopsFloatingActionMenu = (FloatingActionMenu) rootView.findViewById(R.id.add_troop_menu);
+        addTroopsActionButton = (FloatingActionButton) rootView.findViewById(R.id.add_troop_menu_item);
+
+
         apiService.getTroops(1).enqueue(new Callback<TroopsResponse>() {
             @Override
             public void onResponse(Call<TroopsResponse> call, Response<TroopsResponse> response) {
                 troopAdapter.addAll(response.body().getTroops());
             }
 
-
-
             @Override
             public void onFailure(Call<TroopsResponse> call, Throwable t) {
 
             }
         });
-
-        View rootView = inflater.inflate(R.layout.fragment_troops, container, false);
-
-        ListView listView = (ListView) rootView.findViewById(R.id.troops_listView);
-        listView.setAdapter(troopAdapter);
-
-        troopsFloatingActionMenu = (FloatingActionMenu) rootView.findViewById(R.id.add_troop_menu);
-        addTroopsActionButton = (FloatingActionButton) rootView.findViewById(R.id.add_troop_menu_item);
         addTroopsActionButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Toast.makeText(getContext(),"Troop added", Toast.LENGTH_SHORT).show();
-                troopAdapter.add(new Troop(1,1,1,1,1));
+                apiService.postTroop(1).enqueue(new Callback<Troop>() {
+                    @Override
+                    public void onResponse(Call<Troop> call, Response<Troop> response) {
+                        apiService.addTroopToMockTroops(response.body());
+                    }
 
+                    @Override
+                    public void onFailure(Call<Troop> call, Throwable t) {
+
+                    }
+                });
             }
         });
 
-        ArrayList<Troop> troopArrayList = new ArrayList<>();
-        Troop troop = new Troop(1,1,5,5,5);
 
-        troopAdapter = new TroopAdapter(this.getContext(), troopArrayList);
-        troopAdapter.add(troop);
-
+        ListView listView = (ListView) rootView.findViewById(R.id.troops_listView);
+        listView.setAdapter(troopAdapter);
 
         return rootView;
     }
