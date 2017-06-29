@@ -9,6 +9,7 @@ import com.greenfox.tribesoflagopusandroid.api.model.response.TroopsResponse;
 import retrofit2.Call;
 import retrofit2.http.Field;
 import retrofit2.http.GET;
+import retrofit2.http.Header;
 import retrofit2.http.POST;
 import retrofit2.http.Path;
 
@@ -28,7 +29,7 @@ public interface ApiService {
     Call<Building> getCertainBuilding(@Path("buildingId")int buildingId);
 
     @GET("/kingdom")
-    Call<Kingdom> getKingdom();
+    Call<Kingdom> getKingdom(@Header("token") String token);
 
     @POST("/kingdom/buildings")
     Call<Building> postBuilding(@Field("type") String type);

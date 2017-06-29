@@ -26,6 +26,7 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 import static com.greenfox.tribesoflagopusandroid.MainActivity.MAIN_FRAGMENT_SAVE;
+import static com.greenfox.tribesoflagopusandroid.MainActivity.USER_ACCESS_TOKEN;
 
 public class MainFragment extends BaseFragment {
 
@@ -51,7 +52,7 @@ public class MainFragment extends BaseFragment {
         TribesApplication.app().basicComponent().inject(this);
         editor = preferences.edit();
 
-        apiService.getKingdom().enqueue(new Callback<Kingdom>() {
+        apiService.getKingdom(preferences.getString(USER_ACCESS_TOKEN, "")).enqueue(new Callback<Kingdom>() {
             @Override
             public void onResponse(Call<Kingdom> call, Response<Kingdom> response) {
                 buildings = response.body().getBuildings();

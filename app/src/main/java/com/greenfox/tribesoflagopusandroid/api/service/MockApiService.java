@@ -17,6 +17,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 import retrofit2.http.Field;
+import retrofit2.http.Header;
 import retrofit2.http.Path;
 /**
  * Created by hegyi on 2017-06-22.
@@ -74,7 +75,7 @@ public class MockApiService implements ApiService{
     }
 
     @Override
-    public Call<Kingdom> getKingdom() {
+    public Call<Kingdom> getKingdom(@Header("token") String token) {
         return new MockCall<Kingdom>() {
             @Override
             public void enqueue(Callback callback) {

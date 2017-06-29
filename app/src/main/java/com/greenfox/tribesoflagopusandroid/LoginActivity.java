@@ -81,11 +81,11 @@ public class LoginActivity extends AppCompatActivity {
                 Token token = response.body();
                 addUserToken(token.getToken());
 
-                apiService.getKingdom().enqueue(new Callback<Kingdom>() {
+                apiService.getKingdom(mainActivity.preferences.getString(USER_ACCESS_TOKEN, "")).enqueue(new Callback<Kingdom>() {
                     @Override
                     public void onResponse(Call<Kingdom> call, Response<Kingdom> response) {
                         mainActivity.thisKingdom = response.body();
-                        sendNotification("dear User");
+                        sendNotification(mainActivity.thisKingdom.getName());
                         Intent intent = new Intent(LoginActivity.this, MainActivity.class);
                         startActivity(intent);
                     }
