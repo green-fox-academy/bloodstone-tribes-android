@@ -42,7 +42,7 @@ public class LoginActivity extends AppCompatActivity {
     ApiService apiService;
 
     SharedPreferences.Editor editor;
-    MainActivity mainActivity;
+    MainActivity mainActivity = new MainActivity();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -80,26 +80,29 @@ public class LoginActivity extends AppCompatActivity {
             public void onResponse(Call<Token> call, Response<Token> response) {
                 Token token = response.body();
                 addUserToken(token.getToken());
-
-                apiService.getKingdom(mainActivity.preferences.getString(USER_ACCESS_TOKEN, "")).enqueue(new Callback<Kingdom>() {
-                    @Override
-                    public void onResponse(Call<Kingdom> call, Response<Kingdom> response) {
-                        mainActivity.thisKingdom = response.body();
-                        sendNotification(mainActivity.thisKingdom.getName());
-                        Intent intent = new Intent(LoginActivity.this, MainActivity.class);
-                        startActivity(intent);
-                    }
-
-                    @Override
-                    public void onFailure(Call<Kingdom> call, Throwable t) {
-                        Toast.makeText(LoginActivity.this, "error getting information from server", Toast.LENGTH_SHORT).show();
-                    }
-                });
+                getKingdomFromAPI();
             }
 
             @Override
             public void onFailure(Call<Token> call, Throwable t) {
                 Toast.makeText(LoginActivity.this, "error getting login information from server", Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+    public void getKingdomFromAPI() {
+        apiService.getKingdom(preferences.getString(USER_ACCESS_TOKEN, "")).enqueue(new Callback<Kingdom>() {
+            @Override
+            public void onResponse(Call<Kingdom> call, Response<Kingdom> response) {
+                mainActivity.thisKingdom = response.body();
+                sendNotification(mainActivity.thisKingdom.getName());
+                Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+                startActivity(intent);
+            }
+
+            @Override
+            public void onFailure(Call<Kingdom> call, Throwable t) {
+                Toast.makeText(LoginActivity.this, "error getting information from server", Toast.LENGTH_SHORT).show();
             }
         });
     }

@@ -1,6 +1,8 @@
 package com.greenfox.tribesoflagopusandroid;
 
 
+import android.app.AlarmManager;
+import android.app.PendingIntent;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -48,7 +50,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     BaseFragment baseFragment;
     String timestamp;
     Fragment fragment = null;
-    Kingdom thisKingdom;
+    Kingdom thisKingdom = new Kingdom();
+    private PendingIntent pendingIntent;
+    private AlarmManager manager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,6 +61,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         TribesApplication.app().basicComponent().inject(this);
         editor = preferences.edit();
         checkUserAccessToken();
+//        startAlarm();
 
         displaySelectedScreen(R.id.nav_kingdom);
 
@@ -104,6 +109,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     }
 
     public void logout() {
+//        cancelAlarm();
         preferences = PreferenceManager.getDefaultSharedPreferences(this);
         editor = preferences.edit();
         editor.clear();
@@ -113,18 +119,41 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         finish();
     }
 
-    @Override
-    protected void onPause() {
-        baseFragment.saveOnExit(APP_SAVE);
-        timestamp = BaseFragment.timestamp;
-        super.onPause();
-    }
+//    public void startAlarm() {
+//        manager = (AlarmManager)getApplicationContext().getSystemService(MainActivity.ALARM_SERVICE);
+//        long interval = 60000l;
+//        Intent alarmIntent = new Intent(this, AlarmReceiver.class);
+//        pendingIntent = PendingIntent.getBroadcast(this, 0,  alarmIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+//        manager.setRepeating(AlarmManager.RTC_WAKEUP, System.currentTimeMillis(),interval, pendingIntent);
+//    }
+//
+//    public void cancelAlarm() {
+//        long interval = 600000l;
+//        manager.setRepeating(AlarmManager.ELAPSED_REALTIME, System.currentTimeMillis(),interval, pendingIntent);
+//    }
+//
+//
+//    @Override
+//    protected void onPause() {
+//        long interval = 600000l;
+//        manager.setRepeating(AlarmManager.ELAPSED_REALTIME, System.currentTimeMillis(),interval, pendingIntent);
+//        saveOnExit(APP_SAVE);
+//        super.onPause();
+//    }
+//
+//    @Override
+//    protected void onStop() {
+//        manager.cancel(pendingIntent);
+//        saveOnExit(APP_SAVE);
+//        super.onStop();
+//    }
 
-    @Override
-    protected void onStop() {
-        baseFragment.saveOnExit(APP_SAVE);
-        timestamp = BaseFragment.timestamp;
-        super.onStop();
+    public void saveOnExit(String fragmentName) {
+        TribesApplication.app().basicComponent().inject(this);
+        editor = preferences.edit();
+        timestamp = String.valueOf(System.currentTimeMillis());
+        editor.putString(fragmentName, timestamp);
+        editor.apply();
     }
 
     private void displaySelectedScreen(int id) {
