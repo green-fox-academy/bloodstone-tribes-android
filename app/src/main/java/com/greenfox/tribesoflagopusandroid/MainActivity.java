@@ -34,8 +34,6 @@ import javax.inject.Inject;
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
     public static final String USERNAME = "Username";
-    public static final String PASSWORD = "Password";
-    private DrawerLayout mDrawer;
 
     public static final String NOTIFICATION = "Notification";
     public static final String BACKGROUND_SYNC = "BackgroundSync";
@@ -47,6 +45,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     public static final String MAIN_FRAGMENT_SAVE = "mainSave";
 
     String timestamp;
+    Fragment fragment = null;
 
     @Inject
     public
@@ -88,9 +87,17 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         super.onOptionsItemSelected(item);
         switch (item.getItemId()) {
             case R.id.refreshing:
-                Toast.makeText(MainActivity.this, "Refreshing", Toast.LENGTH_SHORT).show();
+                refreshActiveFragment();
         }
         return false;
+    }
+
+    public void refreshActiveFragment() {
+        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+        transaction.detach(fragment);
+        transaction.attach(fragment);
+        transaction.commit();
+        Toast.makeText(this,"Refreshing", Toast.LENGTH_SHORT).show();
     }
 
     public void checkUsername() {
@@ -132,7 +139,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     }
 
     private void displaySelectedScreen(int id) {
-        Fragment fragment = null;
 
         switch (id) {
             case R.id.nav_buildings:

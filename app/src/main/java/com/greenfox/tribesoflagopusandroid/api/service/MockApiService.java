@@ -32,16 +32,12 @@ public class MockApiService implements ApiService{
 
     private String name = "kingdomname";
     private long idOfUser = 1;
-    private Building farm1 = new Building(1, "farm", 1, 2);
-    private Building mine1 = new Building(2, "mine", 1, 2);
-    private Building townhall = new Building(3, "townhall", 1, 10);
-    private ArrayList<Building> buildings = new ArrayList<>(Arrays.asList(farm1, mine1, townhall));
+    private Building townhall = new Building(3, "townhall", 1, 10);;
+    private List<Building> buildings = new ArrayList<>(Arrays.asList(townhall));
     private Resource gold = new Resource("gold", 100, 1);
     private Resource food = new Resource("food", 20, 1);
     private List<Resource> resources = new ArrayList<>(Arrays.asList(gold, food));
-    private Troop troop1 = new Troop(1, 1, 10, 1, 2);
-    private Troop troop2 = new Troop(2, 1, 10, 2, 2);
-    private List<Troop> troops = new ArrayList<>(Arrays.asList(troop1, troop2));
+    private List<Troop> troops = new ArrayList<>();
     private Location location = new Location(1, 1);
     private String type = "farm";
     private int level = 1;
@@ -108,4 +104,23 @@ public class MockApiService implements ApiService{
             }
         };
     }
+
+    @Override
+    public void addBuildingToList(Building building) {
+        buildings.add(building);
+    }
+
+    public Call<Troop> postTroop(@Path("userId") int userId) {
+        return new MockCall<Troop>() {
+            @Override
+            public void enqueue(Callback callback) {
+                callback.onResponse(null, Response.success(new Troop(1L,1,1,1,1)));
+            }
+        };
+    }
+
+    public void addTroopToMockTroops(Troop troop) {
+        troops.add(troop);
+    }
+
 }

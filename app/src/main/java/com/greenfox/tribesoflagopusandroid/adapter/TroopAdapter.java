@@ -30,7 +30,7 @@ public class TroopAdapter extends ArrayAdapter<Troop> {
         Troop current = getItem(position);
 
         if (convertView == null) {
-            convertView = LayoutInflater.from(getContext()).inflate(R.layout.list_item, parent, false);
+            convertView = LayoutInflater.from(getContext()).inflate(R.layout.troop_list_item, parent, false);
         }
 
         TextView hp = (TextView) convertView.findViewById(R.id.HP_amount);
