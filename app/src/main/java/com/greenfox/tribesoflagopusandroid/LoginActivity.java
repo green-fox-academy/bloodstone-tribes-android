@@ -16,7 +16,9 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import com.greenfox.tribesoflagopusandroid.api.model.gameobject.User;
+import com.greenfox.tribesoflagopusandroid.api.model.gameobject.Kingdom;
+import com.greenfox.tribesoflagopusandroid.api.model.gameobject.Token;
+import com.greenfox.tribesoflagopusandroid.api.service.ApiService;
 import com.greenfox.tribesoflagopusandroid.api.service.LoginService;
 
 import javax.inject.Inject;
@@ -25,7 +27,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-import static com.greenfox.tribesoflagopusandroid.MainActivity.USERNAME;
+import static com.greenfox.tribesoflagopusandroid.MainActivity.USER_ACCESS_TOKEN;
 
 
 public class LoginActivity extends AppCompatActivity {
@@ -36,8 +38,11 @@ public class LoginActivity extends AppCompatActivity {
     ObjectManager objectManager;
     @Inject
     LoginService loginService;
+    @Inject
+    ApiService apiService;
 
     SharedPreferences.Editor editor;
+    MainActivity mainActivity;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -70,18 +75,30 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     protected void loginWithAPIService(String username, String password) {
-        loginService.loginWithUser(username, password).enqueue(new Callback<User>() {
+        loginService.loginWithUser(username, password).enqueue(new Callback<Token>() {
             @Override
-            public void onResponse(Call<User> call, Response<User> response) {
-                User user = response.body();
-                addUserInfoToPreferences(user.getUsername());
-                sendNotification(user.getUsername());
-                Intent intent = new Intent(LoginActivity.this, MainActivity.class);
-                startActivity(intent);
+            public void onResponse(Call<Token> call, Response<Token> response) {
+                Token token = response.body();
+                addUserToken(token.getToken());
+
+                apiService.getKingdom().enqueue(new Callback<Kingdom>() {
+                    @Override
+                    public void onResponse(Call<Kingdom> call, Response<Kingdom> response) {
+                        mainActivity.thisKingdom = response.body();
+                        sendNotification("dear User");
+                        Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+                        startActivity(intent);
+                    }
+
+                    @Override
+                    public void onFailure(Call<Kingdom> call, Throwable t) {
+                        Toast.makeText(LoginActivity.this, "error getting information from server", Toast.LENGTH_SHORT).show();
+                    }
+                });
             }
 
             @Override
-            public void onFailure(Call<User> call, Throwable t) {
+            public void onFailure(Call<Token> call, Throwable t) {
                 Toast.makeText(LoginActivity.this, "error getting login information from server", Toast.LENGTH_SHORT).show();
             }
         });
@@ -110,12 +127,8 @@ public class LoginActivity extends AppCompatActivity {
         mNotificationManager.notify(001, mBuilder.build());
     }
 
-    protected void addUserInfoToPreferences(String username) {
-        addUsername(username);
-    }
-
-    protected void addUsername(String username) {
-        editor.putString(USERNAME, username);
+    protected void addUserToken(String token) {
+        editor.putString(USER_ACCESS_TOKEN, token);
         editor.apply();
     }
 }
