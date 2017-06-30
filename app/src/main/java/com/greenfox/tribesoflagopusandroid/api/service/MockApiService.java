@@ -41,7 +41,7 @@ public class MockApiService implements ApiService{
     private int hp = 10;
 
     @Override
-    public Call<TroopsResponse> getTroops() {
+    public Call<TroopsResponse> getTroops(@Header("X-tribes-token") String token) {
         return new MockCall<TroopsResponse>() {
             @Override
             public void enqueue(Callback callback) {
@@ -51,7 +51,7 @@ public class MockApiService implements ApiService{
     }
 
     @Override
-    public Call<BuildingsResponse> getBuildings() {
+    public Call<BuildingsResponse> getBuildings(@Header("X-tribes-token") String token) {
         return new MockCall<BuildingsResponse>() {
             @Override
             public void enqueue(Callback callback) {
@@ -61,7 +61,7 @@ public class MockApiService implements ApiService{
     }
 
     @Override
-    public Call<Building> getCertainBuilding(@Path("buildingId") int buildingId) {
+    public Call<Building> getCertainBuilding(@Header("X-tribes-token") String token, @Path("buildingId") int buildingId) {
         return new MockCall<Building>() {
             @Override
             public void enqueue(Callback callback) {
@@ -71,7 +71,7 @@ public class MockApiService implements ApiService{
     }
 
     @Override
-    public Call<Kingdom> getKingdom(@Header("token") String token) {
+    public Call<Kingdom> getKingdom(@Header("X-tribes-token") String token) {
         return new MockCall<Kingdom>() {
             @Override
             public void enqueue(Callback callback) {
@@ -81,7 +81,7 @@ public class MockApiService implements ApiService{
     }
 
     @Override
-    public Call<Building> postBuilding(@Field("type") final String type) {
+    public Call<Building> postBuilding(@Header("X-tribes-token") String token, @Field("type") final String type) {
         return new MockCall<Building>() {
             @Override
             public void enqueue(Callback callback) {
@@ -91,7 +91,7 @@ public class MockApiService implements ApiService{
     }
 
     @Override
-    public Call<ResourcesResponse> getResource() {
+    public Call<ResourcesResponse> getResource(@Header("X-tribes-token") String token) {
         return new MockCall<ResourcesResponse>() {
             @Override
             public void enqueue(Callback callback) {
@@ -105,7 +105,7 @@ public class MockApiService implements ApiService{
         buildings.add(building);
     }
 
-    public Call<Troop> postTroop(@Path("userId") int userId) {
+    public Call<Troop> postTroop(@Header("X-tribes-token") String token) {
         return new MockCall<Troop>() {
             @Override
             public void enqueue(Callback callback) {

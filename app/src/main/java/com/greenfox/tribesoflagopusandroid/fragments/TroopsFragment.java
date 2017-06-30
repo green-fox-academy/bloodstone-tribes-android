@@ -28,6 +28,7 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 import static com.greenfox.tribesoflagopusandroid.MainActivity.TROOPS_FRAGMENT_SAVE;
+import static com.greenfox.tribesoflagopusandroid.MainActivity.USER_ACCESS_TOKEN;
 
 public class TroopsFragment extends BaseFragment {
 
@@ -60,7 +61,7 @@ public class TroopsFragment extends BaseFragment {
         addTroopsActionButton = (FloatingActionButton) rootView.findViewById(R.id.add_troop_menu_item);
 
 
-        apiService.getTroops().enqueue(new Callback<TroopsResponse>() {
+        apiService.getTroops(preferences.getString(USER_ACCESS_TOKEN, "")).enqueue(new Callback<TroopsResponse>() {
             @Override
             public void onResponse(Call<TroopsResponse> call, Response<TroopsResponse> response) {
                 troopAdapter.addAll(response.body().getTroops());
@@ -75,7 +76,7 @@ public class TroopsFragment extends BaseFragment {
             @Override
             public void onClick(View v) {
                 Toast.makeText(getContext(),"Troop added", Toast.LENGTH_SHORT).show();
-                apiService.postTroop(1).enqueue(new Callback<Troop>() {
+                apiService.postTroop(preferences.getString(USER_ACCESS_TOKEN, "")).enqueue(new Callback<Troop>() {
                     @Override
                     public void onResponse(Call<Troop> call, Response<Troop> response) {
                         apiService.addTroopToMockTroops(response.body());

@@ -30,6 +30,7 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 import static com.greenfox.tribesoflagopusandroid.MainActivity.BUILDINGS_FRAGMENT_SAVE;
+import static com.greenfox.tribesoflagopusandroid.MainActivity.USER_ACCESS_TOKEN;
 
 public class BuildingsFragment extends BaseFragment {
 
@@ -63,7 +64,7 @@ public class BuildingsFragment extends BaseFragment {
         editor = preferences.edit();
 
         buildingsAdapter = new BuildingsAdapter(getContext(), new ArrayList<Building>());
-        apiService.getBuildings().enqueue(new Callback<BuildingsResponse>() {
+        apiService.getBuildings(preferences.getString(USER_ACCESS_TOKEN, "")).enqueue(new Callback<BuildingsResponse>() {
             @Override
             public void onResponse(Call<BuildingsResponse> call, Response<BuildingsResponse> response) {
                 buildingsAdapter.addAll(response.body().getBuildings());
@@ -85,7 +86,7 @@ public class BuildingsFragment extends BaseFragment {
             @Override
             public void onClick(View v) {
                 Toast.makeText(getContext(),"Farm added", Toast.LENGTH_SHORT).show();
-                apiService.postBuilding("farm").enqueue(new Callback<Building>() {
+                apiService.postBuilding(preferences.getString(USER_ACCESS_TOKEN, ""), "farm").enqueue(new Callback<Building>() {
                     @Override
                     public void onResponse(Call<Building> call, Response<Building> response) {
                         apiService.addBuildingToList(response.body());
@@ -105,7 +106,7 @@ public class BuildingsFragment extends BaseFragment {
             @Override
             public void onClick(View v) {
                 Toast.makeText(getContext(),"Mine added", Toast.LENGTH_SHORT).show();
-                apiService.postBuilding("mine").enqueue(new Callback<Building>() {
+                apiService.postBuilding(preferences.getString(USER_ACCESS_TOKEN, ""), "mine").enqueue(new Callback<Building>() {
                     @Override
                     public void onResponse(Call<Building> call, Response<Building> response) {
                         apiService.addBuildingToList(response.body());
@@ -125,7 +126,7 @@ public class BuildingsFragment extends BaseFragment {
             @Override
             public void onClick(View v) {
                 Toast.makeText(getContext(), "Barrack added", Toast.LENGTH_SHORT).show();
-                apiService.postBuilding("barrack").enqueue(new Callback<Building>() {
+                apiService.postBuilding(preferences.getString(USER_ACCESS_TOKEN, ""), "barrack").enqueue(new Callback<Building>() {
                     @Override
                     public void onResponse(Call<Building> call, Response<Building> response) {
                         apiService.addBuildingToList(response.body());
