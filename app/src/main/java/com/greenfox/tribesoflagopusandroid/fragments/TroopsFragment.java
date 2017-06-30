@@ -91,7 +91,6 @@ public class TroopsFragment extends BaseFragment {
             }
         });
 
-
         ListView listView = (ListView) rootView.findViewById(R.id.troops_listView);
         listView.setAdapter(troopAdapter);
 
