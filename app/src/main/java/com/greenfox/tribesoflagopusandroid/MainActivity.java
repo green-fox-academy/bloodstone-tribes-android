@@ -22,7 +22,6 @@ import android.view.MenuItem;
 import android.widget.Toast;
 
 import com.greenfox.tribesoflagopusandroid.api.model.gameobject.Kingdom;
-import com.greenfox.tribesoflagopusandroid.fragments.BaseFragment;
 import com.greenfox.tribesoflagopusandroid.fragments.BattleFragment;
 import com.greenfox.tribesoflagopusandroid.fragments.BuildingsFragment;
 import com.greenfox.tribesoflagopusandroid.fragments.MainFragment;
@@ -48,22 +47,20 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     SharedPreferences preferences;
 
     SharedPreferences.Editor editor;
-    BaseFragment baseFragment;
     String timestamp;
     Fragment fragment = null;
     Kingdom thisKingdom = new Kingdom();
-    private PendingIntent pendingIntent;
-    private AlarmManager manager;
+    public PendingIntent pendingIntent;
+    public AlarmManager manager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        startAlarm();
         TribesApplication.app().basicComponent().inject(this);
         editor = preferences.edit();
         checkUserAccessToken();
-
+        checkBackgroundSyncStatus();
         displaySelectedScreen(R.id.nav_kingdom);
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -76,6 +73,13 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         toggle.syncState();
         NavigationView navigationView = (NavigationView) findViewById(R.id.navigation_view);
         navigationView.setNavigationItemSelectedListener(this);
+    }
+
+    public void checkBackgroundSyncStatus() {
+        preferences = PreferenceManager.getDefaultSharedPreferences(this);
+        if (preferences.getBoolean(BACKGROUND_SYNC, true)) {
+            startBackgroundSync();
+        }
     }
 
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -112,7 +116,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     }
 
     public void logout() {
-        cancelAlarm();
+        switchToBackgroundMode();
         preferences = PreferenceManager.getDefaultSharedPreferences(this);
         editor = preferences.edit();
         editor.clear();
@@ -122,7 +126,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         finish();
     }
 
-    public void startAlarm() {
+    public void startBackgroundSync() {
         manager = (AlarmManager)getApplicationContext().getSystemService(MainActivity.ALARM_SERVICE);
         long interval = 60000l;
         Intent alarmIntent = new Intent(this, AlarmReceiver.class);
@@ -130,22 +134,28 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         manager.setRepeating(AlarmManager.RTC_WAKEUP, System.currentTimeMillis(),interval, pendingIntent);
     }
 
-    public void cancelAlarm() {
+    public void switchToBackgroundMode() {
         long interval = 600000l;
         manager.setRepeating(AlarmManager.ELAPSED_REALTIME, System.currentTimeMillis(),interval, pendingIntent);
     }
 
+    public void stopBackgroundSync() {
+        manager.cancel(pendingIntent);
+    }
+
     @Override
     protected void onPause() {
-        long interval = 600000l;
-        manager.setRepeating(AlarmManager.ELAPSED_REALTIME, System.currentTimeMillis(),interval, pendingIntent);
+        preferences = PreferenceManager.getDefaultSharedPreferences(this);
+        if (preferences.getBoolean(BACKGROUND_SYNC, true)) {
+            switchToBackgroundMode();
+        }
         saveOnExit(APP_SAVE);
         super.onPause();
     }
 
     @Override
     protected void onStop() {
-        manager.cancel(pendingIntent);
+        stopBackgroundSync();
         saveOnExit(APP_SAVE);
         super.onStop();
     }
