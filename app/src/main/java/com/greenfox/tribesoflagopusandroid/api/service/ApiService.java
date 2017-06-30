@@ -1,19 +1,18 @@
 package com.greenfox.tribesoflagopusandroid.api.service;
 
-import com.greenfox.tribesoflagopusandroid.api.model.gameobject.Troop;
-import com.greenfox.tribesoflagopusandroid.api.model.response.TroopsResponse;
 import com.greenfox.tribesoflagopusandroid.api.model.gameobject.Building;
 import com.greenfox.tribesoflagopusandroid.api.model.gameobject.Kingdom;
-import com.greenfox.tribesoflagopusandroid.api.model.gameobject.Resource;
+import com.greenfox.tribesoflagopusandroid.api.model.gameobject.Troop;
 import com.greenfox.tribesoflagopusandroid.api.model.response.BuildingsResponse;
 import com.greenfox.tribesoflagopusandroid.api.model.response.ResourcesResponse;
-import com.greenfox.tribesoflagopusandroid.event.BuildingsEvent;
+import com.greenfox.tribesoflagopusandroid.api.model.response.TroopsResponse;
 
 import retrofit2.Call;
-import retrofit2.http.GET;
-import retrofit2.http.Path;
 import retrofit2.http.Field;
+import retrofit2.http.GET;
+import retrofit2.http.Header;
 import retrofit2.http.POST;
+import retrofit2.http.Path;
 
 /**
  * Created by hegyi on 2017-06-22.
@@ -21,28 +20,28 @@ import retrofit2.http.POST;
 
 public interface ApiService {
 
-    @GET("/{userId}/kingdom/troops")
-    Call<TroopsResponse> getTroops(@Path("userId") int userId);
+    @GET("/kingdom/troops")
+    Call<TroopsResponse> getTroops(@Header("X-tribes-token") String token);
 
-    @GET("/{userId}/kingdom/buildings")
-    Call<BuildingsResponse> getBuildings(@Path("userId") int userId);
+    @GET("/kingdom/buildings")
+    Call<BuildingsResponse> getBuildings(@Header("X-tribes-token") String token);
 
-    @GET("/{userId}/kingdom/buildings/{buildingId}")
-    Call<Building> getCertainBuilding(@Path("userId") int userId, @Path("buildingId")int buildingId);
+    @GET("/kingdom/buildings/{buildingId}")
+    Call<Building> getCertainBuilding(@Header("X-tribes-token") String token, @Path("buildingId")int buildingId);
 
-    @GET("/{userId}/kingdom")
-    Call<Kingdom> getKingdom(@Path("userId") int userId);
+    @GET("/kingdom")
+    Call<Kingdom> getKingdom(@Header("X-tribes-token") String token);
 
-    @POST("/{userId}/kingdom/buildings")
-    Call<Building> postBuilding (@Field("type") String type);
+    @POST("/kingdom/buildings")
+    Call<Building> postBuilding(@Header("X-tribes-token") String token, @Field("type") String type);
 
-    @GET("/{userId}/kingdom/resources")
-    Call<ResourcesResponse> getResource (@Path("userId") int userId);
+    @GET("/kingdom/resources")
+    Call<ResourcesResponse> getResource(@Header("X-tribes-token") String token);
 
     void addBuildingToList(Building building);
 
-    @POST("/{userId}/kingdom/troops")
-    Call<Troop> postTroop(@Path("userId") int userId);
+    @POST("/kingdom/troops")
+    Call<Troop> postTroop(@Header("X-tribes-token") String token);
 
     void addTroopToMockTroops(Troop troop);
 }

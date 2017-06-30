@@ -12,6 +12,7 @@ public class ServiceFactory {
 private static final String SERVER_URL = "https://tribes-of-lagopus.herokuapp.com";
 
     public static <T> T createRetrofitService() {
+
         Class serviceClass = LoginService.class;
         Retrofit.Builder builder = new Retrofit.Builder()
                 .baseUrl(SERVER_URL)
