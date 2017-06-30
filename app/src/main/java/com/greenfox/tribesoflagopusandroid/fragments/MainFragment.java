@@ -94,11 +94,8 @@ public class MainFragment extends BaseFragment {
         TextView totalTroopNumber = (TextView) rootView.findViewById(R.id.troops_finished);
         totalTroopNumber.setText((troops.size() + " finished"));
 
-
         Button buildingButton = (Button) rootView.findViewById(R.id.go_to_buildings_btn);
         Button troopButton = (Button) rootView.findViewById(R.id.go_to_troops_btn);
-
-
 
         buildingButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -109,6 +106,7 @@ public class MainFragment extends BaseFragment {
                         .commit();
             }
         });
+
         troopButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -118,10 +116,8 @@ public class MainFragment extends BaseFragment {
                         .commit();
             }
         });
-
         return rootView;
     }
-
 
     @Override
     public void onStop() {
