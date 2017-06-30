@@ -29,7 +29,7 @@ public interface ApiService {
     Call<Building> getCertainBuilding(@Path("buildingId")int buildingId);
 
     @GET("/kingdom")
-    Call<Kingdom> getKingdom(@Header("token") String token);
+    Call<Kingdom> getKingdom(@Header("X-tribes-token") String token);
 
     @POST("/kingdom/buildings")
     Call<Building> postBuilding(@Field("type") String type);
