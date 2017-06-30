@@ -3,12 +3,19 @@ package com.greenfox.tribesoflagopusandroid.fragments;
 
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.github.clans.fab.FloatingActionButton;
+import com.greenfox.tribesoflagopusandroid.MainActivity;
 import com.greenfox.tribesoflagopusandroid.R;
 import com.greenfox.tribesoflagopusandroid.TribesApplication;
 import com.greenfox.tribesoflagopusandroid.api.model.gameobject.Building;
@@ -25,6 +32,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
+import static android.R.attr.button;
 import static com.greenfox.tribesoflagopusandroid.MainActivity.MAIN_FRAGMENT_SAVE;
 import static com.greenfox.tribesoflagopusandroid.MainActivity.USER_ACCESS_TOKEN;
 
@@ -44,6 +52,12 @@ public class MainFragment extends BaseFragment {
     List<Troop> troops;
 
     public MainFragment() {
+    }
+
+    @Override
+    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        getActivity().setTitle("Kingdom");
     }
 
     @Override
@@ -80,8 +94,34 @@ public class MainFragment extends BaseFragment {
         TextView totalTroopNumber = (TextView) rootView.findViewById(R.id.troops_finished);
         totalTroopNumber.setText((troops.size() + " finished"));
 
+
+        Button buildingButton = (Button) rootView.findViewById(R.id.go_to_buildings_btn);
+        Button troopButton = (Button) rootView.findViewById(R.id.go_to_troops_btn);
+
+
+
+        buildingButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                (getActivity()).getSupportFragmentManager()
+                        .beginTransaction()
+                        .replace(R.id.layout_content, new BuildingsFragment())
+                        .commit();
+            }
+        });
+        troopButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                (getActivity()).getSupportFragmentManager()
+                        .beginTransaction()
+                        .replace(R.id.layout_content, new TroopsFragment())
+                        .commit();
+            }
+        });
+
         return rootView;
     }
+
 
     @Override
     public void onStop() {
