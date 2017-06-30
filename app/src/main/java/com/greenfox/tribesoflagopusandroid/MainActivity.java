@@ -33,6 +33,7 @@ import javax.inject.Inject;
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
     public static final String USER_ACCESS_TOKEN = "userToken";
+    public static final String USERNAME = "username";
     public static final String NOTIFICATION = "notification";
     public static final String BACKGROUND_SYNC = "backgroundSync";
     public static final String APP_SAVE = "appSave";
