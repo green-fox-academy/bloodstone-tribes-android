@@ -45,7 +45,7 @@ public class MainActivityTest {
 
     @Test
     public void userDoesNotExistAndGoToLoginActivityTest() throws Exception {
-        main.checkUsername();
+        main.checkUserAccessToken();
 
         Intent expectedIntent = new Intent(login, LoginActivity.class);
         assertEquals(expectedIntent.getClass(), shadowOf(main).getNextStartedActivity().getClass());

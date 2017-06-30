@@ -21,6 +21,8 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.widget.Toast;
 
+import com.greenfox.tribesoflagopusandroid.api.model.gameobject.Kingdom;
+import com.greenfox.tribesoflagopusandroid.fragments.BaseFragment;
 import com.greenfox.tribesoflagopusandroid.fragments.BattleFragment;
 import com.greenfox.tribesoflagopusandroid.fragments.BuildingsFragment;
 import com.greenfox.tribesoflagopusandroid.fragments.MainFragment;
@@ -31,10 +33,9 @@ import javax.inject.Inject;
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
-    public static final String USERNAME = "Username";
-
-    public static final String NOTIFICATION = "Notification";
-    public static final String BACKGROUND_SYNC = "BackgroundSync";
+    public static final String USER_ACCESS_TOKEN = "userToken";
+    public static final String NOTIFICATION = "notification";
+    public static final String BACKGROUND_SYNC = "backgroundSync";
     public static final String APP_SAVE = "appSave";
     public static final String BUILDINGS_FRAGMENT_SAVE = "buildingsSave";
     public static final String TROOPS_FRAGMENT_SAVE = "troopsSave";
@@ -42,14 +43,15 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     public static final String BATTLE_FRAGMENT_SAVE = "battleSave";
     public static final String MAIN_FRAGMENT_SAVE = "mainSave";
 
-    String timestamp;
-    Fragment fragment = null;
-
     @Inject
     public
     SharedPreferences preferences;
 
     SharedPreferences.Editor editor;
+    BaseFragment baseFragment;
+    String timestamp;
+    Fragment fragment = null;
+    Kingdom thisKingdom = new Kingdom();
     private PendingIntent pendingIntent;
     private AlarmManager manager;
 
@@ -60,7 +62,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         startAlarm();
         TribesApplication.app().basicComponent().inject(this);
         editor = preferences.edit();
-        checkUsername();
+        checkUserAccessToken();
 
         displaySelectedScreen(R.id.nav_kingdom);
 
@@ -100,10 +102,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         Toast.makeText(this,"Refreshing", Toast.LENGTH_SHORT).show();
     }
 
-    public void checkUsername() {
+    public void checkUserAccessToken() {
         preferences = PreferenceManager.getDefaultSharedPreferences(this);
 
-        if (TextUtils.isEmpty(preferences.getString(USERNAME, null))) {
+        if (TextUtils.isEmpty(preferences.getString(USER_ACCESS_TOKEN, null))) {
             Intent intent = new Intent(this, LoginActivity.class);
             startActivity(intent);
         }
