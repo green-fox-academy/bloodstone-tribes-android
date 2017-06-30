@@ -9,6 +9,7 @@ import android.widget.CompoundButton;
 import android.widget.Switch;
 import android.widget.TextView;
 
+import com.greenfox.tribesoflagopusandroid.MainActivity;
 import com.greenfox.tribesoflagopusandroid.R;
 import com.greenfox.tribesoflagopusandroid.TribesApplication;
 
@@ -29,10 +30,8 @@ public class SettingsFragment extends BaseFragment {
     public SharedPreferences preferences;
 
     public SharedPreferences.Editor editor;
-
     public TextView notification_status, background_sync_status;
     public Switch notification, background_sync;
-
     public String timestamp;
 
     public SettingsFragment() {
@@ -81,11 +80,13 @@ public class SettingsFragment extends BaseFragment {
                     background_sync_status.setText(getContext().getString(R.string.background_sync_on));
                     editor.putBoolean(BACKGROUND_SYNC, true);
                     editor.apply();
+                    ((MainActivity)getActivity()).startBackgroundSync();
                 } else {
                     background_sync.setChecked(false);
                     background_sync_status.setText(getContext().getString(R.string.background_sync_off));
                     editor.putBoolean(BACKGROUND_SYNC, false);
                     editor.apply();
+                    ((MainActivity)getActivity()).stopBackgroundSync();
                 }
             }
         });

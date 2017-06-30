@@ -27,6 +27,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
+import static com.greenfox.tribesoflagopusandroid.MainActivity.USERNAME;
 import static com.greenfox.tribesoflagopusandroid.MainActivity.USER_ACCESS_TOKEN;
 
 
@@ -74,12 +75,13 @@ public class LoginActivity extends AppCompatActivity {
         toast.show();
     }
 
-    protected void loginWithAPIService(String username, String password) {
+    protected void loginWithAPIService(final String username, String password) {
         loginService.loginWithUser(username, password).enqueue(new Callback<Token>() {
             @Override
             public void onResponse(Call<Token> call, Response<Token> response) {
                 Token token = response.body();
                 addUserToken(token.getToken());
+                addUserName(username);
                 getKingdomFromAPI();
             }
 
@@ -90,12 +92,13 @@ public class LoginActivity extends AppCompatActivity {
         });
     }
 
+
     public void getKingdomFromAPI() {
         apiService.getKingdom(preferences.getString(USER_ACCESS_TOKEN, "")).enqueue(new Callback<Kingdom>() {
             @Override
             public void onResponse(Call<Kingdom> call, Response<Kingdom> response) {
                 mainActivity.thisKingdom = response.body();
-                sendNotification(mainActivity.thisKingdom.getName());
+                sendNotification(preferences.getString(USERNAME, ""));
                 Intent intent = new Intent(LoginActivity.this, MainActivity.class);
                 startActivity(intent);
             }
@@ -134,4 +137,10 @@ public class LoginActivity extends AppCompatActivity {
         editor.putString(USER_ACCESS_TOKEN, token);
         editor.apply();
     }
+
+    private void addUserName(String username) {
+        editor.putString(USERNAME, username);
+        editor.apply();
+    }
+
 }
