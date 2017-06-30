@@ -19,6 +19,7 @@ import android.text.TextUtils;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.widget.Toast;
 
 import com.greenfox.tribesoflagopusandroid.api.model.gameobject.Kingdom;
 import com.greenfox.tribesoflagopusandroid.fragments.BaseFragment;
@@ -32,9 +33,9 @@ import javax.inject.Inject;
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
-    public static final String USER_ACCESS_TOKEN = "UserToken";
-    public static final String NOTIFICATION = "Notification";
-    public static final String BACKGROUND_SYNC = "BackgroundSync";
+    public static final String USER_ACCESS_TOKEN = "userToken";
+    public static final String NOTIFICATION = "notification";
+    public static final String BACKGROUND_SYNC = "backgroundSync";
     public static final String APP_SAVE = "appSave";
     public static final String BUILDINGS_FRAGMENT_SAVE = "buildingsSave";
     public static final String TROOPS_FRAGMENT_SAVE = "troopsSave";
@@ -58,10 +59,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        startAlarm();
         TribesApplication.app().basicComponent().inject(this);
         editor = preferences.edit();
         checkUserAccessToken();
-//        startAlarm();
 
         displaySelectedScreen(R.id.nav_kingdom);
 
@@ -95,8 +96,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     public void refreshActiveFragment() {
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-        transaction.replace(R.id.layout_content, fragment);
+        transaction.detach(fragment);
+        transaction.attach(fragment);
         transaction.commit();
+        Toast.makeText(this,"Refreshing", Toast.LENGTH_SHORT).show();
     }
 
     public void checkUserAccessToken() {
@@ -109,7 +112,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     }
 
     public void logout() {
-//        cancelAlarm();
+        cancelAlarm();
         preferences = PreferenceManager.getDefaultSharedPreferences(this);
         editor = preferences.edit();
         editor.clear();
@@ -119,34 +122,33 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         finish();
     }
 
-//    public void startAlarm() {
-//        manager = (AlarmManager)getApplicationContext().getSystemService(MainActivity.ALARM_SERVICE);
-//        long interval = 60000l;
-//        Intent alarmIntent = new Intent(this, AlarmReceiver.class);
-//        pendingIntent = PendingIntent.getBroadcast(this, 0,  alarmIntent, PendingIntent.FLAG_UPDATE_CURRENT);
-//        manager.setRepeating(AlarmManager.RTC_WAKEUP, System.currentTimeMillis(),interval, pendingIntent);
-//    }
-//
-//    public void cancelAlarm() {
-//        long interval = 600000l;
-//        manager.setRepeating(AlarmManager.ELAPSED_REALTIME, System.currentTimeMillis(),interval, pendingIntent);
-//    }
-//
-//
-//    @Override
-//    protected void onPause() {
-//        long interval = 600000l;
-//        manager.setRepeating(AlarmManager.ELAPSED_REALTIME, System.currentTimeMillis(),interval, pendingIntent);
-//        saveOnExit(APP_SAVE);
-//        super.onPause();
-//    }
-//
-//    @Override
-//    protected void onStop() {
-//        manager.cancel(pendingIntent);
-//        saveOnExit(APP_SAVE);
-//        super.onStop();
-//    }
+    public void startAlarm() {
+        manager = (AlarmManager)getApplicationContext().getSystemService(MainActivity.ALARM_SERVICE);
+        long interval = 60000l;
+        Intent alarmIntent = new Intent(this, AlarmReceiver.class);
+        pendingIntent = PendingIntent.getBroadcast(this, 0,  alarmIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+        manager.setRepeating(AlarmManager.RTC_WAKEUP, System.currentTimeMillis(),interval, pendingIntent);
+    }
+
+    public void cancelAlarm() {
+        long interval = 600000l;
+        manager.setRepeating(AlarmManager.ELAPSED_REALTIME, System.currentTimeMillis(),interval, pendingIntent);
+    }
+
+    @Override
+    protected void onPause() {
+        long interval = 600000l;
+        manager.setRepeating(AlarmManager.ELAPSED_REALTIME, System.currentTimeMillis(),interval, pendingIntent);
+        saveOnExit(APP_SAVE);
+        super.onPause();
+    }
+
+    @Override
+    protected void onStop() {
+        manager.cancel(pendingIntent);
+        saveOnExit(APP_SAVE);
+        super.onStop();
+    }
 
     public void saveOnExit(String fragmentName) {
         TribesApplication.app().basicComponent().inject(this);
@@ -194,4 +196,5 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         displaySelectedScreen(id);
         return true;
     }
+
 }

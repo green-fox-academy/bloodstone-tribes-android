@@ -4,10 +4,12 @@ package com.greenfox.tribesoflagopusandroid.fragments;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.app.FragmentTransaction;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import com.greenfox.tribesoflagopusandroid.R;
 import com.greenfox.tribesoflagopusandroid.TribesApplication;
@@ -15,6 +17,9 @@ import com.greenfox.tribesoflagopusandroid.adapter.BuildingsAdapter;
 import com.greenfox.tribesoflagopusandroid.api.model.gameobject.Building;
 import com.greenfox.tribesoflagopusandroid.api.model.response.BuildingsResponse;
 import com.greenfox.tribesoflagopusandroid.api.service.ApiService;
+
+import com.github.clans.fab.FloatingActionMenu;
+import com.github.clans.fab.FloatingActionButton;
 
 import java.util.ArrayList;
 
@@ -37,6 +42,9 @@ public class BuildingsFragment extends BaseFragment {
 
     private BuildingsAdapter buildingsAdapter;
     String timestamp;
+
+    FloatingActionMenu buildingsFloatingMenu;
+    FloatingActionButton addFarmFloatingButton, addMineFloatingButton, addBarrackFloatingButton;
 
     public BuildingsFragment() {
     }
@@ -70,6 +78,68 @@ public class BuildingsFragment extends BaseFragment {
         ListView listView = (ListView) rootView.findViewById(R.id.buildings_list);
         listView.setAdapter(buildingsAdapter);
 
+        buildingsFloatingMenu = (FloatingActionMenu) rootView.findViewById(R.id.add_building_menu);
+
+        addFarmFloatingButton = (FloatingActionButton) rootView.findViewById(R.id.add_farm_menu_item);
+        addFarmFloatingButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(getContext(),"Farm added", Toast.LENGTH_SHORT).show();
+                apiService.postBuilding("farm").enqueue(new Callback<Building>() {
+                    @Override
+                    public void onResponse(Call<Building> call, Response<Building> response) {
+                        apiService.addBuildingToList(response.body());
+                        refresh();
+                    }
+
+                    @Override
+                    public void onFailure(Call<Building> call, Throwable t) {
+
+                    }
+                });
+            }
+        });
+
+        addMineFloatingButton = (FloatingActionButton) rootView.findViewById(R.id.add_mine_menu_item);
+        addMineFloatingButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(getContext(),"Mine added", Toast.LENGTH_SHORT).show();
+                apiService.postBuilding("mine").enqueue(new Callback<Building>() {
+                    @Override
+                    public void onResponse(Call<Building> call, Response<Building> response) {
+                        apiService.addBuildingToList(response.body());
+                        refresh();
+                    }
+
+                    @Override
+                    public void onFailure(Call<Building> call, Throwable t) {
+
+                    }
+                });
+            }
+        });
+
+        addBarrackFloatingButton = (FloatingActionButton) rootView.findViewById(R.id.add_barrack_menu_item);
+        addBarrackFloatingButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(getContext(), "Barrack added", Toast.LENGTH_SHORT).show();
+                apiService.postBuilding("barrack").enqueue(new Callback<Building>() {
+                    @Override
+                    public void onResponse(Call<Building> call, Response<Building> response) {
+                        apiService.addBuildingToList(response.body());
+                        refresh();
+                    }
+
+                    @Override
+                    public void onFailure(Call<Building> call, Throwable t) {
+
+                    }
+                });
+            }
+        });
+
         return rootView;
     }
 
@@ -79,4 +149,12 @@ public class BuildingsFragment extends BaseFragment {
         timestamp = BaseFragment.timestamp;
         super.onStop();
     }
+
+    public void refresh() {
+        FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
+        transaction.detach(this);
+        transaction.attach(this);
+        transaction.commit();
+    }
+
 }

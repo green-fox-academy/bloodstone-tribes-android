@@ -20,6 +20,8 @@ public interface BasicComponent {
 
     void inject(SettingsFragment fragment);
 
+    void inject(AlarmReceiver broadcastReceiver);
+
     void inject(MainFragment fragment);
 
     void inject(BuildingsFragment fragment);
@@ -29,4 +31,5 @@ public interface BasicComponent {
     void inject(BattleFragment fragment);
 
     void inject(BaseFragment fragment);
+
 }

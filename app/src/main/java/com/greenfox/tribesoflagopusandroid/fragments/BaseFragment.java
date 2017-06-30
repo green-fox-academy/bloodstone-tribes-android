@@ -31,6 +31,5 @@ public class BaseFragment extends Fragment {
         timestamp = String.valueOf(System.currentTimeMillis());
         editor.putString(fragment, timestamp);
         editor.apply();
-        super.onStop();
     }
 }

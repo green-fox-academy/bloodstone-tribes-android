@@ -1,5 +1,7 @@
 package com.greenfox.tribesoflagopusandroid.api.service;
 
+import com.greenfox.tribesoflagopusandroid.api.model.gameobject.Troop;
+import com.greenfox.tribesoflagopusandroid.api.model.response.TroopsResponse;
 import com.greenfox.tribesoflagopusandroid.api.model.gameobject.Building;
 import com.greenfox.tribesoflagopusandroid.api.model.gameobject.Kingdom;
 import com.greenfox.tribesoflagopusandroid.api.model.response.BuildingsResponse;
@@ -37,4 +39,10 @@ public interface ApiService {
     @GET("/kingdom/resources")
     Call<ResourcesResponse> getResource();
 
+    void addBuildingToList(Building building);
+
+    @POST("/{userId}/kingdom/troops")
+    Call<Troop> postTroop(@Path("userId") int userId);
+
+    void addTroopToMockTroops(Troop troop);
 }
