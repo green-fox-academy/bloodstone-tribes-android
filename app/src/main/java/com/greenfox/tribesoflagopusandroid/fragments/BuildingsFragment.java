@@ -11,15 +11,14 @@ import android.view.ViewGroup;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import com.github.clans.fab.FloatingActionButton;
+import com.github.clans.fab.FloatingActionMenu;
 import com.greenfox.tribesoflagopusandroid.R;
 import com.greenfox.tribesoflagopusandroid.TribesApplication;
 import com.greenfox.tribesoflagopusandroid.adapter.BuildingsAdapter;
 import com.greenfox.tribesoflagopusandroid.api.model.gameobject.Building;
 import com.greenfox.tribesoflagopusandroid.api.model.response.BuildingsResponse;
 import com.greenfox.tribesoflagopusandroid.api.service.ApiService;
-
-import com.github.clans.fab.FloatingActionMenu;
-import com.github.clans.fab.FloatingActionButton;
 
 import java.util.ArrayList;
 
