@@ -67,7 +67,7 @@ public class MainActivityTest {
     public void testKingdomMenuClickedRedirectsToMain() throws Exception {
         drawerLayout.openDrawer(GravityCompat.START);
         main.findViewById(R.id.nav_kingdom);
-        assertEquals("Tribes of Lagopus", main.getTitle().toString());
+        assertEquals("Kingdom", main.getTitle().toString());
     }
 
     @Test
