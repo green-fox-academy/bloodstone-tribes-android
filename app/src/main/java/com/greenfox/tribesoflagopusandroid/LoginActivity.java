@@ -26,6 +26,7 @@ import javax.inject.Inject;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
+import se.simbio.encryption.Encryption;
 
 import static com.greenfox.tribesoflagopusandroid.MainActivity.USERNAME;
 import static com.greenfox.tribesoflagopusandroid.MainActivity.USER_ACCESS_TOKEN;
@@ -45,6 +46,11 @@ public class LoginActivity extends AppCompatActivity {
     SharedPreferences.Editor editor;
     MainActivity mainActivity = new MainActivity();
 
+    String key = "YourKey";
+    String salt = "YourSalt";
+    byte[] iv = new byte[16];
+    Encryption encryption = Encryption.getDefault(key, salt, iv);
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -56,7 +62,7 @@ public class LoginActivity extends AppCompatActivity {
     public void login(View view) {
 
         String username = ((EditText) findViewById(R.id.usernameText)).getText().toString();
-        String password = ((EditText) findViewById(R.id.passwordText)).getText().toString();
+        String password = encryption.encryptOrNull(((EditText) findViewById(R.id.passwordText)).getText().toString());
 
         checkFieldsNotEmpty(username, password);
     }
@@ -65,7 +71,7 @@ public class LoginActivity extends AppCompatActivity {
         if (TextUtils.isEmpty(username) || TextUtils.isEmpty(password)) {
             showToastFillAllFields();
         } else {
-            loginWithAPIService(username, password);
+            loginWithAPIService(username, encryption.encryptOrNull(password));
         }
     }
 
