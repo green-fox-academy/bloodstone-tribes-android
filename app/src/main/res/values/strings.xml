@@ -41,4 +41,5 @@
     <string name="background_sync_off">Background sync is OFF</string>
     <string name="gold_amount">1</string>
     <string name="food_amount">1</string>
+    <string name="register_btn">Register</string>
 </resources>
