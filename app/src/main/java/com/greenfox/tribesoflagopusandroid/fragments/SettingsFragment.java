@@ -114,6 +114,11 @@ public class SettingsFragment extends BaseFragment {
     }
 
     @Override
+    public void refreshActiveFragment() {
+        super.refreshActiveFragment();
+    }
+
+    @Override
     public void onStop() {
         super.saveOnExit(SETTINGS_FRAGMENT_SAVE);
         timestamp = BaseFragment.timestamp;

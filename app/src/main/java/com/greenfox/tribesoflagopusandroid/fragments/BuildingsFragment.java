@@ -145,6 +145,11 @@ public class BuildingsFragment extends BaseFragment {
     }
 
     @Override
+    public void refreshActiveFragment() {
+        super.refreshActiveFragment();
+    }
+
+    @Override
     public void onStop() {
         super.saveOnExit(BUILDINGS_FRAGMENT_SAVE);
         timestamp = BaseFragment.timestamp;

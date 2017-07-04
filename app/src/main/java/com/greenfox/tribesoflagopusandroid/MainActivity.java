@@ -19,9 +19,9 @@ import android.text.TextUtils;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.widget.Toast;
 
 import com.greenfox.tribesoflagopusandroid.api.model.gameobject.Kingdom;
+import com.greenfox.tribesoflagopusandroid.fragments.BaseFragment;
 import com.greenfox.tribesoflagopusandroid.fragments.BattleFragment;
 import com.greenfox.tribesoflagopusandroid.fragments.BuildingsFragment;
 import com.greenfox.tribesoflagopusandroid.fragments.MainFragment;
@@ -94,17 +94,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         super.onOptionsItemSelected(item);
         switch (item.getItemId()) {
             case R.id.refreshing:
-                refreshActiveFragment();
+                ((BaseFragment) activeFragment).refreshActiveFragment();
         }
         return false;
-    }
-
-    public void refreshActiveFragment() {
-        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-        transaction.detach(activeFragment);
-        transaction.attach(activeFragment);
-        transaction.commit();
-        Toast.makeText(this,"Refreshing", Toast.LENGTH_SHORT).show();
     }
 
     public void checkUserAccessToken() {

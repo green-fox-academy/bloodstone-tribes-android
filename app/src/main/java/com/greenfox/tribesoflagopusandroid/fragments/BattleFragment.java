@@ -30,6 +30,11 @@ public class BattleFragment extends BaseFragment {
     }
 
     @Override
+    public void refreshActiveFragment() {
+        super.refreshActiveFragment();
+    }
+
+    @Override
     public void onStop() {
         super.saveOnExit(BATTLE_FRAGMENT_SAVE);
         timestamp = BaseFragment.timestamp;

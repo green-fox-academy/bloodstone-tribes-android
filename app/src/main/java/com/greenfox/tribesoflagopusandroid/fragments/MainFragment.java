@@ -117,6 +117,11 @@ public class MainFragment extends BaseFragment {
     }
 
     @Override
+    public void refreshActiveFragment() {
+        super.refreshActiveFragment();
+    }
+
+    @Override
     public void onStop() {
         super.saveOnExit(MAIN_FRAGMENT_SAVE);
         timestamp = BaseFragment.timestamp;
