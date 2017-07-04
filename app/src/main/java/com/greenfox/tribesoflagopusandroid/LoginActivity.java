@@ -45,12 +45,19 @@ public class LoginActivity extends AppCompatActivity {
     SharedPreferences.Editor editor;
     MainActivity mainActivity = new MainActivity();
 
+    EditText password, username, passwordConfirmation, kingdomName;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
         TribesApplication.app().basicComponent().inject(this);
         editor = preferences.edit();
+        passwordConfirmation = (EditText) findViewById(R.id.confirm_password);
+        kingdomName = (EditText) findViewById(R.id.kingdom);
+
+        passwordConfirmation.setVisibility(View.INVISIBLE);
+        kingdomName.setVisibility(View.INVISIBLE);
     }
 
     public void login(View view) {
@@ -59,6 +66,21 @@ public class LoginActivity extends AppCompatActivity {
         String password = ((EditText) findViewById(R.id.passwordText)).getText().toString();
 
         checkFieldsNotEmpty(username, password);
+    }
+
+    public void register(View view) {
+
+        password = (EditText) findViewById(R.id.passwordText);
+        username = (EditText) findViewById(R.id.usernameText);
+        passwordConfirmation = (EditText) findViewById(R.id.confirm_password);
+        kingdomName = (EditText) findViewById(R.id.kingdom);
+
+        passwordConfirmation.setVisibility(View.VISIBLE);
+        kingdomName.setVisibility(View.VISIBLE);
+
+        username.setHint("Enter your username");
+        password.setHint("Write your password");
+
     }
 
     public void checkFieldsNotEmpty(String username, String password) {
