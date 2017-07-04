@@ -71,7 +71,6 @@ public class BuildingsFragment extends BaseFragment {
         addFarmFloatingButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(getContext(),"Farm added", Toast.LENGTH_SHORT).show();
                 apiService.postBuilding(preferences.getString(USER_ACCESS_TOKEN, ""), "farm").enqueue(new Callback<Building>() {
                     @Override
                     public void onResponse(Call<Building> call, Response<Building> response) {
@@ -91,7 +90,6 @@ public class BuildingsFragment extends BaseFragment {
         addMineFloatingButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(getContext(),"Mine added", Toast.LENGTH_SHORT).show();
                 apiService.postBuilding(preferences.getString(USER_ACCESS_TOKEN, ""), "mine").enqueue(new Callback<Building>() {
                     @Override
                     public void onResponse(Call<Building> call, Response<Building> response) {
@@ -111,7 +109,6 @@ public class BuildingsFragment extends BaseFragment {
         addBarrackFloatingButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(getContext(), "Barrack added", Toast.LENGTH_SHORT).show();
                 apiService.postBuilding(preferences.getString(USER_ACCESS_TOKEN, ""), "barrack").enqueue(new Callback<Building>() {
                     @Override
                     public void onResponse(Call<Building> call, Response<Building> response) {

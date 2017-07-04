@@ -60,7 +60,6 @@ public class TroopsFragment extends BaseFragment {
         addTroopsActionButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(getContext(),"Troop added", Toast.LENGTH_SHORT).show();
                 apiService.postTroop(preferences.getString(USER_ACCESS_TOKEN, "")).enqueue(new Callback<Troop>() {
                     @Override
                     public void onResponse(Call<Troop> call, Response<Troop> response) {
