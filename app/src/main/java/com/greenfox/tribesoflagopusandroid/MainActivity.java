@@ -22,12 +22,18 @@ import android.view.MenuItem;
 import android.widget.Toast;
 
 import com.greenfox.tribesoflagopusandroid.api.model.gameobject.Kingdom;
+import com.greenfox.tribesoflagopusandroid.event.BuildingsEvent;
+import com.greenfox.tribesoflagopusandroid.event.TroopsEvent;
 import com.greenfox.tribesoflagopusandroid.fragments.BaseFragment;
 import com.greenfox.tribesoflagopusandroid.fragments.BattleFragment;
 import com.greenfox.tribesoflagopusandroid.fragments.BuildingsFragment;
 import com.greenfox.tribesoflagopusandroid.fragments.MainFragment;
 import com.greenfox.tribesoflagopusandroid.fragments.SettingsFragment;
 import com.greenfox.tribesoflagopusandroid.fragments.TroopsFragment;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import javax.inject.Inject;
 
@@ -48,7 +54,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     SharedPreferences preferences;
 
     SharedPreferences.Editor editor;
-    BaseFragment baseFragment;
     String timestamp;
     Fragment fragment = null;
     Kingdom thisKingdom = new Kingdom();
@@ -57,6 +62,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        EventBus.getDefault().register(this);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         startAlarm();
@@ -152,6 +158,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     protected void onStop() {
         manager.cancel(pendingIntent);
         saveOnExit(APP_SAVE);
+        EventBus.getDefault().unregister(this);
         super.onStop();
     }
 
@@ -167,7 +174,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         switch (id) {
             case R.id.nav_buildings:
-                fragment = new BuildingsFragment();
+                EventBus.getDefault().post(new BuildingsEvent());
                 break;
             case R.id.nav_kingdom:
                 fragment = new MainFragment();
@@ -179,7 +186,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 fragment = new SettingsFragment();
                 break;
             case R.id.nav_troops:
-                fragment = new TroopsFragment();
+                EventBus.getDefault().post(new TroopsEvent());
                 break;
             case R.id.nav_logout:
                 logout();
@@ -200,5 +207,15 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         int id = item.getItemId();
         displaySelectedScreen(id);
         return true;
+    }
+
+    @Subscribe (threadMode = ThreadMode.MAIN)
+    public void onEventNavigateToBuildings(BuildingsEvent event) {
+        fragment = new BuildingsFragment();
+    }
+
+    @Subscribe (threadMode = ThreadMode.MAIN)
+    public void onEventNavigateToTroops(TroopsEvent event) {
+        fragment = new TroopsFragment();
     }
 }
