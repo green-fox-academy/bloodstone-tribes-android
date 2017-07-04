@@ -49,7 +49,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     SharedPreferences.Editor editor;
     String timestamp;
-    Fragment fragment = null;
+    public Fragment fragment = null;
     Kingdom thisKingdom = new Kingdom();
     public PendingIntent pendingIntent;
     public AlarmManager manager;
