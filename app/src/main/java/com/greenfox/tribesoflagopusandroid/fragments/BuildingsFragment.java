@@ -94,7 +94,8 @@ public class BuildingsFragment extends BaseFragment {
         apiService.postBuilding(preferences.getString(USER_ACCESS_TOKEN, ""), "farm").enqueue(new Callback<Building>() {
           @Override
           public void onResponse(Call<Building> call, Response<Building> response) {
-            EventBus.getDefault().post(new Building(response.body().getType()));
+            apiService.addBuildingToList(response.body());
+            refresh();
           }
 
           @Override
@@ -113,7 +114,8 @@ public class BuildingsFragment extends BaseFragment {
         apiService.postBuilding(preferences.getString(USER_ACCESS_TOKEN, ""), "mine").enqueue(new Callback<Building>() {
           @Override
           public void onResponse(Call<Building> call, Response<Building> response) {
-            EventBus.getDefault().post(new Building(response.body().getType()));
+            apiService.addBuildingToList(response.body());
+            refresh();
           }
 
           @Override
@@ -132,7 +134,8 @@ public class BuildingsFragment extends BaseFragment {
         apiService.postBuilding(preferences.getString(USER_ACCESS_TOKEN, ""), "barrack").enqueue(new Callback<Building>() {
           @Override
           public void onResponse(Call<Building> call, Response<Building> response) {
-            EventBus.getDefault().post(new Building(response.body().getType()));
+            apiService.addBuildingToList(response.body());
+            refresh();
           }
 
           @Override
