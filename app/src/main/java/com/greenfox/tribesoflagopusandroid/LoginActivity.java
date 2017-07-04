@@ -62,7 +62,7 @@ public class LoginActivity extends AppCompatActivity {
     public void login(View view) {
 
         String username = ((EditText) findViewById(R.id.usernameText)).getText().toString();
-        String password = encryption.encryptOrNull(((EditText) findViewById(R.id.passwordText)).getText().toString());
+        String password = ((EditText) findViewById(R.id.passwordText)).getText().toString();
 
         checkFieldsNotEmpty(username, password);
     }
