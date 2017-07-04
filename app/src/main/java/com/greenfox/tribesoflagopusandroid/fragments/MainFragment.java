@@ -46,6 +46,8 @@ public class MainFragment extends BaseFragment {
     List<Resource> resources;
     List<Troop> troops;
 
+    View rootView;
+
     public MainFragment() {
     }
 
@@ -60,38 +62,10 @@ public class MainFragment extends BaseFragment {
                              Bundle savedInstanceState) {
         TribesApplication.app().basicComponent().inject(this);
         editor = preferences.edit();
-
-        apiService.getKingdom(preferences.getString(USER_ACCESS_TOKEN, "")).enqueue(new Callback<Kingdom>() {
-            @Override
-            public void onResponse(Call<Kingdom> call, Response<Kingdom> response) {
-                buildings = response.body().getBuildings();
-                troops = response.body().getTroops();
-                resources = response.body().getResources();
-            }
-
-            @Override
-            public void onFailure(Call<Kingdom> call, Throwable t) {
-            }
-        });
-
-        View rootView = inflater.inflate(R.layout.fragment_main, container, false);
-
-        ImageView goldImage = (ImageView) rootView.findViewById(R.id.gold_image);
-        ImageView foodImage = (ImageView) rootView.findViewById(R.id.food_image);
-        TextView gold = (TextView) rootView.findViewById(R.id.resources_gold);
-        TextView food = (TextView) rootView.findViewById(R.id.resources_food);
-        gold.setText(resources.get(0).getAmount() + " " + resources.get(0).getType());
-        food.setText(resources.get(1).getAmount() + " " + resources.get(1).getType());
-        goldImage.setImageResource(R.drawable.gold);
-        foodImage.setImageResource(R.drawable.food);
-        TextView totalBuildingNumber = (TextView) rootView.findViewById(R.id.buildings_finished);
-        totalBuildingNumber.setText((buildings.size() + " finished"));
-        TextView totalTroopNumber = (TextView) rootView.findViewById(R.id.troops_finished);
-        totalTroopNumber.setText((troops.size() + " finished"));
+        rootView = inflater.inflate(R.layout.fragment_main, container, false);
+        refreshActiveFragment();
 
         Button buildingButton = (Button) rootView.findViewById(R.id.go_to_buildings_btn);
-        Button troopButton = (Button) rootView.findViewById(R.id.go_to_troops_btn);
-
         buildingButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -103,6 +77,7 @@ public class MainFragment extends BaseFragment {
             }
         });
 
+        Button troopButton = (Button) rootView.findViewById(R.id.go_to_troops_btn);
         troopButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -116,8 +91,48 @@ public class MainFragment extends BaseFragment {
         return rootView;
     }
 
+    public void getKingdomFromAPI() {
+        apiService.getKingdom(preferences.getString(USER_ACCESS_TOKEN, "")).enqueue(new Callback<Kingdom>() {
+            @Override
+            public void onResponse(Call<Kingdom> call, Response<Kingdom> response) {
+                buildings = response.body().getBuildings();
+                troops = response.body().getTroops();
+                resources = response.body().getResources();
+            }
+
+            @Override
+            public void onFailure(Call<Kingdom> call, Throwable t) {
+            }
+        });
+    }
+
+    public void fillResources() {
+        ImageView goldImage = (ImageView) rootView.findViewById(R.id.gold_image);
+        ImageView foodImage = (ImageView) rootView.findViewById(R.id.food_image);
+        TextView gold = (TextView) rootView.findViewById(R.id.resources_gold);
+        TextView food = (TextView) rootView.findViewById(R.id.resources_food);
+        gold.setText(resources.get(0).getAmount() + " " + resources.get(0).getType());
+        food.setText(resources.get(1).getAmount() + " " + resources.get(1).getType());
+        goldImage.setImageResource(R.drawable.gold);
+        foodImage.setImageResource(R.drawable.food);
+    }
+
+    public void fillBuildings() {
+        TextView totalBuildingNumber = (TextView) rootView.findViewById(R.id.buildings_finished);
+        totalBuildingNumber.setText((buildings.size() + " finished"));
+    }
+
+    public void fillTroops() {
+        TextView totalTroopNumber = (TextView) rootView.findViewById(R.id.troops_finished);
+        totalTroopNumber.setText((troops.size() + " finished"));
+    }
+
     @Override
     public void refreshActiveFragment() {
+        getKingdomFromAPI();
+        fillResources();
+        fillBuildings();
+        fillTroops();
         super.refreshActiveFragment();
     }
 
