@@ -39,6 +39,7 @@ public class MockApiService implements ApiService{
     private String type = "farm";
     private int level = 1;
     private int hp = 10;
+    private Troop troop = new Troop(1L,1,1,1,1);
 
     @Override
     public Call<TroopsResponse> getTroops(@Header("X-tribes-token") String token) {
@@ -85,7 +86,9 @@ public class MockApiService implements ApiService{
         return new MockCall<Building>() {
             @Override
             public void enqueue(Callback callback) {
-                callback.onResponse(null, Response.success(new Building(1L, type, 1, 1)));
+                Building building = new Building(1L, type, 1, 1);
+                callback.onResponse(null, Response.success(building));
+                buildings.add(building);
             }
         };
     }
@@ -100,22 +103,13 @@ public class MockApiService implements ApiService{
         };
     }
 
-    @Override
-    public void addBuildingToList(Building building) {
-        buildings.add(building);
-    }
-
     public Call<Troop> postTroop(@Header("X-tribes-token") String token) {
         return new MockCall<Troop>() {
             @Override
             public void enqueue(Callback callback) {
-                callback.onResponse(null, Response.success(new Troop(1L,1,1,1,1)));
+                callback.onResponse(null, Response.success(troop));
+                troops.add(troop);
             }
         };
     }
-
-    public void addTroopToMockTroops(Troop troop) {
-        troops.add(troop);
-    }
-
 }
