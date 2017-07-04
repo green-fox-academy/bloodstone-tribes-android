@@ -3,10 +3,8 @@ package com.greenfox.tribesoflagopusandroid.fragments;
 
 import android.content.SharedPreferences;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentTransaction;
 import android.widget.Toast;
 
-import com.greenfox.tribesoflagopusandroid.MainActivity;
 import com.greenfox.tribesoflagopusandroid.TribesApplication;
 
 import javax.inject.Inject;
@@ -31,10 +29,6 @@ public class BaseFragment extends Fragment {
 
 
     public void refreshActiveFragment() {
-        FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
-        transaction.detach(((MainActivity)getActivity()).activeFragment);
-        transaction.attach(((MainActivity)getActivity()).activeFragment);
-        transaction.commit();
         Toast.makeText(getActivity(),"Refreshing", Toast.LENGTH_SHORT).show();
     }
 
