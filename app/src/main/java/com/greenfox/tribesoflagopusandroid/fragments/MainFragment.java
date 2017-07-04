@@ -4,17 +4,13 @@ package com.greenfox.tribesoflagopusandroid.fragments;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentTransaction;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import com.github.clans.fab.FloatingActionButton;
 import com.greenfox.tribesoflagopusandroid.MainActivity;
 import com.greenfox.tribesoflagopusandroid.R;
 import com.greenfox.tribesoflagopusandroid.TribesApplication;
@@ -32,7 +28,6 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-import static android.R.attr.button;
 import static com.greenfox.tribesoflagopusandroid.MainActivity.MAIN_FRAGMENT_SAVE;
 import static com.greenfox.tribesoflagopusandroid.MainActivity.USER_ACCESS_TOKEN;
 
@@ -50,6 +45,8 @@ public class MainFragment extends BaseFragment {
     List<Building> buildings;
     List<Resource> resources;
     List<Troop> troops;
+
+//    MainActivity mainActivity = new MainActivity();
 
     public MainFragment() {
     }
@@ -100,9 +97,10 @@ public class MainFragment extends BaseFragment {
         buildingButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                ((MainActivity)getActivity()).fragment = new BuildingsFragment();
                 (getActivity()).getSupportFragmentManager()
                         .beginTransaction()
-                        .replace(R.id.layout_content, new BuildingsFragment())
+                        .replace(R.id.layout_content, ((MainActivity)getActivity()).fragment)
                         .commit();
             }
         });
@@ -110,9 +108,10 @@ public class MainFragment extends BaseFragment {
         troopButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                ((MainActivity)getActivity()).fragment = new TroopsFragment();
                 (getActivity()).getSupportFragmentManager()
                         .beginTransaction()
-                        .replace(R.id.layout_content, new TroopsFragment())
+                        .replace(R.id.layout_content, ((MainActivity)getActivity()).fragment)
                         .commit();
             }
         });
