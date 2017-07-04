@@ -72,8 +72,8 @@ public class MainActivityTest {
     @Test
     public void refreshActiveFragment() throws Exception {
         Fragment fragmentTest = new BattleFragment();
-        main.fragment = fragmentTest;
+        main.activeFragment = fragmentTest;
         main.refreshActiveFragment();
-        assertEquals(fragmentTest, main.fragment);
+        assertEquals(fragmentTest, main.activeFragment);
     }
 }

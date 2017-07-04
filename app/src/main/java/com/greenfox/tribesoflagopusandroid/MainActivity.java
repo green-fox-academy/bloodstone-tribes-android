@@ -49,7 +49,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     SharedPreferences.Editor editor;
     String timestamp;
-    Fragment fragment = null;
+    public Fragment activeFragment = null;
     Kingdom thisKingdom = new Kingdom();
     public PendingIntent pendingIntent;
     public AlarmManager manager;
@@ -101,8 +101,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     public void refreshActiveFragment() {
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-        transaction.detach(fragment);
-        transaction.attach(fragment);
+        transaction.detach(activeFragment);
+        transaction.attach(activeFragment);
         transaction.commit();
         Toast.makeText(this,"Refreshing", Toast.LENGTH_SHORT).show();
     }
@@ -173,27 +173,27 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         switch (id) {
             case R.id.nav_buildings:
-                fragment = new BuildingsFragment();
+                activeFragment = new BuildingsFragment();
                 break;
             case R.id.nav_kingdom:
-                fragment = new MainFragment();
+                activeFragment = new MainFragment();
                 break;
             case R.id.nav_battle:
-                fragment = new BattleFragment();
+                activeFragment = new BattleFragment();
                 break;
             case R.id.nav_settings:
-                fragment = new SettingsFragment();
+                activeFragment = new SettingsFragment();
                 break;
             case R.id.nav_troops:
-                fragment = new TroopsFragment();
+                activeFragment = new TroopsFragment();
                 break;
             case R.id.nav_logout:
                 logout();
                 break;
         }
-        if (fragment != null) {
+        if (activeFragment != null) {
             FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-            transaction.replace(R.id.layout_content, fragment);
+            transaction.replace(R.id.layout_content, activeFragment);
             transaction.commit();
         }
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
