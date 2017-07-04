@@ -4,22 +4,20 @@ package com.greenfox.tribesoflagopusandroid.fragments;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v4.app.FragmentTransaction;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import com.github.clans.fab.FloatingActionButton;
+import com.github.clans.fab.FloatingActionMenu;
 import com.greenfox.tribesoflagopusandroid.R;
 import com.greenfox.tribesoflagopusandroid.TribesApplication;
 import com.greenfox.tribesoflagopusandroid.adapter.BuildingsAdapter;
 import com.greenfox.tribesoflagopusandroid.api.model.gameobject.Building;
 import com.greenfox.tribesoflagopusandroid.api.model.response.BuildingsResponse;
 import com.greenfox.tribesoflagopusandroid.api.service.ApiService;
-
-import com.github.clans.fab.FloatingActionMenu;
-import com.github.clans.fab.FloatingActionButton;
 
 import java.util.ArrayList;
 
@@ -47,6 +45,8 @@ public class BuildingsFragment extends BaseFragment {
     FloatingActionMenu buildingsFloatingMenu;
     FloatingActionButton addFarmFloatingButton, addMineFloatingButton, addBarrackFloatingButton;
 
+    View rootView;
+
     public BuildingsFragment() {
     }
 
@@ -62,22 +62,8 @@ public class BuildingsFragment extends BaseFragment {
                              Bundle savedInstanceState) {
         TribesApplication.app().basicComponent().inject(this);
         editor = preferences.edit();
-
-        buildingsAdapter = new BuildingsAdapter(getContext(), new ArrayList<Building>());
-        apiService.getBuildings(preferences.getString(USER_ACCESS_TOKEN, "")).enqueue(new Callback<BuildingsResponse>() {
-            @Override
-            public void onResponse(Call<BuildingsResponse> call, Response<BuildingsResponse> response) {
-                buildingsAdapter.addAll(response.body().getBuildings());
-            }
-
-            @Override
-            public void onFailure(Call<BuildingsResponse> call, Throwable t) {
-            }
-        });
-
-        View rootView = inflater.inflate(R.layout.fragment_buildings, container, false);
-        ListView listView = (ListView) rootView.findViewById(R.id.buildings_list);
-        listView.setAdapter(buildingsAdapter);
+        rootView = inflater.inflate(R.layout.fragment_buildings, container, false);
+        refreshActiveFragment();
 
         buildingsFloatingMenu = (FloatingActionMenu) rootView.findViewById(R.id.add_building_menu);
 
@@ -90,7 +76,7 @@ public class BuildingsFragment extends BaseFragment {
                     @Override
                     public void onResponse(Call<Building> call, Response<Building> response) {
                         apiService.addBuildingToList(response.body());
-                        refresh();
+                        refreshActiveFragment();
                     }
 
                     @Override
@@ -110,7 +96,7 @@ public class BuildingsFragment extends BaseFragment {
                     @Override
                     public void onResponse(Call<Building> call, Response<Building> response) {
                         apiService.addBuildingToList(response.body());
-                        refresh();
+                        refreshActiveFragment();
                     }
 
                     @Override
@@ -130,7 +116,7 @@ public class BuildingsFragment extends BaseFragment {
                     @Override
                     public void onResponse(Call<Building> call, Response<Building> response) {
                         apiService.addBuildingToList(response.body());
-                        refresh();
+                        refreshActiveFragment();
                     }
 
                     @Override
@@ -144,8 +130,25 @@ public class BuildingsFragment extends BaseFragment {
         return rootView;
     }
 
+    public void getBuildingsFromAPI() {
+        buildingsAdapter = new BuildingsAdapter(getContext(), new ArrayList<Building>());
+        apiService.getBuildings(preferences.getString(USER_ACCESS_TOKEN, "")).enqueue(new Callback<BuildingsResponse>() {
+            @Override
+            public void onResponse(Call<BuildingsResponse> call, Response<BuildingsResponse> response) {
+                buildingsAdapter.addAll(response.body().getBuildings());
+            }
+
+            @Override
+            public void onFailure(Call<BuildingsResponse> call, Throwable t) {
+            }
+        });
+        ListView listView = (ListView) rootView.findViewById(R.id.buildings_list);
+        listView.setAdapter(buildingsAdapter);
+    }
+
     @Override
     public void refreshActiveFragment() {
+        getBuildingsFromAPI();
         super.refreshActiveFragment();
     }
 
@@ -154,13 +157,6 @@ public class BuildingsFragment extends BaseFragment {
         super.saveOnExit(BUILDINGS_FRAGMENT_SAVE);
         timestamp = BaseFragment.timestamp;
         super.onStop();
-    }
-
-    public void refresh() {
-        FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
-        transaction.detach(this);
-        transaction.attach(this);
-        transaction.commit();
     }
 
 }
