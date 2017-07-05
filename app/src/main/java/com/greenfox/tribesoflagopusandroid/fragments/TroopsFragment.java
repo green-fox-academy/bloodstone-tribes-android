@@ -79,7 +79,6 @@ public class TroopsFragment extends BaseFragment {
                 apiService.postTroop(preferences.getString(USER_ACCESS_TOKEN, "")).enqueue(new Callback<Troop>() {
                     @Override
                     public void onResponse(Call<Troop> call, Response<Troop> response) {
-                        refresh();
                     }
 
                     @Override
