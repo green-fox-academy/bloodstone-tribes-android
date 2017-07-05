@@ -46,6 +46,7 @@ public class LoginActivity extends AppCompatActivity {
 
     public static final String KEY = "YourKey";
     public static final String SALT = "YourSalt";
+    Encryption encryption;
 
 
     @Override
@@ -55,11 +56,10 @@ public class LoginActivity extends AppCompatActivity {
         TribesApplication.app().basicComponent().inject(this);
         editor = preferences.edit();
         byte[] iv = new byte[16];
-        Encryption encryption = Encryption.getDefault(KEY, SALT, iv);
+        encryption = Encryption.getDefault(KEY, SALT, iv);
     }
 
     public void login(View view) {
-
         String username = ((EditText) findViewById(R.id.usernameText)).getText().toString();
         String password = ((EditText) findViewById(R.id.passwordText)).getText().toString();
 
@@ -147,5 +147,4 @@ public class LoginActivity extends AppCompatActivity {
         editor.putString(USERNAME, username);
         editor.apply();
     }
-
 }
