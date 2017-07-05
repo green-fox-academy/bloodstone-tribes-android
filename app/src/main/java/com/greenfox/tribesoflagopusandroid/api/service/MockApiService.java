@@ -1,5 +1,7 @@
 package com.greenfox.tribesoflagopusandroid.api.service;
 
+import android.os.AsyncTask;
+
 import com.greenfox.tribesoflagopusandroid.api.model.gameobject.Building;
 import com.greenfox.tribesoflagopusandroid.api.model.gameobject.Kingdom;
 import com.greenfox.tribesoflagopusandroid.api.model.gameobject.Location;
@@ -74,8 +76,24 @@ public class MockApiService implements ApiService{
     public Call<Kingdom> getKingdom(@Header("X-tribes-token") String token) {
         return new MockCall<Kingdom>() {
             @Override
-            public void enqueue(Callback callback) {
-                callback.onResponse(null, Response.success(new Kingdom(id, name, idOfUser, buildings, resources, troops, location)));
+            public void enqueue(final Callback callback) {
+                new AsyncTask<Void, Void, Void>() {
+                    @Override
+                    protected Void doInBackground(Void... params) {
+                        try {
+                            Thread.sleep(3000);
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
+                        }
+                        return null;
+                    }
+
+                    @Override
+                    protected void onPostExecute(Void aVoid) {
+                        callback.onResponse(null, Response.success(new Kingdom(id, name, idOfUser, buildings, resources, troops, location)));
+
+                    }
+                }.execute();
             }
         };
     }
