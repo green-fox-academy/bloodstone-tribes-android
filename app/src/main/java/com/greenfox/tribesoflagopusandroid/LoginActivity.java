@@ -46,10 +46,9 @@ public class LoginActivity extends AppCompatActivity {
     SharedPreferences.Editor editor;
     MainActivity mainActivity = new MainActivity();
 
-    String key = "YourKey";
-    String salt = "YourSalt";
-    byte[] iv = new byte[16];
-    Encryption encryption = Encryption.getDefault(key, salt, iv);
+    public static final String KEY = "YourKey";
+    public static final String SALT = "YourSalt";
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,6 +56,8 @@ public class LoginActivity extends AppCompatActivity {
         setContentView(R.layout.activity_login);
         TribesApplication.app().basicComponent().inject(this);
         editor = preferences.edit();
+        byte[] iv = new byte[16];
+        Encryption encryption = Encryption.getDefault(KEY, SALT, iv);
     }
 
     public void login(View view) {
