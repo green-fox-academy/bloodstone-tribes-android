@@ -13,11 +13,14 @@ import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
 import android.view.Gravity;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import com.greenfox.tribesoflagopusandroid.api.model.gameobject.Kingdom;
 import com.greenfox.tribesoflagopusandroid.api.model.gameobject.Token;
+import com.greenfox.tribesoflagopusandroid.api.model.gameobject.User;
 import com.greenfox.tribesoflagopusandroid.api.service.ApiService;
 import com.greenfox.tribesoflagopusandroid.api.service.LoginService;
 
@@ -45,7 +48,9 @@ public class LoginActivity extends AppCompatActivity {
     SharedPreferences.Editor editor;
     MainActivity mainActivity = new MainActivity();
 
-    EditText password, username, passwordConfirmation, kingdomName;
+    EditText password, username, passwordConfirmation, kingdomName, registeredUser;
+    Button sendRegister;
+    LinearLayout loginLayout, registerLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,34 +58,85 @@ public class LoginActivity extends AppCompatActivity {
         setContentView(R.layout.activity_login);
         TribesApplication.app().basicComponent().inject(this);
         editor = preferences.edit();
-        passwordConfirmation = (EditText) findViewById(R.id.confirm_password);
-        kingdomName = (EditText) findViewById(R.id.kingdom);
 
-        passwordConfirmation.setVisibility(View.INVISIBLE);
-        kingdomName.setVisibility(View.INVISIBLE);
+        registerLayout = (LinearLayout) findViewById(R.id.registerLayout);
+        loginLayout = (LinearLayout) findViewById(R.id.loginLayout);
+        registeredUser = (EditText) findViewById(R.id.usernameText);
+        registerLayout.setVisibility(View.INVISIBLE);
+
+        String registerdName = preferences.getString("RegisterName", null);
+
+        if (registerdName != null) {
+            registeredUser.setText(registerdName);
+        }
     }
 
     public void login(View view) {
-
         String username = ((EditText) findViewById(R.id.usernameText)).getText().toString();
         String password = ((EditText) findViewById(R.id.passwordText)).getText().toString();
 
         checkFieldsNotEmpty(username, password);
     }
 
-    public void register(View view) {
+    public void registerUsername(View view) {
+        username = (EditText) findViewById(R.id.register_name);
+        password = (EditText) findViewById(R.id.register_password);
+        passwordConfirmation = (EditText) findViewById(R.id.register_password_confirm);
+        kingdomName = (EditText) findViewById(R.id.kingdom_name);
+        sendRegister = (Button) findViewById(R.id.send_register);
 
-        password = (EditText) findViewById(R.id.passwordText);
-        username = (EditText) findViewById(R.id.usernameText);
-        passwordConfirmation = (EditText) findViewById(R.id.confirm_password);
-        kingdomName = (EditText) findViewById(R.id.kingdom);
+        registerLayout.setVisibility(View.VISIBLE);
+        loginLayout.setVisibility(View.INVISIBLE);
+    }
 
-        passwordConfirmation.setVisibility(View.VISIBLE);
-        kingdomName.setVisibility(View.VISIBLE);
+    public void back(View view) {
+        registerLayout.setVisibility(View.INVISIBLE);
+        loginLayout.setVisibility(View.VISIBLE);
+    }
 
-        username.setHint("Enter your username");
-        password.setHint("Write your password");
+    public void sendRegister(View view) {
+        String username = ((EditText) findViewById(R.id.register_name)).getText().toString();
+        String password = ((EditText) findViewById(R.id.register_password)).getText().toString();
+        String confirmPassword = ((EditText) findViewById(R.id.register_password_confirm)).getText().toString();
+        String kingdomName = ((EditText) findViewById(R.id.kingdom_name)).getText().toString();
 
+        editor.putString("RegisterName", username);
+        editor.apply();
+
+        checkFieldsInRegisterIsNotEmpty(username, password, confirmPassword, kingdomName);
+    }
+
+    public void registerWithAPIService(String username, String password, String kingdomName) {
+        apiService.register(username,password, kingdomName).enqueue(new Callback<User>() {
+            @Override
+            public void onResponse(Call<User> call, Response<User> response) {
+                Intent intent = new Intent(LoginActivity.this, LoginActivity.class);
+                startActivity(intent);
+            }
+
+            @Override
+            public void onFailure(Call<User> call, Throwable t) {
+
+            }
+        });
+    }
+
+    public void checkPasswordMatch(String username, String password, String passwordConfirm, String kingdomName) {
+        if (!password.equals(passwordConfirm)) {
+            Toast toast = Toast.makeText(LoginActivity.this, "Password not match", Toast.LENGTH_SHORT);
+            toast.setGravity(Gravity.CENTER, 0, 0);
+            toast.show();
+        } else {
+            registerWithAPIService(username, password, kingdomName);
+        }
+    }
+
+    public void checkFieldsInRegisterIsNotEmpty(String username, String password, String passwordConfirm, String kingdomName) {
+        if (TextUtils.isEmpty(username) || TextUtils.isEmpty(password) || TextUtils.isEmpty(passwordConfirm)) {
+            showToastFillAllFields();
+        } else {
+            checkPasswordMatch(username, password, passwordConfirm, kingdomName);
+        }
     }
 
     public void checkFieldsNotEmpty(String username, String password) {
