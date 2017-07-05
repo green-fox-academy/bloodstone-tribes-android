@@ -45,8 +45,9 @@ public class MainFragment extends BaseFragment {
     List<Building> buildings;
     List<Resource> resources;
     List<Troop> troops;
+    ImageView goldImage, foodImage;
+    TextView gold, food, totalBuildingNumber, totalTroopNumber;
 
-    View rootView;
 
     public MainFragment() {
     }
@@ -62,7 +63,13 @@ public class MainFragment extends BaseFragment {
                              Bundle savedInstanceState) {
         TribesApplication.app().basicComponent().inject(this);
         editor = preferences.edit();
-        rootView = inflater.inflate(R.layout.fragment_main, container, false);
+        View rootView = inflater.inflate(R.layout.fragment_main, container, false);
+        goldImage = (ImageView) rootView.findViewById(R.id.gold_image);
+        foodImage = (ImageView) rootView.findViewById(R.id.food_image);
+        gold = (TextView) rootView.findViewById(R.id.resources_gold);
+        food = (TextView) rootView.findViewById(R.id.resources_food);
+        totalBuildingNumber = (TextView) rootView.findViewById(R.id.buildings_finished);
+        totalTroopNumber = (TextView) rootView.findViewById(R.id.troops_finished);
         refreshActiveFragment();
 
         Button buildingButton = (Button) rootView.findViewById(R.id.go_to_buildings_btn);
@@ -92,12 +99,17 @@ public class MainFragment extends BaseFragment {
     }
 
     public void getKingdomFromAPI() {
+        ((MainActivity)getActivity()).switchToLoadingView();
         apiService.getKingdom(preferences.getString(USER_ACCESS_TOKEN, "")).enqueue(new Callback<Kingdom>() {
             @Override
             public void onResponse(Call<Kingdom> call, Response<Kingdom> response) {
                 buildings = response.body().getBuildings();
                 troops = response.body().getTroops();
                 resources = response.body().getResources();
+                fillResources();
+                fillTroops();
+                fillBuildings();
+                ((MainActivity) getActivity()).sitchToContentView();
             }
 
             @Override
@@ -107,10 +119,6 @@ public class MainFragment extends BaseFragment {
     }
 
     public void fillResources() {
-        ImageView goldImage = (ImageView) rootView.findViewById(R.id.gold_image);
-        ImageView foodImage = (ImageView) rootView.findViewById(R.id.food_image);
-        TextView gold = (TextView) rootView.findViewById(R.id.resources_gold);
-        TextView food = (TextView) rootView.findViewById(R.id.resources_food);
         gold.setText(resources.get(0).getAmount() + " " + resources.get(0).getType());
         food.setText(resources.get(1).getAmount() + " " + resources.get(1).getType());
         goldImage.setImageResource(R.drawable.gold);
@@ -118,21 +126,19 @@ public class MainFragment extends BaseFragment {
     }
 
     public void fillBuildings() {
-        TextView totalBuildingNumber = (TextView) rootView.findViewById(R.id.buildings_finished);
         totalBuildingNumber.setText((buildings.size() + " finished"));
     }
 
     public void fillTroops() {
-        TextView totalTroopNumber = (TextView) rootView.findViewById(R.id.troops_finished);
         totalTroopNumber.setText((troops.size() + " finished"));
     }
 
     @Override
     public void refreshActiveFragment() {
         getKingdomFromAPI();
-        fillResources();
-        fillBuildings();
-        fillTroops();
+//        fillResources();
+//        fillBuildings();
+//        fillTroops();
         super.refreshActiveFragment();
     }
 
