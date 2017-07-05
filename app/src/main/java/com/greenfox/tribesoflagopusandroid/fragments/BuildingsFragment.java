@@ -150,14 +150,14 @@ public class BuildingsFragment extends BaseFragment {
 
   @Override
   public void onDestroy() {
-    EventBus.getDefault().unregister(this);
     super.onDestroy();
+    EventBus.getDefault().unregister(this);
   }
 
   @Override
   public void onCreate(@Nullable Bundle savedInstanceState) {
-    EventBus.getDefault().register(this);
     super.onCreate(savedInstanceState);
+    EventBus.getDefault().register(this);
   }
 
   @Override

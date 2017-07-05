@@ -62,10 +62,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
-    EventBus.getDefault().register(this);
     super.onCreate(savedInstanceState);
     setContentView(R.layout.activity_main);
     TribesApplication.app().basicComponent().inject(this);
+    EventBus.getDefault().register(this);
     editor = preferences.edit();
     checkUserAccessToken();
     checkBackgroundSyncStatus();
@@ -162,20 +162,14 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
   }
 
   @Override
-  protected void onResume() {
-    super.onResume();
-  }
-
-  @Override
   protected void onStop() {
     stopBackgroundSync();
     saveOnExit(APP_SAVE);
-    EventBus.getDefault().unregister(this);
     super.onStop();
+    EventBus.getDefault().unregister(this);
   }
 
   public void saveOnExit(String fragmentName) {
-    TribesApplication.app().basicComponent().inject(this);
     editor = preferences.edit();
     timestamp = String.valueOf(System.currentTimeMillis());
     editor.putString(fragmentName, timestamp);
@@ -183,7 +177,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
   }
 
   private void displaySelectedScreen(int id) {
-
     switch (id) {
       case R.id.nav_buildings:
         EventBus.getDefault().post(new BuildingsEvent());
