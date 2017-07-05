@@ -8,61 +8,73 @@ import com.greenfox.tribesoflagopusandroid.api.model.response.BaseResponse;
 
 public class Troop extends BaseResponse {
 
-    private long id;
-    private int level;
-    private int hp;
-    private int attack;
-    private int defense;
+  private long id;
+  private int level;
+  private int hp;
+  private int attack;
+  private int defense;
+  private long startedAt;
+  private long finishedAt;
 
-    public Troop() {
-    }
+  public Troop() {
+  }
 
-    public Troop(long id, int level, int hp, int attack, int defense) {
-        this.id = id;
-        this.level = level;
-        this.hp = hp;
-        this.attack = attack;
-        this.defense = defense;
-    }
+  public Troop(long id, int level, int hp, int attack, int defense) {
+    this.id = id;
+    this.level = level;
+    this.hp = hp;
+    this.attack = attack;
+    this.defense = defense;
+    this.startedAt = System.currentTimeMillis();
+    this.finishedAt = System.currentTimeMillis() + 600000;    //10 min
+  }
 
-    public long getId() {
-        return id;
-    }
+  public long getId() {
+    return id;
+  }
 
-    public void setId(long id) {
-        this.id = id;
-    }
+  public void setId(long id) {
+    this.id = id;
+  }
 
-    public int getLevel() {
-        return level;
-    }
+  public int getLevel() {
+    return level;
+  }
 
-    public void setLevel(int level) {
-        this.level = level;
-    }
+  public void setLevel(int level) {
+    this.level = level;
+  }
 
-    public int getHp() {
-        return hp;
-    }
+  public int getHp() {
+    return hp;
+  }
 
-    public void setHp(int hp) {
-        this.hp = hp;
-    }
+  public void setHp(int hp) {
+    this.hp = hp;
+  }
 
-    public int getAttack() {
-        return attack;
-    }
+  public int getAttack() {
+    return attack;
+  }
 
-    public void setAttack(int attack) {
-        this.attack = attack;
-    }
+  public void setAttack(int attack) {
+    this.attack = attack;
+  }
 
-    public int getDefense() {
-        return defense;
-    }
+  public int getDefense() {
+    return defense;
+  }
 
-    public void setDefense(int defense) {
-        this.defense = defense;
-    }
+  public void setDefense(int defense) {
+    this.defense = defense;
+  }
+
+  public long getStartedAt() {
+    return startedAt;
+  }
+
+  public long getFinishedAt() {
+    return finishedAt;
+  }
 }
 
