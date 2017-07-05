@@ -8,10 +8,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
-import android.widget.Toast;
 
 import com.github.clans.fab.FloatingActionButton;
 import com.github.clans.fab.FloatingActionMenu;
+import com.greenfox.tribesoflagopusandroid.MainActivity;
 import com.greenfox.tribesoflagopusandroid.R;
 import com.greenfox.tribesoflagopusandroid.TribesApplication;
 import com.greenfox.tribesoflagopusandroid.adapter.BuildingsAdapter;
@@ -41,11 +41,10 @@ public class BuildingsFragment extends BaseFragment {
 
     private BuildingsAdapter buildingsAdapter;
     String timestamp;
-
     FloatingActionMenu buildingsFloatingMenu;
     FloatingActionButton addFarmFloatingButton, addMineFloatingButton, addBarrackFloatingButton;
+    ListView listView;
 
-    View rootView;
 
     public BuildingsFragment() {
     }
@@ -62,11 +61,12 @@ public class BuildingsFragment extends BaseFragment {
                              Bundle savedInstanceState) {
         TribesApplication.app().basicComponent().inject(this);
         editor = preferences.edit();
-        rootView = inflater.inflate(R.layout.fragment_buildings, container, false);
+        View rootView = inflater.inflate(R.layout.fragment_buildings, container, false);
+        buildingsAdapter = new BuildingsAdapter(getContext(), new ArrayList<Building>());
+        listView = (ListView) rootView.findViewById(R.id.buildings_list);
         refreshActiveFragment();
 
         buildingsFloatingMenu = (FloatingActionMenu) rootView.findViewById(R.id.add_building_menu);
-
         addFarmFloatingButton = (FloatingActionButton) rootView.findViewById(R.id.add_farm_menu_item);
         addFarmFloatingButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -128,19 +128,19 @@ public class BuildingsFragment extends BaseFragment {
     }
 
     public void getBuildingsFromAPI() {
-        buildingsAdapter = new BuildingsAdapter(getContext(), new ArrayList<Building>());
+        ((MainActivity)getActivity()).switchToLoadingView();
         apiService.getBuildings(preferences.getString(USER_ACCESS_TOKEN, "")).enqueue(new Callback<BuildingsResponse>() {
             @Override
             public void onResponse(Call<BuildingsResponse> call, Response<BuildingsResponse> response) {
                 buildingsAdapter.addAll(response.body().getBuildings());
+        listView.setAdapter(buildingsAdapter);
+                ((MainActivity)getActivity()).sitchToContentView();
             }
 
             @Override
             public void onFailure(Call<BuildingsResponse> call, Throwable t) {
             }
         });
-        ListView listView = (ListView) rootView.findViewById(R.id.buildings_list);
-        listView.setAdapter(buildingsAdapter);
     }
 
     @Override
