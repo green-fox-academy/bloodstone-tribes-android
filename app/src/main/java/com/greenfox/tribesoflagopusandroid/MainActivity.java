@@ -9,7 +9,6 @@ import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.constraint.ConstraintLayout;
 import android.support.design.widget.NavigationView;
-import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -52,7 +51,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     SharedPreferences.Editor editor;
     String timestamp;
-    public Fragment activeFragment = null;
+    public BaseFragment activeFragment = null;
     Kingdom thisKingdom = new Kingdom();
     public PendingIntent pendingIntent;
     public AlarmManager manager;
@@ -111,7 +110,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         super.onOptionsItemSelected(item);
         switch (item.getItemId()) {
             case R.id.refreshing:
-                ((BaseFragment) activeFragment).refreshActiveFragment();
+                activeFragment.refreshActiveFragment();
         }
         return false;
     }
