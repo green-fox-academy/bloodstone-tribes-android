@@ -5,6 +5,7 @@ import com.greenfox.tribesoflagopusandroid.api.model.gameobject.Kingdom;
 import com.greenfox.tribesoflagopusandroid.api.model.gameobject.Location;
 import com.greenfox.tribesoflagopusandroid.api.model.gameobject.Resource;
 import com.greenfox.tribesoflagopusandroid.api.model.gameobject.Troop;
+import com.greenfox.tribesoflagopusandroid.api.model.gameobject.User;
 import com.greenfox.tribesoflagopusandroid.api.model.response.BuildingsResponse;
 import com.greenfox.tribesoflagopusandroid.api.model.response.ResourcesResponse;
 import com.greenfox.tribesoflagopusandroid.api.model.response.TroopsResponse;
@@ -39,6 +40,16 @@ public class MockApiService implements ApiService{
     private String type = "farm";
     private int level = 1;
     private int hp = 10;
+
+    @Override
+    public Call<User> register(@Field("username") final String username, @Field("password") String password, @Field("kingdomName") String kingdomName) {
+        return new MockCall<User>() {
+            @Override
+            public void enqueue(Callback callback) {
+                callback.onResponse(null, Response.success(new User(1, username, 1)));
+            }
+        };
+    }
 
     @Override
     public Call<TroopsResponse> getTroops(@Header("X-tribes-token") String token) {
