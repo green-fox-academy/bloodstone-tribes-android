@@ -36,8 +36,6 @@ public class LoginActivity extends AppCompatActivity {
     @Inject
     SharedPreferences preferences;
     @Inject
-    ObjectManager objectManager;
-    @Inject
     LoginService loginService;
     @Inject
     ApiService apiService;
