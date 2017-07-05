@@ -133,8 +133,8 @@ public class BuildingsFragment extends BaseFragment {
             @Override
             public void onResponse(Call<BuildingsResponse> call, Response<BuildingsResponse> response) {
                 buildingsAdapter.addAll(response.body().getBuildings());
-        listView.setAdapter(buildingsAdapter);
-                ((MainActivity)getActivity()).sitchToContentView();
+                listView.setAdapter(buildingsAdapter);
+                ((MainActivity) getActivity()).sitchToContentView();
             }
 
             @Override
