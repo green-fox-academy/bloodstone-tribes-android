@@ -48,8 +48,7 @@ public class LoginActivity extends AppCompatActivity {
     SharedPreferences.Editor editor;
     MainActivity mainActivity = new MainActivity();
 
-    EditText password, username, passwordConfirmation, kingdomName, registeredUser;
-    Button sendRegister;
+    EditText username;
     LinearLayout loginLayout, registerLayout;
 
     @Override
@@ -61,14 +60,15 @@ public class LoginActivity extends AppCompatActivity {
 
         registerLayout = (LinearLayout) findViewById(R.id.registerLayout);
         loginLayout = (LinearLayout) findViewById(R.id.loginLayout);
-        registeredUser = (EditText) findViewById(R.id.usernameText);
+        username = (EditText) findViewById(R.id.usernameText);
         registerLayout.setVisibility(View.INVISIBLE);
 
-        String registerdName = preferences.getString("RegisterName", null);
+        String registeredName = preferences.getString("RegisterName", null);
 
-        if (registerdName != null) {
-            registeredUser.setText(registerdName);
+        if (!TextUtils.isEmpty(registeredName)) {
+            username.setText(registeredName);
         }
+
     }
 
     public void login(View view) {
@@ -79,12 +79,6 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     public void registerUsername(View view) {
-        username = (EditText) findViewById(R.id.register_name);
-        password = (EditText) findViewById(R.id.register_password);
-        passwordConfirmation = (EditText) findViewById(R.id.register_password_confirm);
-        kingdomName = (EditText) findViewById(R.id.kingdom_name);
-        sendRegister = (Button) findViewById(R.id.send_register);
-
         registerLayout.setVisibility(View.VISIBLE);
         loginLayout.setVisibility(View.INVISIBLE);
     }
@@ -106,7 +100,7 @@ public class LoginActivity extends AppCompatActivity {
         checkFieldsInRegisterIsNotEmpty(username, password, confirmPassword, kingdomName);
     }
 
-    public void registerWithAPIService(String username, String password, String kingdomName) {
+    protected void registerWithAPIService(String username, String password, String kingdomName) {
         apiService.register(username,password, kingdomName).enqueue(new Callback<User>() {
             @Override
             public void onResponse(Call<User> call, Response<User> response) {
