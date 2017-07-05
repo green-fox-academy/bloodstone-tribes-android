@@ -12,8 +12,8 @@ public class Building extends BaseResponse {
   private String type;
   private int level;
   private int hp;
-  private long started_at;
-  private long finished_at;
+  private long startedAt;
+  private long finishedAt;
 
   public Building() {
   }
@@ -23,8 +23,8 @@ public class Building extends BaseResponse {
     this.type = type;
     this.level = level;
     this.hp = hp;
-    this.started_at = System.currentTimeMillis();
-    this.finished_at = System.currentTimeMillis() + 600000;    //10 min
+    this.startedAt = System.currentTimeMillis();
+    this.finishedAt = System.currentTimeMillis() + 600000;    //10 min
   }
 
   public Building(String type) {
@@ -64,12 +64,12 @@ public class Building extends BaseResponse {
     this.id = id;
   }
 
-  public long getStarted_at() {
-    return started_at;
+  public long getStartedAt() {
+    return startedAt;
   }
 
-  public long getFinished_at() {
-    return finished_at;
+  public long getFinishedAt() {
+    return finishedAt;
   }
 }
 

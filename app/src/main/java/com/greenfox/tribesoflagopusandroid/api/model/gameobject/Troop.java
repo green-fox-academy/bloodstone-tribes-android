@@ -13,8 +13,8 @@ public class Troop extends BaseResponse {
   private int hp;
   private int attack;
   private int defense;
-  private long started_at;
-  private long finished_at;
+  private long startedAt;
+  private long finishedAt;
 
   public Troop() {
   }
@@ -25,8 +25,8 @@ public class Troop extends BaseResponse {
     this.hp = hp;
     this.attack = attack;
     this.defense = defense;
-    this.started_at = System.currentTimeMillis();
-    this.finished_at = System.currentTimeMillis() + 600000;    //10 min
+    this.startedAt = System.currentTimeMillis();
+    this.finishedAt = System.currentTimeMillis() + 600000;    //10 min
   }
 
   public long getId() {
@@ -69,12 +69,12 @@ public class Troop extends BaseResponse {
     this.defense = defense;
   }
 
-  public long getStarted_at() {
-    return started_at;
+  public long getStartedAt() {
+    return startedAt;
   }
 
-  public long getFinished_at() {
-    return finished_at;
+  public long getFinishedAt() {
+    return finishedAt;
   }
 }
 
