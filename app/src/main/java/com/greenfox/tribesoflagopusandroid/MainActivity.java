@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.support.constraint.ConstraintLayout;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
@@ -19,6 +20,8 @@ import android.text.TextUtils;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.FrameLayout;
 
 import com.greenfox.tribesoflagopusandroid.api.model.gameobject.Kingdom;
 import com.greenfox.tribesoflagopusandroid.fragments.BaseFragment;
@@ -53,6 +56,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     Kingdom thisKingdom = new Kingdom();
     public PendingIntent pendingIntent;
     public AlarmManager manager;
+    FrameLayout fragmentLayout;
+    ConstraintLayout loadingView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,6 +65,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         setContentView(R.layout.activity_main);
         TribesApplication.app().basicComponent().inject(this);
         editor = preferences.edit();
+        fragmentLayout = (FrameLayout) findViewById(R.id.layout_content);
+        loadingView = (ConstraintLayout) findViewById(R.id.loadingView);
         checkUserAccessToken();
         checkBackgroundSyncStatus();
         displaySelectedScreen(R.id.nav_kingdom);
@@ -74,6 +81,16 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         toggle.syncState();
         NavigationView navigationView = (NavigationView) findViewById(R.id.navigation_view);
         navigationView.setNavigationItemSelectedListener(this);
+    }
+
+    public void switchToLoadingView() {
+        fragmentLayout.setVisibility(View.INVISIBLE);
+        loadingView.setVisibility(View.VISIBLE);
+    }
+
+    public void sitchToContentView() {
+        fragmentLayout.setVisibility(View.VISIBLE);
+        loadingView.setVisibility(View.INVISIBLE);
     }
 
     public void checkBackgroundSyncStatus() {
