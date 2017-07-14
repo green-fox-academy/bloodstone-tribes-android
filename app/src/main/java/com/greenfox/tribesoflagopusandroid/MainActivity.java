@@ -84,6 +84,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     toggle.syncState();
     NavigationView navigationView = (NavigationView) findViewById(R.id.navigation_view);
     navigationView.setNavigationItemSelectedListener(this);
+    setNavItemCount(R.id.nav_buildings, 4);
+    setNavItemCount(R.id.nav_troops, 15);
   }
 
   public void checkBackgroundSyncStatus() {
@@ -224,7 +226,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         TextView view = (TextView) navigationView.getMenu().findItem(itemId).getActionView();
         view.setText(count > 0 ? String.valueOf(count) : null);
     }
-  
+
   @Subscribe(threadMode = ThreadMode.MAIN)
   public void onEventNavigateToBuildings(BuildingsEvent event) {
     fragment = new BuildingsFragment();
