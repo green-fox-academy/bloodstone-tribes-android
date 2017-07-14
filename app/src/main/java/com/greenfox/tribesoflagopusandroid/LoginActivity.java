@@ -29,6 +29,7 @@ import javax.inject.Inject;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
+import se.simbio.encryption.Encryption;
 
 import static com.greenfox.tribesoflagopusandroid.MainActivity.USERNAME;
 import static com.greenfox.tribesoflagopusandroid.MainActivity.USER_ACCESS_TOKEN;
@@ -39,8 +40,6 @@ public class LoginActivity extends AppCompatActivity {
     @Inject
     SharedPreferences preferences;
     @Inject
-    ObjectManager objectManager;
-    @Inject
     LoginService loginService;
     @Inject
     ApiService apiService;
@@ -50,6 +49,10 @@ public class LoginActivity extends AppCompatActivity {
 
     EditText username;
     LinearLayout loginLayout, registerLayout;
+    public static final String KEY = "YourKey";
+    public static final String SALT = "YourSalt";
+    Encryption encryption;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -69,6 +72,8 @@ public class LoginActivity extends AppCompatActivity {
             username.setText(registeredName);
         }
 
+        byte[] iv = new byte[16];
+        encryption = Encryption.getDefault(KEY, SALT, iv);
     }
 
     public void login(View view) {
@@ -137,7 +142,7 @@ public class LoginActivity extends AppCompatActivity {
         if (TextUtils.isEmpty(username) || TextUtils.isEmpty(password)) {
             showToastFillAllFields();
         } else {
-            loginWithAPIService(username, password);
+            loginWithAPIService(username, encryption.encryptOrNull(password));
         }
     }
 
@@ -214,5 +219,4 @@ public class LoginActivity extends AppCompatActivity {
         editor.putString(USERNAME, username);
         editor.apply();
     }
-
 }
