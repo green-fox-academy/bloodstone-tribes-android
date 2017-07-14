@@ -16,6 +16,7 @@ import org.robolectric.Robolectric;
 import org.robolectric.RobolectricTestRunner;
 import org.robolectric.RuntimeEnvironment;
 import org.robolectric.annotation.Config;
+import org.robolectric.fakes.RoboMenuItem;
 
 import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertEquals;
