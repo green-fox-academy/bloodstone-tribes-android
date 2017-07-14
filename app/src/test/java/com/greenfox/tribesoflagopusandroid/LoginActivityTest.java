@@ -45,7 +45,7 @@ public class LoginActivityTest {
 
     @Test
     public void onClick() throws Exception {
-        Button button = (Button) loginActivity.findViewById(R.id.button2);
+        Button button = (Button) loginActivity.findViewById(R.id.login);
         EditText username = (EditText) loginActivity.findViewById(R.id.usernameText);
         button.performClick();
         assertEquals(username.getText().toString(), loginActivity.preferences.getString("Username", ""));
