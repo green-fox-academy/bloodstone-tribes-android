@@ -1,20 +1,24 @@
 package com.greenfox.tribesoflagopusandroid.api.model.gameobject;
 
+import com.greenfox.tribesoflagopusandroid.api.model.response.BaseResponse;
+
 /**
  * Created by User on 2017. 06. 09..
  */
 
-public class User {
+public class User extends BaseResponse{
 
+    private long id;
     private String username;
-    private String password;
+    private long kingdomId;
 
     public User() {
     }
 
-    public User(String username, String password) {
+    public User(long id, String username, long kingdomId) {
+        this.id = id;
         this.username = username;
-        this.password = password;
+        this.kingdomId = kingdomId;
     }
 
     public String getUsername() {
@@ -25,11 +29,4 @@ public class User {
         this.username = username;
     }
 
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
 }
