@@ -94,7 +94,6 @@ public class BuildingsFragment extends BaseFragment {
         apiService.postBuilding(preferences.getString(USER_ACCESS_TOKEN, ""), "farm").enqueue(new Callback<Building>() {
           @Override
           public void onResponse(Call<Building> call, Response<Building> response) {
-            apiService.addBuildingToList(response.body());
             refresh();
           }
 
@@ -114,7 +113,6 @@ public class BuildingsFragment extends BaseFragment {
         apiService.postBuilding(preferences.getString(USER_ACCESS_TOKEN, ""), "mine").enqueue(new Callback<Building>() {
           @Override
           public void onResponse(Call<Building> call, Response<Building> response) {
-            apiService.addBuildingToList(response.body());
             refresh();
           }
 
@@ -134,7 +132,6 @@ public class BuildingsFragment extends BaseFragment {
         apiService.postBuilding(preferences.getString(USER_ACCESS_TOKEN, ""), "barrack").enqueue(new Callback<Building>() {
           @Override
           public void onResponse(Call<Building> call, Response<Building> response) {
-            apiService.addBuildingToList(response.body());
             refresh();
           }
 
@@ -145,33 +142,34 @@ public class BuildingsFragment extends BaseFragment {
         });
       }
     });
+
     return rootView;
   }
 
-  @Override
-  public void onDestroy() {
-    super.onDestroy();
-    EventBus.getDefault().unregister(this);
-  }
+    @Override
+    public void onDestroy () {
+      super.onDestroy();
+      EventBus.getDefault().unregister(this);
+    }
 
-  @Override
-  public void onCreate(@Nullable Bundle savedInstanceState) {
-    super.onCreate(savedInstanceState);
-    EventBus.getDefault().register(this);
-  }
+    @Override
+    public void onCreate (@Nullable Bundle savedInstanceState){
+      super.onCreate(savedInstanceState);
+      EventBus.getDefault().register(this);
+    }
 
-  @Override
-  public void onStop() {
-    EventBus.getDefault().unregister(this);
-    super.saveOnExit(BUILDINGS_FRAGMENT_SAVE);
-    timestamp = BaseFragment.timestamp;
-    super.onStop();
-  }
+    @Override
+    public void onStop () {
+      EventBus.getDefault().unregister(this);
+      super.saveOnExit(BUILDINGS_FRAGMENT_SAVE);
+      timestamp = BaseFragment.timestamp;
+      super.onStop();
+    }
 
-  @Subscribe(threadMode = ThreadMode.MAIN)
-  public void onEventBuildingAdded(BuildingsEvent event) {
-    buildingsAdapter.addAll(event.getBuildings());
-  }
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEventBuildingAdded (BuildingsEvent event){
+      buildingsAdapter.addAll(event.getBuildings());
+    }
 
   public void refresh() {
     FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();

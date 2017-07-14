@@ -75,7 +75,6 @@ public class TroopsFragment extends BaseFragment {
 
       @Override
       public void onFailure(Call<TroopsResponse> call, Throwable t) {
-
       }
     });
     addTroopsActionButton.setOnClickListener(new View.OnClickListener() {
@@ -85,7 +84,6 @@ public class TroopsFragment extends BaseFragment {
         apiService.postTroop(preferences.getString(USER_ACCESS_TOKEN, "")).enqueue(new Callback<Troop>() {
           @Override
           public void onResponse(Call<Troop> call, Response<Troop> response) {
-            apiService.addTroopToMockTroops(response.body());
             refresh();
           }
 
