@@ -18,6 +18,12 @@ import com.greenfox.tribesoflagopusandroid.adapter.TroopAdapter;
 import com.greenfox.tribesoflagopusandroid.api.model.gameobject.Troop;
 import com.greenfox.tribesoflagopusandroid.api.model.response.TroopsResponse;
 import com.greenfox.tribesoflagopusandroid.api.service.ApiService;
+import com.greenfox.tribesoflagopusandroid.event.BuildingsEvent;
+import com.greenfox.tribesoflagopusandroid.event.TroopsEvent;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.ArrayList;
 
@@ -72,7 +78,6 @@ public class TroopsFragment extends BaseFragment {
                 apiService.postTroop(preferences.getString(USER_ACCESS_TOKEN, "")).enqueue(new Callback<Troop>() {
                     @Override
                     public void onResponse(Call<Troop> call, Response<Troop> response) {
-                        apiService.addTroopToMockTroops(response.body());
                         refreshActiveFragment(((MainActivity)getActivity()));
                     }
 
@@ -90,6 +95,7 @@ public class TroopsFragment extends BaseFragment {
         apiService.getTroops(preferences.getString(USER_ACCESS_TOKEN, "")).enqueue(new Callback<TroopsResponse>() {
             @Override
             public void onResponse(Call<TroopsResponse> call, Response<TroopsResponse> response) {
+                EventBus.getDefault().post(new TroopsEvent(response.body().getTroops()));
                 troopAdapter.clear();
                 troopAdapter.addAll(response.body().getTroops());
                 listView.setAdapter(troopAdapter);
@@ -111,11 +117,15 @@ public class TroopsFragment extends BaseFragment {
         super.refreshActiveFragment(callback);
     }
 
-    @Override
-    public void onStop() {
-        super.saveOnExit(TROOPS_FRAGMENT_SAVE);
-        timestamp = BaseFragment.timestamp;
-        super.onStop();
-    }
+  @Override
+  public void onStop() {
+    super.saveOnExit(TROOPS_FRAGMENT_SAVE);
+    timestamp = BaseFragment.timestamp;
+    super.onStop();
+  }
 
+  @Subscribe(threadMode = ThreadMode.MAIN)
+  public void onEventTroopAdded(TroopsEvent event) {
+    troopAdapter.addAll(event.getTroops());
+  }
 }

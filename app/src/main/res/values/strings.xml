@@ -42,4 +42,10 @@
     <string name="gold_amount">1</string>
     <string name="food_amount">1</string>
     <string name="loading">loading</string>
+    <string name="register_btn">Register</string>
+    <string name="your_kingdom">Write your kingdom name</string>
+    <string name="add_password">Add a password</string>
+    <string name="confirm_password">Confirm your password</string>
+    <string name="register_name">Write your register name</string>
+    <string name="back_btn">Back</string>
 </resources>

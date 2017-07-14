@@ -21,6 +21,8 @@ import com.greenfox.tribesoflagopusandroid.api.model.gameobject.Resource;
 import com.greenfox.tribesoflagopusandroid.api.model.gameobject.Troop;
 import com.greenfox.tribesoflagopusandroid.api.service.ApiService;
 
+import org.greenrobot.eventbus.EventBus;
+
 import java.util.List;
 
 import javax.inject.Inject;

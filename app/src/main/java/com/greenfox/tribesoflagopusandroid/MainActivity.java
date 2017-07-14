@@ -24,11 +24,17 @@ import android.widget.FrameLayout;
 
 import com.greenfox.tribesoflagopusandroid.api.model.gameobject.Kingdom;
 import com.greenfox.tribesoflagopusandroid.fragments.BaseFragment;
+import com.greenfox.tribesoflagopusandroid.event.BuildingsEvent;
+import com.greenfox.tribesoflagopusandroid.event.TroopsEvent;
 import com.greenfox.tribesoflagopusandroid.fragments.BattleFragment;
 import com.greenfox.tribesoflagopusandroid.fragments.BuildingsFragment;
 import com.greenfox.tribesoflagopusandroid.fragments.MainFragment;
 import com.greenfox.tribesoflagopusandroid.fragments.SettingsFragment;
 import com.greenfox.tribesoflagopusandroid.fragments.TroopsFragment;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import javax.inject.Inject;
 
@@ -63,6 +69,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         TribesApplication.app().basicComponent().inject(this);
+        EventBus.getDefault().register(this);
         editor = preferences.edit();
         fragmentLayout = (FrameLayout) findViewById(R.id.layout_content);
         loadingView = (ConstraintLayout) findViewById(R.id.loadingView);
@@ -133,49 +140,50 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         Intent intent = new Intent(this, LoginActivity.class);
         startActivity(intent);
         finish();
+
     }
 
-    public void startBackgroundSync() {
-        manager = (AlarmManager)getApplicationContext().getSystemService(MainActivity.ALARM_SERVICE);
-        long interval = 60000l;
-        Intent alarmIntent = new Intent(this, AlarmReceiver.class);
-        pendingIntent = PendingIntent.getBroadcast(this, 0,  alarmIntent, PendingIntent.FLAG_UPDATE_CURRENT);
-        manager.setRepeating(AlarmManager.RTC_WAKEUP, System.currentTimeMillis(),interval, pendingIntent);
-    }
+  public void startBackgroundSync() {
+    manager = (AlarmManager) getApplicationContext().getSystemService(MainActivity.ALARM_SERVICE);
+    long interval = 60000l;
+    Intent alarmIntent = new Intent(this, AlarmReceiver.class);
+    pendingIntent = PendingIntent.getBroadcast(this, 0, alarmIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+    manager.setRepeating(AlarmManager.RTC_WAKEUP, System.currentTimeMillis(), interval, pendingIntent);
+  }
 
-    public void switchToBackgroundMode() {
-        long interval = 600000l;
-        manager.setRepeating(AlarmManager.ELAPSED_REALTIME, System.currentTimeMillis(),interval, pendingIntent);
-    }
+  public void switchToBackgroundMode() {
+    long interval = 600000l;
+    manager.setRepeating(AlarmManager.ELAPSED_REALTIME, System.currentTimeMillis(), interval, pendingIntent);
+  }
 
-    public void stopBackgroundSync() {
-        manager.cancel(pendingIntent);
-    }
+  public void stopBackgroundSync() {
+    manager.cancel(pendingIntent);
+  }
 
-    @Override
-    protected void onPause() {
-        preferences = PreferenceManager.getDefaultSharedPreferences(this);
-        if (preferences.getBoolean(BACKGROUND_SYNC, true)) {
-            switchToBackgroundMode();
-        }
-        saveOnExit(APP_SAVE);
-        super.onPause();
+  @Override
+  protected void onPause() {
+    preferences = PreferenceManager.getDefaultSharedPreferences(this);
+    if (preferences.getBoolean(BACKGROUND_SYNC, true)) {
+      switchToBackgroundMode();
     }
+    saveOnExit(APP_SAVE);
+    super.onPause();
+  }
 
-    @Override
-    protected void onStop() {
-        stopBackgroundSync();
-        saveOnExit(APP_SAVE);
-        super.onStop();
-    }
+  @Override
+  protected void onStop() {
+    stopBackgroundSync();
+    saveOnExit(APP_SAVE);
+    super.onStop();
+    EventBus.getDefault().unregister(this);
+  }
 
-    public void saveOnExit(String fragmentName) {
-        TribesApplication.app().basicComponent().inject(this);
-        editor = preferences.edit();
-        timestamp = String.valueOf(System.currentTimeMillis());
-        editor.putString(fragmentName, timestamp);
-        editor.apply();
-    }
+  public void saveOnExit(String fragmentName) {
+    editor = preferences.edit();
+    timestamp = String.valueOf(System.currentTimeMillis());
+    editor.putString(fragmentName, timestamp);
+    editor.apply();
+  }
 
     private void displaySelectedScreen(int id) {
 
@@ -208,14 +216,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         drawer.closeDrawer(GravityCompat.START);
     }
 
-    @SuppressWarnings("StatementWithEmptyBody")
-    @Override
-    public boolean onNavigationItemSelected(MenuItem item) {
-        int id = item.getItemId();
-        displaySelectedScreen(id);
-        return true;
-    }
-
     @Override
     public void loadingStarted() {
         switchToLoadingView();
@@ -225,4 +225,23 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     public void loadingFinished() {
         switchToContentView();
     }
+
+  @SuppressWarnings("StatementWithEmptyBody")
+  @Override
+  public boolean onNavigationItemSelected(MenuItem item) {
+    int id = item.getItemId();
+    displaySelectedScreen(id);
+    return true;
+  }
+
+  @Subscribe(threadMode = ThreadMode.MAIN)
+  public void onEventNavigateToBuildings(BuildingsEvent event) {
+      activeFragment = new BuildingsFragment();
+  }
+
+  @Subscribe(threadMode = ThreadMode.MAIN)
+  public void onEventNavigateToTroops(TroopsEvent event) {
+      activeFragment = new TroopsFragment();
+  }
+
 }
