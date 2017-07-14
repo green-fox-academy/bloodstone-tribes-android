@@ -33,7 +33,6 @@ public class MockApiService implements ApiService {
     private String name = "kingdomname";
     private long idOfUser = 1;
     private Building townhall = new Building(3, "townhall", 1, 10);
-    ;
     private List<Building> buildings = new ArrayList<>(Arrays.asList(townhall));
     private Resource gold = new Resource("gold", 100, 1);
     private Resource food = new Resource("food", 20, 1);
