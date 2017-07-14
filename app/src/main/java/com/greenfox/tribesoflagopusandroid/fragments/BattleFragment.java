@@ -33,7 +33,9 @@ public class BattleFragment extends BaseFragment {
     @Override
     public void refreshActiveFragment() {
         super.refreshActiveFragment();
-        loadingViewListener.loadingFinished();
+        if (loadingViewListener != null) {
+            loadingViewListener.loadingFinished();
+        }
     }
 
     @Override

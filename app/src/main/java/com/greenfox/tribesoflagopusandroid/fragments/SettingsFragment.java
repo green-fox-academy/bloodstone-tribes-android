@@ -116,7 +116,9 @@ public class SettingsFragment extends BaseFragment {
         background_sync_status = (TextView) rootView.findViewById(R.id.background_sync_status);
         background_sync = (Switch) rootView.findViewById(R.id.background_sync);
         super.refreshActiveFragment();
-        loadingViewListener.loadingFinished();
+        if (loadingViewListener != null) {
+            loadingViewListener.loadingFinished();
+        }
     }
 
     @Override
