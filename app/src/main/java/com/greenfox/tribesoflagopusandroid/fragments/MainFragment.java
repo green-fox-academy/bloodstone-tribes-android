@@ -11,7 +11,6 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.greenfox.tribesoflagopusandroid.LFCB;
 import com.greenfox.tribesoflagopusandroid.MainActivity;
 import com.greenfox.tribesoflagopusandroid.R;
 import com.greenfox.tribesoflagopusandroid.TribesApplication;
@@ -20,8 +19,6 @@ import com.greenfox.tribesoflagopusandroid.api.model.gameobject.Kingdom;
 import com.greenfox.tribesoflagopusandroid.api.model.gameobject.Resource;
 import com.greenfox.tribesoflagopusandroid.api.model.gameobject.Troop;
 import com.greenfox.tribesoflagopusandroid.api.service.ApiService;
-
-import org.greenrobot.eventbus.EventBus;
 
 import java.util.List;
 
@@ -73,7 +70,7 @@ public class MainFragment extends BaseFragment {
         food = (TextView) rootView.findViewById(R.id.resources_food);
         totalBuildingNumber = (TextView) rootView.findViewById(R.id.buildings_finished);
         totalTroopNumber = (TextView) rootView.findViewById(R.id.troops_finished);
-        refreshActiveFragment(((MainActivity)getActivity()));
+        refreshActiveFragment();
 
         Button buildingButton = (Button) rootView.findViewById(R.id.go_to_buildings_btn);
         buildingButton.setOnClickListener(new View.OnClickListener() {
@@ -101,7 +98,7 @@ public class MainFragment extends BaseFragment {
         return rootView;
     }
 
-    public void getKingdomFromAPI(final LFCB callback) {
+    public void getKingdomFromAPI() {
         apiService.getKingdom(preferences.getString(USER_ACCESS_TOKEN, "")).enqueue(new Callback<Kingdom>() {
             @Override
             public void onResponse(Call<Kingdom> call, Response<Kingdom> response) {
@@ -111,8 +108,8 @@ public class MainFragment extends BaseFragment {
                 fillResources();
                 fillTroops();
                 fillBuildings();
-                if (callback != null) {
-                    callback.loadingFinished();
+                if (loadingViewListener != null) {
+                    loadingViewListener.loadingFinished();
                 }
             }
 
@@ -138,9 +135,9 @@ public class MainFragment extends BaseFragment {
     }
 
     @Override
-    public void refreshActiveFragment(LFCB callback) {
-        getKingdomFromAPI(callback);
-        super.refreshActiveFragment(callback);
+    public void refreshActiveFragment() {
+        getKingdomFromAPI();
+        super.refreshActiveFragment();
     }
 
     @Override

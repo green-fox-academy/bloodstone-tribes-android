@@ -6,8 +6,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.greenfox.tribesoflagopusandroid.LFCB;
-import com.greenfox.tribesoflagopusandroid.MainActivity;
 import com.greenfox.tribesoflagopusandroid.R;
 
 import static com.greenfox.tribesoflagopusandroid.MainActivity.BATTLE_FRAGMENT_SAVE;
@@ -22,7 +20,7 @@ public class BattleFragment extends BaseFragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        refreshActiveFragment(((MainActivity)getActivity()));
+        refreshActiveFragment();
         return inflater.inflate(R.layout.fragment_battle, container, false);
     }
 
@@ -33,8 +31,9 @@ public class BattleFragment extends BaseFragment {
     }
 
     @Override
-    public void refreshActiveFragment(LFCB callback) {
-        super.refreshActiveFragment(callback);
+    public void refreshActiveFragment() {
+        super.refreshActiveFragment();
+        loadingViewListener.loadingFinished();
     }
 
     @Override

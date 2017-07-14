@@ -10,15 +10,12 @@ import android.widget.ListView;
 
 import com.github.clans.fab.FloatingActionButton;
 import com.github.clans.fab.FloatingActionMenu;
-import com.greenfox.tribesoflagopusandroid.LFCB;
-import com.greenfox.tribesoflagopusandroid.MainActivity;
 import com.greenfox.tribesoflagopusandroid.R;
 import com.greenfox.tribesoflagopusandroid.TribesApplication;
 import com.greenfox.tribesoflagopusandroid.adapter.TroopAdapter;
 import com.greenfox.tribesoflagopusandroid.api.model.gameobject.Troop;
 import com.greenfox.tribesoflagopusandroid.api.model.response.TroopsResponse;
 import com.greenfox.tribesoflagopusandroid.api.service.ApiService;
-import com.greenfox.tribesoflagopusandroid.event.BuildingsEvent;
 import com.greenfox.tribesoflagopusandroid.event.TroopsEvent;
 
 import org.greenrobot.eventbus.EventBus;
@@ -68,7 +65,7 @@ public class TroopsFragment extends BaseFragment {
         View rootView = inflater.inflate(R.layout.fragment_troops, container, false);
         troopAdapter = new TroopAdapter(getContext(), new ArrayList<Troop>());
         listView = (ListView) rootView.findViewById(R.id.troops_listView);
-        refreshActiveFragment(((MainActivity)getActivity()));
+        refreshActiveFragment();
 
         troopsFloatingActionMenu = (FloatingActionMenu) rootView.findViewById(R.id.add_troop_menu);
         addTroopsActionButton = (FloatingActionButton) rootView.findViewById(R.id.add_troop_menu_item);
@@ -78,7 +75,7 @@ public class TroopsFragment extends BaseFragment {
                 apiService.postTroop(preferences.getString(USER_ACCESS_TOKEN, "")).enqueue(new Callback<Troop>() {
                     @Override
                     public void onResponse(Call<Troop> call, Response<Troop> response) {
-                        refreshActiveFragment(((MainActivity)getActivity()));
+                        refreshActiveFragment();
                     }
 
                     @Override
@@ -91,7 +88,7 @@ public class TroopsFragment extends BaseFragment {
         return rootView;
     }
 
-    public void getTroopsFromAPI(final LFCB callback) {
+    public void getTroopsFromAPI() {
         apiService.getTroops(preferences.getString(USER_ACCESS_TOKEN, "")).enqueue(new Callback<TroopsResponse>() {
             @Override
             public void onResponse(Call<TroopsResponse> call, Response<TroopsResponse> response) {
@@ -99,8 +96,8 @@ public class TroopsFragment extends BaseFragment {
                 troopAdapter.clear();
                 troopAdapter.addAll(response.body().getTroops());
                 listView.setAdapter(troopAdapter);
-                if (callback != null) {
-                    callback.loadingFinished();
+                if (loadingViewListener != null) {
+                    loadingViewListener.loadingFinished();
                 }
             }
 
@@ -112,9 +109,9 @@ public class TroopsFragment extends BaseFragment {
     }
 
     @Override
-    public void refreshActiveFragment(LFCB callback) {
-        getTroopsFromAPI(callback);
-        super.refreshActiveFragment(callback);
+    public void refreshActiveFragment() {
+        getTroopsFromAPI();
+        super.refreshActiveFragment();
     }
 
   @Override

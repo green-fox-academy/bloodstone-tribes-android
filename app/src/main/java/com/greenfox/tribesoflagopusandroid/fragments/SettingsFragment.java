@@ -10,7 +10,6 @@ import android.widget.CompoundButton;
 import android.widget.Switch;
 import android.widget.TextView;
 
-import com.greenfox.tribesoflagopusandroid.LFCB;
 import com.greenfox.tribesoflagopusandroid.MainActivity;
 import com.greenfox.tribesoflagopusandroid.R;
 import com.greenfox.tribesoflagopusandroid.TribesApplication;
@@ -53,7 +52,7 @@ public class SettingsFragment extends BaseFragment {
         TribesApplication.app().basicComponent().inject(this);
         editor = preferences.edit();
         rootView = inflater.inflate(R.layout.settings_fragment, container, false);
-        refreshActiveFragment(((MainActivity)getActivity()));
+        refreshActiveFragment();
 
         notification.setChecked(preferences.getBoolean(NOTIFICATION, false));
         notification.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
@@ -111,12 +110,13 @@ public class SettingsFragment extends BaseFragment {
     }
 
     @Override
-    public void refreshActiveFragment(LFCB callback) {
+    public void refreshActiveFragment() {
         notification_status = (TextView) rootView.findViewById(R.id.notification_status);
         notification = (Switch) rootView.findViewById(R.id.notification);
         background_sync_status = (TextView) rootView.findViewById(R.id.background_sync_status);
         background_sync = (Switch) rootView.findViewById(R.id.background_sync);
-        super.refreshActiveFragment(callback);
+        super.refreshActiveFragment();
+        loadingViewListener.loadingFinished();
     }
 
     @Override

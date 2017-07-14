@@ -3,9 +3,8 @@ package com.greenfox.tribesoflagopusandroid.fragments;
 
 import android.content.SharedPreferences;
 import android.support.v4.app.Fragment;
-import android.widget.Toast;
 
-import com.greenfox.tribesoflagopusandroid.LFCB;
+import com.greenfox.tribesoflagopusandroid.LoadingViewListener;
 import com.greenfox.tribesoflagopusandroid.TribesApplication;
 
 import javax.inject.Inject;
@@ -15,6 +14,8 @@ import javax.inject.Inject;
  */
 
 public class BaseFragment extends Fragment {
+
+    LoadingViewListener loadingViewListener;
 
     @Inject
     SharedPreferences preferences;
@@ -27,11 +28,14 @@ public class BaseFragment extends Fragment {
         super.onStop();
     }
 
+    public void setLoadingViewListener(LoadingViewListener loadingViewListener) {
+        this.loadingViewListener = loadingViewListener;
+    }
 
-
-    public void refreshActiveFragment(LFCB callback) {
-        callback.loadingStarted();
-        Toast.makeText(getActivity(),"Refreshing", Toast.LENGTH_SHORT).show();
+    public void refreshActiveFragment() {
+        if (loadingViewListener != null) {
+            loadingViewListener.loadingStarted();
+        }
     }
 
     public void saveOnExit(String fragment) {

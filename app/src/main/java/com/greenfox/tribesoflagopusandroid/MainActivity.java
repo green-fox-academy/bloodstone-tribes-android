@@ -38,7 +38,7 @@ import org.greenrobot.eventbus.ThreadMode;
 
 import javax.inject.Inject;
 
-public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener, LFCB {
+public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener, LoadingViewListener {
 
     public static final String USER_ACCESS_TOKEN = "userToken";
     public static final String USERNAME = "username";
@@ -89,16 +89,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         navigationView.setNavigationItemSelectedListener(this);
     }
 
-    public void switchToLoadingView() {
-        fragmentLayout.setVisibility(View.INVISIBLE);
-        loadingView.setVisibility(View.VISIBLE);
-    }
-
-    public void switchToContentView() {
-        fragmentLayout.setVisibility(View.VISIBLE);
-        loadingView.setVisibility(View.INVISIBLE);
-    }
-
     public void checkBackgroundSyncStatus() {
         preferences = PreferenceManager.getDefaultSharedPreferences(this);
         if (preferences.getBoolean(BACKGROUND_SYNC, true)) {
@@ -117,7 +107,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         super.onOptionsItemSelected(item);
         switch (item.getItemId()) {
             case R.id.refreshing:
-                activeFragment.refreshActiveFragment(this);
+                activeFragment.refreshActiveFragment();
         }
         return false;
     }
@@ -208,6 +198,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 break;
         }
         if (activeFragment != null) {
+            activeFragment.setLoadingViewListener(this);
             FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
             transaction.replace(R.id.layout_content, activeFragment);
             transaction.commit();
@@ -218,12 +209,14 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     @Override
     public void loadingStarted() {
-        switchToLoadingView();
+        fragmentLayout.setVisibility(View.INVISIBLE);
+        loadingView.setVisibility(View.VISIBLE);
     }
 
     @Override
     public void loadingFinished() {
-        switchToContentView();
+        fragmentLayout.setVisibility(View.VISIBLE);
+        loadingView.setVisibility(View.INVISIBLE);
     }
 
   @SuppressWarnings("StatementWithEmptyBody")
