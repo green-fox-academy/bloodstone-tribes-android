@@ -13,23 +13,27 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import org.greenrobot.eventbus.EventBus;
+
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 import retrofit2.http.Field;
 import retrofit2.http.Header;
 import retrofit2.http.Path;
+
 /**
  * Created by hegyi on 2017-06-22.
  */
 
-public class MockApiService implements ApiService{
+public class MockApiService implements ApiService {
 
     private long id = 1;
 
     private String name = "kingdomname";
     private long idOfUser = 1;
     private Building townhall = new Building(3, "townhall", 1, 10);
+    ;
     private List<Building> buildings = new ArrayList<>(Arrays.asList(townhall));
     private Resource gold = new Resource("gold", 100, 1);
     private Resource food = new Resource("food", 20, 1);
@@ -39,6 +43,7 @@ public class MockApiService implements ApiService{
     private String type = "farm";
     private int level = 1;
     private int hp = 10;
+    private Troop troop = new Troop(1L,1,1,1,1);
 
     @Override
     public Call<TroopsResponse> getTroops(@Header("X-tribes-token") String token) {
@@ -82,10 +87,13 @@ public class MockApiService implements ApiService{
 
     @Override
     public Call<Building> postBuilding(@Header("X-tribes-token") String token, @Field("type") final String type) {
+        EventBus.getDefault().post(new BuildingsResponse(buildings));
         return new MockCall<Building>() {
             @Override
             public void enqueue(Callback callback) {
-                callback.onResponse(null, Response.success(new Building(1L, type, 1, 1)));
+                Building building = new Building(1L, type, 1, 1);
+                buildings.add(building);
+                callback.onResponse(null, Response.success(building));
             }
         };
     }
@@ -100,22 +108,13 @@ public class MockApiService implements ApiService{
         };
     }
 
-    @Override
-    public void addBuildingToList(Building building) {
-        buildings.add(building);
-    }
-
     public Call<Troop> postTroop(@Header("X-tribes-token") String token) {
         return new MockCall<Troop>() {
             @Override
             public void enqueue(Callback callback) {
-                callback.onResponse(null, Response.success(new Troop(1L,1,1,1,1)));
+                callback.onResponse(null, Response.success(new Troop(1L, 1, 1, 1, 1)));
             }
         };
     }
-
-    public void addTroopToMockTroops(Troop troop) {
-        troops.add(troop);
-    }
-
 }
+

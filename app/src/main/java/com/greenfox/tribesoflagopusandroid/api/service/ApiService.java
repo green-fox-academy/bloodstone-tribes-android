@@ -38,10 +38,6 @@ public interface ApiService {
     @GET("/kingdom/resources")
     Call<ResourcesResponse> getResource(@Header("X-tribes-token") String token);
 
-    void addBuildingToList(Building building);
-
     @POST("/kingdom/troops")
     Call<Troop> postTroop(@Header("X-tribes-token") String token);
-
-    void addTroopToMockTroops(Troop troop);
 }
