@@ -21,11 +21,12 @@ import retrofit2.Response;
 import retrofit2.http.Field;
 import retrofit2.http.Header;
 import retrofit2.http.Path;
+
 /**
  * Created by hegyi on 2017-06-22.
  */
 
-public class MockApiService implements ApiService{
+public class MockApiService implements ApiService {
 
     private long id = 1;
 
@@ -46,8 +47,23 @@ public class MockApiService implements ApiService{
     public Call<TroopsResponse> getTroops(@Header("X-tribes-token") String token) {
         return new MockCall<TroopsResponse>() {
             @Override
-            public void enqueue(Callback callback) {
-                callback.onResponse(null, Response.success(new TroopsResponse(troops)));
+            public void enqueue(final Callback callback) {
+                new AsyncTask<Void, Void, Void>() {
+                    @Override
+                    protected Void doInBackground(Void... params) {
+                        try {
+                            Thread.sleep(3000);
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
+                        }
+                        return null;
+                    }
+
+                    @Override
+                    protected void onPostExecute(Void aVoid) {
+                        callback.onResponse(null, Response.success(new TroopsResponse(troops)));
+                    }
+                }.execute();
             }
         };
     }
@@ -144,7 +160,7 @@ public class MockApiService implements ApiService{
         return new MockCall<Troop>() {
             @Override
             public void enqueue(Callback callback) {
-                callback.onResponse(null, Response.success(new Troop(1L,1,1,1,1)));
+                callback.onResponse(null, Response.success(new Troop(1L, 1, 1, 1, 1)));
             }
         };
     }

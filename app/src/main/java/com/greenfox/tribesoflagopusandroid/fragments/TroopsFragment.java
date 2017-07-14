@@ -10,6 +10,7 @@ import android.widget.ListView;
 
 import com.github.clans.fab.FloatingActionButton;
 import com.github.clans.fab.FloatingActionMenu;
+import com.greenfox.tribesoflagopusandroid.LFCB;
 import com.greenfox.tribesoflagopusandroid.MainActivity;
 import com.greenfox.tribesoflagopusandroid.R;
 import com.greenfox.tribesoflagopusandroid.TribesApplication;
@@ -47,6 +48,13 @@ public class TroopsFragment extends BaseFragment {
     }
 
     @Override
+    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        getActivity().setTitle("Troops");
+    }
+
+    @Nullable
+    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         TribesApplication.app().basicComponent().inject(this);
@@ -54,7 +62,7 @@ public class TroopsFragment extends BaseFragment {
         View rootView = inflater.inflate(R.layout.fragment_troops, container, false);
         troopAdapter = new TroopAdapter(getContext(), new ArrayList<Troop>());
         listView = (ListView) rootView.findViewById(R.id.troops_listView);
-        refreshActiveFragment();
+        refreshActiveFragment(((MainActivity)getActivity()));
 
         troopsFloatingActionMenu = (FloatingActionMenu) rootView.findViewById(R.id.add_troop_menu);
         addTroopsActionButton = (FloatingActionButton) rootView.findViewById(R.id.add_troop_menu_item);
@@ -65,7 +73,7 @@ public class TroopsFragment extends BaseFragment {
                     @Override
                     public void onResponse(Call<Troop> call, Response<Troop> response) {
                         apiService.addTroopToMockTroops(response.body());
-                        refreshActiveFragment();
+                        refreshActiveFragment(((MainActivity)getActivity()));
                     }
 
                     @Override
@@ -78,14 +86,16 @@ public class TroopsFragment extends BaseFragment {
         return rootView;
     }
 
-    public void getTroopsFromAPI() {
-        ((MainActivity)getActivity()).switchToLoadingView();
+    public void getTroopsFromAPI(final LFCB callback) {
         apiService.getTroops(preferences.getString(USER_ACCESS_TOKEN, "")).enqueue(new Callback<TroopsResponse>() {
             @Override
             public void onResponse(Call<TroopsResponse> call, Response<TroopsResponse> response) {
+                troopAdapter.clear();
                 troopAdapter.addAll(response.body().getTroops());
                 listView.setAdapter(troopAdapter);
-                ((MainActivity)getActivity()).sitchToContentView();
+                if (callback != null) {
+                    callback.loadingFinished();
+                }
             }
 
             @Override
@@ -96,9 +106,9 @@ public class TroopsFragment extends BaseFragment {
     }
 
     @Override
-    public void refreshActiveFragment() {
-        getTroopsFromAPI();
-        super.refreshActiveFragment();
+    public void refreshActiveFragment(LFCB callback) {
+        getTroopsFromAPI(callback);
+        super.refreshActiveFragment(callback);
     }
 
     @Override
@@ -106,12 +116,6 @@ public class TroopsFragment extends BaseFragment {
         super.saveOnExit(TROOPS_FRAGMENT_SAVE);
         timestamp = BaseFragment.timestamp;
         super.onStop();
-    }
-
-    @Override
-    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-        getActivity().setTitle("Troops");
     }
 
 }

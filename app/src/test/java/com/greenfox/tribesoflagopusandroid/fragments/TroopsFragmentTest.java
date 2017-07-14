@@ -12,9 +12,10 @@ import org.junit.runner.RunWith;
 import org.robolectric.Robolectric;
 import org.robolectric.RobolectricTestRunner;
 import org.robolectric.annotation.Config;
+import org.robolectric.shadows.support.v4.SupportFragmentTestUtil;
 
-import static org.junit.Assert.*;
-import static org.robolectric.shadows.support.v4.SupportFragmentTestUtil.startFragment;
+import static junit.framework.TestCase.assertNotNull;
+import static org.junit.Assert.assertTrue;
 
 /**
  * Created by hegyi on 2017-06-29.
@@ -32,7 +33,7 @@ public class TroopsFragmentTest {
     public void setup() {
         mainActivity = Robolectric.setupActivity(MainActivity.class);
         troopsFragment = new TroopsFragment();
-        startFragment(troopsFragment);
+        SupportFragmentTestUtil.startFragment(troopsFragment, MainActivity.class);
     }
 
     @Test

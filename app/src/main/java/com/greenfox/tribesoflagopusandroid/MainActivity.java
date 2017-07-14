@@ -32,7 +32,7 @@ import com.greenfox.tribesoflagopusandroid.fragments.TroopsFragment;
 
 import javax.inject.Inject;
 
-public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
+public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener, LFCB {
 
     public static final String USER_ACCESS_TOKEN = "userToken";
     public static final String USERNAME = "username";
@@ -87,7 +87,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         loadingView.setVisibility(View.VISIBLE);
     }
 
-    public void sitchToContentView() {
+    public void switchToContentView() {
         fragmentLayout.setVisibility(View.VISIBLE);
         loadingView.setVisibility(View.INVISIBLE);
     }
@@ -110,7 +110,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         super.onOptionsItemSelected(item);
         switch (item.getItemId()) {
             case R.id.refreshing:
-                activeFragment.refreshActiveFragment();
+                activeFragment.refreshActiveFragment(this);
         }
         return false;
     }
@@ -216,4 +216,13 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         return true;
     }
 
+    @Override
+    public void loadingStarted() {
+        switchToLoadingView();
+    }
+
+    @Override
+    public void loadingFinished() {
+        switchToContentView();
+    }
 }

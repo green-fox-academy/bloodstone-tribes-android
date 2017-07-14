@@ -5,6 +5,7 @@ import android.content.SharedPreferences;
 import android.support.v4.app.Fragment;
 import android.widget.Toast;
 
+import com.greenfox.tribesoflagopusandroid.LFCB;
 import com.greenfox.tribesoflagopusandroid.TribesApplication;
 
 import javax.inject.Inject;
@@ -28,7 +29,8 @@ public class BaseFragment extends Fragment {
 
 
 
-    public void refreshActiveFragment() {
+    public void refreshActiveFragment(LFCB callback) {
+        callback.loadingStarted();
         Toast.makeText(getActivity(),"Refreshing", Toast.LENGTH_SHORT).show();
     }
 

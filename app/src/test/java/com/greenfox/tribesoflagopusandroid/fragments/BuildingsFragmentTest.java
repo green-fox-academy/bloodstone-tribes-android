@@ -27,16 +27,19 @@ public class BuildingsFragmentTest {
     BuildingsFragment buildingsFragment;
     FloatingActionMenu buildingFloatingActionMenu;
     FloatingActionButton floatingActionButtonFarm;
+    BaseFragment baseFragment;
 
     @Before
     public void setup() {
         mainActivity = Robolectric.setupActivity(MainActivity.class);
-        buildingsFragment = new BuildingsFragment();
-        startFragment(buildingsFragment);
+//        startFragment(buildingsFragment);
     }
 
     @Test
-    public void troopsFragmentOpens() throws Exception {
+    public void buildingFragmentOpen() throws Exception {
+        baseFragment = new BaseFragment();
+        buildingsFragment = new BuildingsFragment();
+        startFragment(buildingsFragment);
         assertNotNull(buildingsFragment);
     }
 

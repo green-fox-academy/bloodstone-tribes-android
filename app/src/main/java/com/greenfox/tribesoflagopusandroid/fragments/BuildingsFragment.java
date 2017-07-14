@@ -11,6 +11,7 @@ import android.widget.ListView;
 
 import com.github.clans.fab.FloatingActionButton;
 import com.github.clans.fab.FloatingActionMenu;
+import com.greenfox.tribesoflagopusandroid.LFCB;
 import com.greenfox.tribesoflagopusandroid.MainActivity;
 import com.greenfox.tribesoflagopusandroid.R;
 import com.greenfox.tribesoflagopusandroid.TribesApplication;
@@ -34,13 +35,12 @@ public class BuildingsFragment extends BaseFragment {
 
     @Inject
     SharedPreferences preferences;
-
-    SharedPreferences.Editor editor;
     @Inject
     ApiService apiService;
 
-    private BuildingsAdapter buildingsAdapter;
+    SharedPreferences.Editor editor;
     String timestamp;
+    private BuildingsAdapter buildingsAdapter;
     FloatingActionMenu buildingsFloatingMenu;
     FloatingActionButton addFarmFloatingButton, addMineFloatingButton, addBarrackFloatingButton;
     ListView listView;
@@ -64,7 +64,7 @@ public class BuildingsFragment extends BaseFragment {
         View rootView = inflater.inflate(R.layout.fragment_buildings, container, false);
         buildingsAdapter = new BuildingsAdapter(getContext(), new ArrayList<Building>());
         listView = (ListView) rootView.findViewById(R.id.buildings_list);
-        refreshActiveFragment();
+        refreshActiveFragment(((MainActivity)getActivity()));
 
         buildingsFloatingMenu = (FloatingActionMenu) rootView.findViewById(R.id.add_building_menu);
         addFarmFloatingButton = (FloatingActionButton) rootView.findViewById(R.id.add_farm_menu_item);
@@ -75,7 +75,7 @@ public class BuildingsFragment extends BaseFragment {
                     @Override
                     public void onResponse(Call<Building> call, Response<Building> response) {
                         apiService.addBuildingToList(response.body());
-                        refreshActiveFragment();
+                        getBuildingsFromAPI(((MainActivity)getActivity()));
                     }
 
                     @Override
@@ -94,7 +94,7 @@ public class BuildingsFragment extends BaseFragment {
                     @Override
                     public void onResponse(Call<Building> call, Response<Building> response) {
                         apiService.addBuildingToList(response.body());
-                        refreshActiveFragment();
+                        refreshActiveFragment(((MainActivity)getActivity()));
                     }
 
                     @Override
@@ -113,7 +113,7 @@ public class BuildingsFragment extends BaseFragment {
                     @Override
                     public void onResponse(Call<Building> call, Response<Building> response) {
                         apiService.addBuildingToList(response.body());
-                        refreshActiveFragment();
+                        refreshActiveFragment(((MainActivity)getActivity()));
                     }
 
                     @Override
@@ -127,14 +127,16 @@ public class BuildingsFragment extends BaseFragment {
         return rootView;
     }
 
-    public void getBuildingsFromAPI() {
-        ((MainActivity)getActivity()).switchToLoadingView();
+    public void getBuildingsFromAPI(final LFCB callback) {
         apiService.getBuildings(preferences.getString(USER_ACCESS_TOKEN, "")).enqueue(new Callback<BuildingsResponse>() {
             @Override
             public void onResponse(Call<BuildingsResponse> call, Response<BuildingsResponse> response) {
+                buildingsAdapter.clear();
                 buildingsAdapter.addAll(response.body().getBuildings());
                 listView.setAdapter(buildingsAdapter);
-                ((MainActivity) getActivity()).sitchToContentView();
+                if (callback != null) {
+                    callback.loadingFinished();
+                }
             }
 
             @Override
@@ -144,9 +146,9 @@ public class BuildingsFragment extends BaseFragment {
     }
 
     @Override
-    public void refreshActiveFragment() {
-        getBuildingsFromAPI();
-        super.refreshActiveFragment();
+    public void refreshActiveFragment(LFCB callback) {
+        getBuildingsFromAPI(callback);
+        super.refreshActiveFragment(callback);
     }
 
     @Override
