@@ -13,6 +13,7 @@ import org.robolectric.Robolectric;
 import org.robolectric.RobolectricTestRunner;
 import org.robolectric.annotation.Config;
 
+import static junit.framework.Assert.assertNotNull;
 import static org.junit.Assert.*;
 import static org.robolectric.shadows.support.v4.SupportFragmentTestUtil.startFragment;
 
@@ -23,23 +24,27 @@ import static org.robolectric.shadows.support.v4.SupportFragmentTestUtil.startFr
 @RunWith(RobolectricTestRunner.class)
 public class TroopsFragmentTest {
 
-    MainActivity mainActivity;
-    TroopsFragment troopsFragment;
-    FloatingActionMenu troopsFloatingActionMenu;
-    FloatingActionButton floatingActionButton;
+  MainActivity mainActivity;
+  TroopsFragment troopsFragment;
+  FloatingActionMenu troopsFloatingActionMenu;
+  FloatingActionButton floatingActionButton;
 
-    @Before
-    public void setup() {
-        mainActivity = Robolectric.setupActivity(MainActivity.class);
-        troopsFragment = new TroopsFragment();
-        startFragment(troopsFragment);
-    }
+  @Before
+  public void setup() {
+    mainActivity = Robolectric.setupActivity(MainActivity.class);
+    troopsFragment = new TroopsFragment();
+    startFragment(troopsFragment);
+  }
 
-    @Test
-    public void floatingActionButtonIsClickable() throws Exception {
-        troopsFloatingActionMenu = (FloatingActionMenu) troopsFragment.getView().findViewById(R.id.add_troop_menu);
-        floatingActionButton = (FloatingActionButton) troopsFragment.getView().findViewById(R.id.add_troop_menu_item);
-        assertTrue(floatingActionButton.isClickable());
-    }
+  @Test
+  public void troopsFragmentOpens() throws Exception {
+    assertNotNull(troopsFragment);
+  }
 
+  @Test
+  public void floatingActionButtonIsClickable() throws Exception {
+    troopsFloatingActionMenu = (FloatingActionMenu) troopsFragment.getView().findViewById(R.id.add_troop_menu);
+    floatingActionButton = (FloatingActionButton) troopsFragment.getView().findViewById(R.id.add_troop_menu_item);
+    assertTrue(floatingActionButton.isClickable());
+  }
 }
