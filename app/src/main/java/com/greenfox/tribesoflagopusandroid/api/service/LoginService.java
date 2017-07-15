@@ -1,10 +1,10 @@
 package com.greenfox.tribesoflagopusandroid.api.service;
 
 import com.greenfox.tribesoflagopusandroid.api.model.gameobject.Token;
+import com.greenfox.tribesoflagopusandroid.api.model.gameobject.UserLoginDTO;
 
 import retrofit2.Call;
-import retrofit2.http.Field;
-import retrofit2.http.FormUrlEncoded;
+import retrofit2.http.Body;
 import retrofit2.http.POST;
 
 /**
@@ -14,7 +14,7 @@ import retrofit2.http.POST;
 public interface LoginService {
 
     @POST("/login")
-    Call<Token> loginWithUser(@Field("username") String username, @Field("password") String password);
+    Call<Token> loginWithUser(@Body UserLoginDTO user);
 
 }
 

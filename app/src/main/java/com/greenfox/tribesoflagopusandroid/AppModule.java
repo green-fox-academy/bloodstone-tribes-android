@@ -46,7 +46,7 @@ public class AppModule {
     public Gson provideGson(){
         return new Gson();
     }
-    
+
     @Singleton
     @Provides
     public LoginService provideLoginService() {

@@ -21,6 +21,7 @@ import android.widget.Toast;
 import com.greenfox.tribesoflagopusandroid.api.model.gameobject.Kingdom;
 import com.greenfox.tribesoflagopusandroid.api.model.gameobject.Token;
 import com.greenfox.tribesoflagopusandroid.api.model.gameobject.User;
+import com.greenfox.tribesoflagopusandroid.api.model.gameobject.UserLoginDTO;
 import com.greenfox.tribesoflagopusandroid.api.service.ApiService;
 import com.greenfox.tribesoflagopusandroid.api.service.LoginService;
 
@@ -153,7 +154,7 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     protected void loginWithAPIService(final String username, String password) {
-        loginService.loginWithUser(username, password).enqueue(new Callback<Token>() {
+        loginService.loginWithUser(new UserLoginDTO(username, password)).enqueue(new Callback<Token>() {
             @Override
             public void onResponse(Call<Token> call, Response<Token> response) {
                 Token token = response.body();
