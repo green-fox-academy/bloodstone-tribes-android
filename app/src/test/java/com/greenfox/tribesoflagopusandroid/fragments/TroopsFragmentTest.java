@@ -36,11 +36,6 @@ public class TroopsFragmentTest {
     }
 
     @Test
-    public void troopsFragmentOpens() throws Exception {
-        assertNotNull(troopsFragment);
-    }
-
-    @Test
     public void floatingActionButtonIsClickable() throws Exception {
         troopsFloatingActionMenu = (FloatingActionMenu) troopsFragment.getView().findViewById(R.id.add_troop_menu);
         floatingActionButton = (FloatingActionButton) troopsFragment.getView().findViewById(R.id.add_troop_menu_item);
