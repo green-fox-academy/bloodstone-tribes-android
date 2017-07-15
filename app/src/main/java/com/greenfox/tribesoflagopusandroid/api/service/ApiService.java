@@ -1,14 +1,17 @@
 package com.greenfox.tribesoflagopusandroid.api.service;
 
 import com.greenfox.tribesoflagopusandroid.api.model.gameobject.Building;
+import com.greenfox.tribesoflagopusandroid.api.model.gameobject.BuildingDTO;
 import com.greenfox.tribesoflagopusandroid.api.model.gameobject.Kingdom;
 import com.greenfox.tribesoflagopusandroid.api.model.gameobject.Troop;
 import com.greenfox.tribesoflagopusandroid.api.model.gameobject.User;
+import com.greenfox.tribesoflagopusandroid.api.model.gameobject.UserRegisterDTO;
 import com.greenfox.tribesoflagopusandroid.api.model.response.BuildingsResponse;
 import com.greenfox.tribesoflagopusandroid.api.model.response.ResourcesResponse;
 import com.greenfox.tribesoflagopusandroid.api.model.response.TroopsResponse;
 
 import retrofit2.Call;
+import retrofit2.http.Body;
 import retrofit2.http.Field;
 import retrofit2.http.GET;
 import retrofit2.http.Header;
@@ -22,7 +25,7 @@ import retrofit2.http.Path;
 public interface ApiService {
 
     @POST("/register")
-    Call<User> register(@Field("username") String username, @Field("password") String password, @Field("kingdomName") String kingdomName);
+    Call<User> register(@Body UserRegisterDTO userRegisterDTO);
 
     @GET("/kingdom/troops")
     Call<TroopsResponse> getTroops(@Header("X-tribes-token") String token);
@@ -37,7 +40,7 @@ public interface ApiService {
     Call<Kingdom> getKingdom(@Header("X-tribes-token") String token);
 
     @POST("/kingdom/buildings")
-    Call<Building> postBuilding(@Header("X-tribes-token") String token, @Field("type") String type);
+    Call<Building> postBuilding(@Header("X-tribes-token") String token, @Body BuildingDTO building);
 
     @GET("/kingdom/resources")
     Call<ResourcesResponse> getResource(@Header("X-tribes-token") String token);
