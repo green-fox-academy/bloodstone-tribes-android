@@ -2,6 +2,7 @@ package com.greenfox.tribesoflagopusandroid;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.os.Build;
 import android.preference.PreferenceManager;
 
 import com.google.gson.Gson;
@@ -22,7 +23,7 @@ import dagger.Provides;
 public class AppModule {
 
     private Context context;
-    private static final Boolean APISERVICE_IS_ACTIVE = true;
+    private static final Boolean APISERVICE_IS_ACTIVE = !"robolectric".equals(Build.FINGERPRINT);
     ServiceFactory serviceFactory;
 
     public AppModule(Context context) {
