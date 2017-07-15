@@ -22,7 +22,7 @@ import dagger.Provides;
 public class AppModule {
 
     private Context context;
-    private static final Boolean APISERVICE_IS_ACTIVE = false;
+    private static final Boolean APISERVICE_IS_ACTIVE = true;
     ServiceFactory serviceFactory;
 
     public AppModule(Context context) {
