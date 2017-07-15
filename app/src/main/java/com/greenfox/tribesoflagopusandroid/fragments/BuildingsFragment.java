@@ -16,6 +16,7 @@ import com.greenfox.tribesoflagopusandroid.R;
 import com.greenfox.tribesoflagopusandroid.TribesApplication;
 import com.greenfox.tribesoflagopusandroid.adapter.BuildingsAdapter;
 import com.greenfox.tribesoflagopusandroid.api.model.gameobject.Building;
+import com.greenfox.tribesoflagopusandroid.api.model.gameobject.BuildingDTO;
 import com.greenfox.tribesoflagopusandroid.api.model.response.BuildingsResponse;
 import com.greenfox.tribesoflagopusandroid.api.service.ApiService;
 import com.greenfox.tribesoflagopusandroid.event.BuildingsEvent;
@@ -91,7 +92,7 @@ public class BuildingsFragment extends BaseFragment {
       @Override
       public void onClick(View v) {
         Toast.makeText(getContext(), "Farm added", Toast.LENGTH_SHORT).show();
-        apiService.postBuilding(preferences.getString(USER_ACCESS_TOKEN, ""), "farm").enqueue(new Callback<Building>() {
+        apiService.postBuilding(preferences.getString(USER_ACCESS_TOKEN, ""), new BuildingDTO("farm")).enqueue(new Callback<Building>() {
           @Override
           public void onResponse(Call<Building> call, Response<Building> response) {
             refresh();
@@ -110,7 +111,7 @@ public class BuildingsFragment extends BaseFragment {
       @Override
       public void onClick(View v) {
         Toast.makeText(getContext(), "Mine added", Toast.LENGTH_SHORT).show();
-        apiService.postBuilding(preferences.getString(USER_ACCESS_TOKEN, ""), "mine").enqueue(new Callback<Building>() {
+        apiService.postBuilding(preferences.getString(USER_ACCESS_TOKEN, ""), new BuildingDTO("mine")).enqueue(new Callback<Building>() {
           @Override
           public void onResponse(Call<Building> call, Response<Building> response) {
             refresh();
@@ -129,7 +130,7 @@ public class BuildingsFragment extends BaseFragment {
       @Override
       public void onClick(View v) {
         Toast.makeText(getContext(), "Barrack added", Toast.LENGTH_SHORT).show();
-        apiService.postBuilding(preferences.getString(USER_ACCESS_TOKEN, ""), "barrack").enqueue(new Callback<Building>() {
+        apiService.postBuilding(preferences.getString(USER_ACCESS_TOKEN, ""),new BuildingDTO("barrack")).enqueue(new Callback<Building>() {
           @Override
           public void onResponse(Call<Building> call, Response<Building> response) {
             refresh();
@@ -147,23 +148,17 @@ public class BuildingsFragment extends BaseFragment {
   }
 
     @Override
-    public void onDestroy () {
-      super.onDestroy();
-      EventBus.getDefault().unregister(this);
-    }
-
-    @Override
-    public void onCreate (@Nullable Bundle savedInstanceState){
-      super.onCreate(savedInstanceState);
+    public void onStart() {
+      super.onStart();
       EventBus.getDefault().register(this);
     }
 
     @Override
     public void onStop () {
-      EventBus.getDefault().unregister(this);
       super.saveOnExit(BUILDINGS_FRAGMENT_SAVE);
       timestamp = BaseFragment.timestamp;
       super.onStop();
+      EventBus.getDefault().unregister(this);
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)

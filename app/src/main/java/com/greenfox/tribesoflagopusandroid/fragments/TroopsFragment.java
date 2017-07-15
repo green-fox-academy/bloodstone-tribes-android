@@ -102,10 +102,17 @@ public class TroopsFragment extends BaseFragment {
   }
 
   @Override
+  public void onStart() {
+    super.onStart();
+    EventBus.getDefault().register(this);
+  }
+
+  @Override
   public void onStop() {
     super.saveOnExit(TROOPS_FRAGMENT_SAVE);
     timestamp = BaseFragment.timestamp;
     super.onStop();
+    EventBus.getDefault().unregister(this);
   }
 
   @Override
