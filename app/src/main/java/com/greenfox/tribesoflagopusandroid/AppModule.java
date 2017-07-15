@@ -46,13 +46,7 @@ public class AppModule {
     public Gson provideGson(){
         return new Gson();
     }
-
-    @Singleton
-    @Provides
-    public ObjectManager provideObjectManager(SharedPreferences sharedPreferences, Gson gson){
-        return new ObjectManager(sharedPreferences, gson);
-    }
-
+    
     @Singleton
     @Provides
     public LoginService provideLoginService() {
