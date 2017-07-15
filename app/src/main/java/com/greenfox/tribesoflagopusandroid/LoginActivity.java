@@ -22,9 +22,19 @@ import com.greenfox.tribesoflagopusandroid.api.model.gameobject.Kingdom;
 import com.greenfox.tribesoflagopusandroid.api.model.gameobject.Token;
 import com.greenfox.tribesoflagopusandroid.api.model.gameobject.User;
 import com.greenfox.tribesoflagopusandroid.api.model.gameobject.UserLoginDTO;
+import com.greenfox.tribesoflagopusandroid.api.model.gameobject.UserRegisterDTO;
 import com.greenfox.tribesoflagopusandroid.api.service.ApiService;
 import com.greenfox.tribesoflagopusandroid.api.service.LoginService;
 
+import java.io.UnsupportedEncodingException;
+import java.security.InvalidAlgorithmParameterException;
+import java.security.InvalidKeyException;
+import java.security.NoSuchAlgorithmException;
+import java.security.spec.InvalidKeySpecException;
+
+import javax.crypto.BadPaddingException;
+import javax.crypto.IllegalBlockSizeException;
+import javax.crypto.NoSuchPaddingException;
 import javax.inject.Inject;
 
 import retrofit2.Call;
@@ -106,8 +116,13 @@ public class LoginActivity extends AppCompatActivity {
         checkFieldsInRegisterIsNotEmpty(username, password, confirmPassword, kingdomName);
     }
 
-    protected void registerWithAPIService(String username, String password, String kingdomName) {
-        apiService.register(username,password, kingdomName).enqueue(new Callback<User>() {
+    protected void registerWithAPIService(String username, String password, String kingdomName)  {
+        try {
+            password = encryption.encrypt(password);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        apiService.register(new UserRegisterDTO(username, password, kingdomName)).enqueue(new Callback<User>() {
             @Override
             public void onResponse(Call<User> call, Response<User> response) {
                 Intent intent = new Intent(LoginActivity.this, LoginActivity.class);
