@@ -35,22 +35,26 @@ public class AppModule {
         return context;
     }
 
-    @Singleton @Provides
+    @Singleton
+    @Provides
     public SharedPreferences provideSharedPreferences(Context context){
         return PreferenceManager.getDefaultSharedPreferences(context);
     }
 
-    @Singleton @Provides
+    @Singleton
+    @Provides
     public Gson provideGson(){
         return new Gson();
     }
 
-    @Singleton @Provides
+    @Singleton
+    @Provides
     public ObjectManager provideObjectManager(SharedPreferences sharedPreferences, Gson gson){
         return new ObjectManager(sharedPreferences, gson);
     }
 
-    @Singleton @Provides
+    @Singleton
+    @Provides
     public LoginService provideLoginService() {
         if (APISERVICE_IS_ACTIVE) {
             return serviceFactory.createRetrofitService();
@@ -58,10 +62,11 @@ public class AppModule {
         return serviceFactory.createMockLoginService();
     }
 
-    @Singleton @Provides
-    public ApiService provideMockApiService() {
+    @Singleton
+    @Provides
+    public ApiService provideApiService() {
         if (APISERVICE_IS_ACTIVE) {
-            return serviceFactory.createRetrofitService();
+            return serviceFactory.createRetrofitApiService();
         }
         return serviceFactory.createMockApiService();
     }
