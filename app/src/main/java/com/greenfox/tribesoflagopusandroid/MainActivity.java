@@ -237,9 +237,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         if (networkInfo != null && networkInfo.isConnectedOrConnecting()) {
             android.net.NetworkInfo wifi = connectivityManager.getNetworkInfo(ConnectivityManager.TYPE_WIFI);
             android.net.NetworkInfo mobile = connectivityManager.getNetworkInfo(ConnectivityManager.TYPE_MOBILE);
-            if ((mobile != null && mobile.isConnectedOrConnecting()) || (wifi != null && wifi.isConnectedOrConnecting())) {
-                return true;
-            } else return false;
+            return (mobile != null && mobile.isConnectedOrConnecting()) || (wifi != null && wifi.isConnectedOrConnecting());
         } else return false;
     }
 
