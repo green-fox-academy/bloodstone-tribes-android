@@ -1,8 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
-    <item android:id="@+id/refreshing"
+    <item
+        android:id="@+id/refreshing"
+        android:icon="@drawable/sync"
         android:title="@string/refreshing"
-        app:showAsAction="always"
-        android:icon="@drawable/sync"/>
+        android:visible="true"
+        app:showAsAction="always" />
+    <item
+        android:id="@+id/loading"
+        android:icon="@android:drawable/ic_popup_sync"
+        android:title="@string/loading"
+        android:visible="false"
+        app:showAsAction="collapseActionView" />
 </menu>

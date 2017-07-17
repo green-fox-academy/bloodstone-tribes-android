@@ -34,6 +34,7 @@ public class SettingsFragment extends BaseFragment {
     public TextView notification_status, background_sync_status;
     public Switch notification, background_sync;
     public String timestamp;
+    View rootView;
 
     public SettingsFragment() {
 
@@ -50,16 +51,10 @@ public class SettingsFragment extends BaseFragment {
                              Bundle savedInstanceState) {
         TribesApplication.app().basicComponent().inject(this);
         editor = preferences.edit();
-
-        View rootView = inflater.inflate(R.layout.settings_fragment, container, false);
-        notification_status = (TextView) rootView.findViewById(R.id.notification_status);
-        notification = (Switch) rootView.findViewById(R.id.notification);
-        background_sync_status = (TextView) rootView.findViewById(R.id.background_sync_status);
-        background_sync = (Switch) rootView.findViewById(R.id.background_sync);
+        rootView = inflater.inflate(R.layout.settings_fragment, container, false);
+        refreshActiveFragment();
 
         notification.setChecked(preferences.getBoolean(NOTIFICATION, false));
-        background_sync.setChecked(preferences.getBoolean(BACKGROUND_SYNC, false));
-
         notification.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView,
@@ -78,6 +73,7 @@ public class SettingsFragment extends BaseFragment {
             }
         });
 
+        background_sync.setChecked(preferences.getBoolean(BACKGROUND_SYNC, false));
         background_sync.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView,
@@ -111,6 +107,18 @@ public class SettingsFragment extends BaseFragment {
         }
 
         return rootView;
+    }
+
+    @Override
+    public void refreshActiveFragment() {
+        notification_status = (TextView) rootView.findViewById(R.id.notification_status);
+        notification = (Switch) rootView.findViewById(R.id.notification);
+        background_sync_status = (TextView) rootView.findViewById(R.id.background_sync_status);
+        background_sync = (Switch) rootView.findViewById(R.id.background_sync);
+        super.refreshActiveFragment();
+        if (loadingViewListener != null) {
+            loadingViewListener.loadingFinished();
+        }
     }
 
     @Override
