@@ -12,6 +12,7 @@ import org.junit.runner.RunWith;
 import org.robolectric.Robolectric;
 import org.robolectric.RobolectricTestRunner;
 import org.robolectric.annotation.Config;
+import org.robolectric.shadows.support.v4.SupportFragmentTestUtil;
 
 import static org.junit.Assert.*;
 import static org.robolectric.shadows.support.v4.SupportFragmentTestUtil.startFragment;
@@ -27,16 +28,20 @@ public class BuildingsFragmentTest {
     BuildingsFragment buildingsFragment;
     FloatingActionMenu buildingFloatingActionMenu;
     FloatingActionButton floatingActionButtonFarm;
+    BaseFragment baseFragment;
 
     @Before
     public void setup() {
         mainActivity = Robolectric.setupActivity(MainActivity.class);
-        buildingsFragment = new BuildingsFragment();
-        startFragment(buildingsFragment);
+        buildingsFragment =  new BuildingsFragment();
+        SupportFragmentTestUtil.startFragment(buildingsFragment, MainActivity.class);
     }
 
     @Test
-    public void troopsFragmentOpens() throws Exception {
+    public void buildingFragmentOpen() throws Exception {
+        baseFragment = new BaseFragment();
+        buildingsFragment = new BuildingsFragment();
+        startFragment(buildingsFragment);
         assertNotNull(buildingsFragment);
     }
 

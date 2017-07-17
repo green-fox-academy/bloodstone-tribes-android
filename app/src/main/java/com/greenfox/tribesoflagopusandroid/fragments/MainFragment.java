@@ -4,17 +4,13 @@ package com.greenfox.tribesoflagopusandroid.fragments;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentTransaction;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import com.github.clans.fab.FloatingActionButton;
 import com.greenfox.tribesoflagopusandroid.MainActivity;
 import com.greenfox.tribesoflagopusandroid.R;
 import com.greenfox.tribesoflagopusandroid.TribesApplication;
@@ -24,8 +20,6 @@ import com.greenfox.tribesoflagopusandroid.api.model.gameobject.Resource;
 import com.greenfox.tribesoflagopusandroid.api.model.gameobject.Troop;
 import com.greenfox.tribesoflagopusandroid.api.service.ApiService;
 
-import org.greenrobot.eventbus.EventBus;
-
 import java.util.List;
 
 import javax.inject.Inject;
@@ -34,7 +28,6 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-import static android.R.attr.button;
 import static com.greenfox.tribesoflagopusandroid.MainActivity.MAIN_FRAGMENT_SAVE;
 import static com.greenfox.tribesoflagopusandroid.MainActivity.USER_ACCESS_TOKEN;
 
@@ -52,6 +45,9 @@ public class MainFragment extends BaseFragment {
     List<Building> buildings;
     List<Resource> resources;
     List<Troop> troops;
+    ImageView goldImage, foodImage;
+    TextView gold, food, totalBuildingNumber, totalTroopNumber;
+
 
     public MainFragment() {
     }
@@ -67,58 +63,81 @@ public class MainFragment extends BaseFragment {
                              Bundle savedInstanceState) {
         TribesApplication.app().basicComponent().inject(this);
         editor = preferences.edit();
+        View rootView = inflater.inflate(R.layout.fragment_main, container, false);
+        goldImage = (ImageView) rootView.findViewById(R.id.gold_image);
+        foodImage = (ImageView) rootView.findViewById(R.id.food_image);
+        gold = (TextView) rootView.findViewById(R.id.resources_gold);
+        food = (TextView) rootView.findViewById(R.id.resources_food);
+        totalBuildingNumber = (TextView) rootView.findViewById(R.id.buildings_finished);
+        totalTroopNumber = (TextView) rootView.findViewById(R.id.troops_finished);
+        refreshActiveFragment();
 
+        Button buildingButton = (Button) rootView.findViewById(R.id.go_to_buildings_btn);
+        buildingButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ((MainActivity)getActivity()).activeFragment = new BuildingsFragment();
+                (getActivity()).getSupportFragmentManager()
+                        .beginTransaction()
+                        .replace(R.id.layout_content, ((MainActivity)getActivity()).activeFragment)
+                        .commit();
+            }
+        });
+
+        Button troopButton = (Button) rootView.findViewById(R.id.go_to_troops_btn);
+        troopButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ((MainActivity)getActivity()).activeFragment = new TroopsFragment();
+                (getActivity()).getSupportFragmentManager()
+                        .beginTransaction()
+                        .replace(R.id.layout_content, ((MainActivity)getActivity()).activeFragment)
+                        .commit();
+            }
+        });
+        return rootView;
+    }
+
+    public void getKingdomFromAPI() {
         apiService.getKingdom(preferences.getString(USER_ACCESS_TOKEN, "")).enqueue(new Callback<Kingdom>() {
             @Override
             public void onResponse(Call<Kingdom> call, Response<Kingdom> response) {
                 buildings = response.body().getBuildings();
                 troops = response.body().getTroops();
                 resources = response.body().getResources();
+                fillResources();
+                fillTroops();
+                fillBuildings();
+                if (loadingViewListener != null) {
+                    loadingViewListener.loadingFinished();
+                }
             }
 
             @Override
             public void onFailure(Call<Kingdom> call, Throwable t) {
             }
         });
+    }
 
-        View rootView = inflater.inflate(R.layout.fragment_main, container, false);
-
-        ImageView goldImage = (ImageView) rootView.findViewById(R.id.gold_image);
-        ImageView foodImage = (ImageView) rootView.findViewById(R.id.food_image);
-        TextView gold = (TextView) rootView.findViewById(R.id.resources_gold);
-        TextView food = (TextView) rootView.findViewById(R.id.resources_food);
+    public void fillResources() {
         gold.setText(resources.get(0).getAmount() + " " + resources.get(0).getType());
         food.setText(resources.get(1).getAmount() + " " + resources.get(1).getType());
         goldImage.setImageResource(R.drawable.gold);
         foodImage.setImageResource(R.drawable.food);
-        TextView totalBuildingNumber = (TextView) rootView.findViewById(R.id.buildings_finished);
+    }
+
+    public void fillBuildings() {
         totalBuildingNumber.setText((buildings.size() + " finished"));
-        TextView totalTroopNumber = (TextView) rootView.findViewById(R.id.troops_finished);
+    }
+
+    public void fillTroops() {
         totalTroopNumber.setText((troops.size() + " finished"));
+    }
 
-        Button buildingButton = (Button) rootView.findViewById(R.id.go_to_buildings_btn);
-        Button troopButton = (Button) rootView.findViewById(R.id.go_to_troops_btn);
-
-        buildingButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                (getActivity()).getSupportFragmentManager()
-                        .beginTransaction()
-                        .replace(R.id.layout_content, new BuildingsFragment())
-                        .commit();
-            }
-        });
-
-        troopButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                (getActivity()).getSupportFragmentManager()
-                        .beginTransaction()
-                        .replace(R.id.layout_content, new TroopsFragment())
-                        .commit();
-            }
-        });
-        return rootView;
+    @Override
+    public void refreshActiveFragment() {
+        getKingdomFromAPI();
+        super.refreshActiveFragment();
     }
 
     @Override

@@ -3,12 +3,10 @@ package com.greenfox.tribesoflagopusandroid.fragments;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v4.app.FragmentTransaction;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
-import android.widget.Toast;
 
 import com.github.clans.fab.FloatingActionButton;
 import com.github.clans.fab.FloatingActionMenu;
@@ -37,22 +35,19 @@ import static com.greenfox.tribesoflagopusandroid.MainActivity.USER_ACCESS_TOKEN
 
 public class BuildingsFragment extends BaseFragment {
 
-  @Inject
-  SharedPreferences preferences;
+    @Inject
+    SharedPreferences preferences;
+    @Inject
+    ApiService apiService;
 
-  SharedPreferences.Editor editor;
-  @Inject
-  ApiService apiService;
+    SharedPreferences.Editor editor;
+    String timestamp;
+    private BuildingsAdapter buildingsAdapter;
+    FloatingActionMenu buildingsFloatingMenu;
+    FloatingActionButton addFarmFloatingButton, addMineFloatingButton, addBarrackFloatingButton;
+    ListView listView;
 
-  private final String createdBuilding = "Building created";
-
-  private BuildingsAdapter buildingsAdapter;
-  String timestamp;
-
-  FloatingActionMenu buildingsFloatingMenu;
-  FloatingActionButton addFarmFloatingButton, addMineFloatingButton, addBarrackFloatingButton;
-
-  public BuildingsFragment() {
+    public BuildingsFragment() {
   }
 
   @Override
@@ -61,101 +56,108 @@ public class BuildingsFragment extends BaseFragment {
     getActivity().setTitle("Buildings");
   }
 
-  @Nullable
-  @Override
-  public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                           Bundle savedInstanceState) {
-    TribesApplication.app().basicComponent().inject(this);
-    editor = preferences.edit();
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+        TribesApplication.app().basicComponent().inject(this);
+        editor = preferences.edit();
+        View rootView = inflater.inflate(R.layout.fragment_buildings, container, false);
+        buildingsAdapter = new BuildingsAdapter(getContext(), new ArrayList<Building>());
+        listView = (ListView) rootView.findViewById(R.id.buildings_list);
+        refreshActiveFragment();
 
-    buildingsAdapter = new BuildingsAdapter(getContext(), new ArrayList<Building>());
-    apiService.getBuildings(preferences.getString(USER_ACCESS_TOKEN, "")).enqueue(new Callback<BuildingsResponse>() {
-      @Override
-      public void onResponse(Call<BuildingsResponse> call, Response<BuildingsResponse> response) {
-        EventBus.getDefault().post(new BuildingsEvent(response.body().getBuildings()));
-      }
+        buildingsFloatingMenu = (FloatingActionMenu) rootView.findViewById(R.id.add_building_menu);
+        addFarmFloatingButton = (FloatingActionButton) rootView.findViewById(R.id.add_farm_menu_item);
+        addFarmFloatingButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                apiService.postBuilding(preferences.getString(USER_ACCESS_TOKEN, ""), "farm").enqueue(new Callback<Building>() {
+                    @Override
+                    public void onResponse(Call<Building> call, Response<Building> response) {
+                        refreshActiveFragment();
+                    }
 
-      @Override
-      public void onFailure(Call<BuildingsResponse> call, Throwable t) {
-      }
-    });
+                    @Override
+                    public void onFailure(Call<Building> call, Throwable t) {
 
-    View rootView = inflater.inflate(R.layout.fragment_buildings, container, false);
-    ListView listView = (ListView) rootView.findViewById(R.id.buildings_list);
-    listView.setAdapter(buildingsAdapter);
-
-    buildingsFloatingMenu = (FloatingActionMenu) rootView.findViewById(R.id.add_building_menu);
-
-    addFarmFloatingButton = (FloatingActionButton) rootView.findViewById(R.id.add_farm_menu_item);
-    addFarmFloatingButton.setOnClickListener(new View.OnClickListener() {
-      @Override
-      public void onClick(View v) {
-        Toast.makeText(getContext(), "Farm added", Toast.LENGTH_SHORT).show();
-        apiService.postBuilding(preferences.getString(USER_ACCESS_TOKEN, ""), "farm").enqueue(new Callback<Building>() {
-          @Override
-          public void onResponse(Call<Building> call, Response<Building> response) {
-            refresh();
-          }
-
-          @Override
-          public void onFailure(Call<Building> call, Throwable t) {
-
-          }
+                    }
+                });
+            }
         });
-      }
-    });
 
-    addMineFloatingButton = (FloatingActionButton) rootView.findViewById(R.id.add_mine_menu_item);
-    addMineFloatingButton.setOnClickListener(new View.OnClickListener() {
-      @Override
-      public void onClick(View v) {
-        Toast.makeText(getContext(), "Mine added", Toast.LENGTH_SHORT).show();
-        apiService.postBuilding(preferences.getString(USER_ACCESS_TOKEN, ""), "mine").enqueue(new Callback<Building>() {
-          @Override
-          public void onResponse(Call<Building> call, Response<Building> response) {
-            refresh();
-          }
+        addMineFloatingButton = (FloatingActionButton) rootView.findViewById(R.id.add_mine_menu_item);
+        addMineFloatingButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                apiService.postBuilding(preferences.getString(USER_ACCESS_TOKEN, ""), "mine").enqueue(new Callback<Building>() {
+                    @Override
+                    public void onResponse(Call<Building> call, Response<Building> response) {
+                        refreshActiveFragment();
+                    }
 
-          @Override
-          public void onFailure(Call<Building> call, Throwable t) {
+                    @Override
+                    public void onFailure(Call<Building> call, Throwable t) {
 
-          }
+                    }
+                });
+            }
         });
-      }
-    });
 
-    addBarrackFloatingButton = (FloatingActionButton) rootView.findViewById(R.id.add_barrack_menu_item);
-    addBarrackFloatingButton.setOnClickListener(new View.OnClickListener() {
-      @Override
-      public void onClick(View v) {
-        Toast.makeText(getContext(), "Barrack added", Toast.LENGTH_SHORT).show();
-        apiService.postBuilding(preferences.getString(USER_ACCESS_TOKEN, ""), "barrack").enqueue(new Callback<Building>() {
-          @Override
-          public void onResponse(Call<Building> call, Response<Building> response) {
-            refresh();
-          }
+        addBarrackFloatingButton = (FloatingActionButton) rootView.findViewById(R.id.add_barrack_menu_item);
+        addBarrackFloatingButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                apiService.postBuilding(preferences.getString(USER_ACCESS_TOKEN, ""), "barrack").enqueue(new Callback<Building>() {
+                    @Override
+                    public void onResponse(Call<Building> call, Response<Building> response) {
+                        refreshActiveFragment();
+                    }
 
-          @Override
-          public void onFailure(Call<Building> call, Throwable t) {
+                    @Override
+                    public void onFailure(Call<Building> call, Throwable t) {
 
-          }
+                    }
+                });
+            }
         });
-      }
-    });
 
-    return rootView;
-  }
+        return rootView;
 
-    @Override
-    public void onDestroy () {
-      super.onDestroy();
-      EventBus.getDefault().unregister(this);
     }
 
-    @Override
     public void onCreate (@Nullable Bundle savedInstanceState){
       super.onCreate(savedInstanceState);
       EventBus.getDefault().register(this);
+    }
+
+    @Override
+    public void onDestroy () {
+        super.onDestroy();
+        EventBus.getDefault().unregister(this);
+    }
+
+    public void getBuildingsFromAPI() {
+        apiService.getBuildings(preferences.getString(USER_ACCESS_TOKEN, "")).enqueue(new Callback<BuildingsResponse>() {
+            @Override
+            public void onResponse(Call<BuildingsResponse> call, Response<BuildingsResponse> response) {
+                EventBus.getDefault().post(new BuildingsEvent(response.body().getBuildings()));
+                buildingsAdapter.clear();
+                buildingsAdapter.addAll(response.body().getBuildings());
+                listView.setAdapter(buildingsAdapter);
+                if (loadingViewListener != null) {
+                    loadingViewListener.loadingFinished();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<BuildingsResponse> call, Throwable t) {
+            }
+        });
+    }
+
+    @Override
+    public void refreshActiveFragment() {
+        getBuildingsFromAPI();
+        super.refreshActiveFragment();
     }
 
     @Override
@@ -171,10 +173,4 @@ public class BuildingsFragment extends BaseFragment {
       buildingsAdapter.addAll(event.getBuildings());
     }
 
-  public void refresh() {
-    FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
-    transaction.detach(this);
-    transaction.attach(this);
-    transaction.commit();
-  }
 }
