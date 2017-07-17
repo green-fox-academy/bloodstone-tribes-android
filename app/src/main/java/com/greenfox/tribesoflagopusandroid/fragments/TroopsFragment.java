@@ -3,22 +3,19 @@ package com.greenfox.tribesoflagopusandroid.fragments;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v4.app.FragmentTransaction;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
-import android.widget.Toast;
 
-import com.github.clans.fab.FloatingActionMenu;
 import com.github.clans.fab.FloatingActionButton;
+import com.github.clans.fab.FloatingActionMenu;
 import com.greenfox.tribesoflagopusandroid.R;
 import com.greenfox.tribesoflagopusandroid.TribesApplication;
 import com.greenfox.tribesoflagopusandroid.adapter.TroopAdapter;
 import com.greenfox.tribesoflagopusandroid.api.model.gameobject.Troop;
 import com.greenfox.tribesoflagopusandroid.api.model.response.TroopsResponse;
 import com.greenfox.tribesoflagopusandroid.api.service.ApiService;
-import com.greenfox.tribesoflagopusandroid.event.BuildingsEvent;
 import com.greenfox.tribesoflagopusandroid.event.TroopsEvent;
 
 import org.greenrobot.eventbus.EventBus;
@@ -38,68 +35,84 @@ import static com.greenfox.tribesoflagopusandroid.MainActivity.USER_ACCESS_TOKEN
 
 public class TroopsFragment extends BaseFragment {
 
-  @Inject
-  SharedPreferences preferences;
+    @Inject
+    SharedPreferences preferences;
+    @Inject
+    ApiService apiService;
 
-  SharedPreferences.Editor editor;
+    SharedPreferences.Editor editor;
+    String timestamp;
+    private TroopAdapter troopAdapter;
+    FloatingActionMenu troopsFloatingActionMenu;
+    FloatingActionButton addTroopsActionButton;
+    ListView listView;
 
-  String timestamp;
+    public TroopsFragment() {
+    }
 
-  private TroopAdapter troopAdapter;
-  FloatingActionMenu troopsFloatingActionMenu;
-  FloatingActionButton addTroopsActionButton;
-  @Inject
-  ApiService apiService;
+    @Override
+    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        getActivity().setTitle("Troops");
+    }
 
-  public TroopsFragment() {
-  }
+    @Nullable
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+        TribesApplication.app().basicComponent().inject(this);
+        editor = preferences.edit();
+        View rootView = inflater.inflate(R.layout.fragment_troops, container, false);
+        troopAdapter = new TroopAdapter(getContext(), new ArrayList<Troop>());
+        listView = (ListView) rootView.findViewById(R.id.troops_listView);
+        refreshActiveFragment();
 
-  @Override
-  public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                           Bundle savedInstanceState) {
-    TribesApplication.app().basicComponent().inject(this);
-    editor = preferences.edit();
+        troopsFloatingActionMenu = (FloatingActionMenu) rootView.findViewById(R.id.add_troop_menu);
+        addTroopsActionButton = (FloatingActionButton) rootView.findViewById(R.id.add_troop_menu_item);
+        addTroopsActionButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                apiService.postTroop(preferences.getString(USER_ACCESS_TOKEN, "")).enqueue(new Callback<Troop>() {
+                    @Override
+                    public void onResponse(Call<Troop> call, Response<Troop> response) {
+                        refreshActiveFragment();
+                    }
 
-    View rootView = inflater.inflate(R.layout.fragment_troops, container, false);
+                    @Override
+                    public void onFailure(Call<Troop> call, Throwable t) {
 
-    troopAdapter = new TroopAdapter(getContext(), new ArrayList<Troop>());
-    troopsFloatingActionMenu = (FloatingActionMenu) rootView.findViewById(R.id.add_troop_menu);
-    addTroopsActionButton = (FloatingActionButton) rootView.findViewById(R.id.add_troop_menu_item);
-
-
-    apiService.getTroops(preferences.getString(USER_ACCESS_TOKEN, "")).enqueue(new Callback<TroopsResponse>() {
-      @Override
-      public void onResponse(Call<TroopsResponse> call, Response<TroopsResponse> response) {
-        EventBus.getDefault().post(new TroopsEvent(response.body().getTroops()));
-      }
-
-      @Override
-      public void onFailure(Call<TroopsResponse> call, Throwable t) {
-      }
-    });
-    addTroopsActionButton.setOnClickListener(new View.OnClickListener() {
-      @Override
-      public void onClick(View v) {
-        Toast.makeText(getContext(), "Troop added", Toast.LENGTH_SHORT).show();
-        apiService.postTroop(preferences.getString(USER_ACCESS_TOKEN, "")).enqueue(new Callback<Troop>() {
-          @Override
-          public void onResponse(Call<Troop> call, Response<Troop> response) {
-            refresh();
-          }
-
-          @Override
-          public void onFailure(Call<Troop> call, Throwable t) {
-
-          }
+                    }
+                });
+            }
         });
-      }
-    });
+        return rootView;
+    }
 
-    ListView listView = (ListView) rootView.findViewById(R.id.troops_listView);
-    listView.setAdapter(troopAdapter);
+    public void getTroopsFromAPI() {
+        apiService.getTroops(preferences.getString(USER_ACCESS_TOKEN, "")).enqueue(new Callback<TroopsResponse>() {
+            @Override
+            public void onResponse(Call<TroopsResponse> call, Response<TroopsResponse> response) {
+                EventBus.getDefault().post(new TroopsEvent(response.body().getTroops()));
+                troopAdapter.clear();
+                troopAdapter.addAll(response.body().getTroops());
+                listView.setAdapter(troopAdapter);
+                if (loadingViewListener != null) {
+                    loadingViewListener.loadingFinished();
+                }
+            }
 
-    return rootView;
-  }
+            @Override
+            public void onFailure(Call<TroopsResponse> call, Throwable t) {
+
+            }
+        });
+    }
+
+    @Override
+    public void refreshActiveFragment() {
+        getTroopsFromAPI();
+        super.refreshActiveFragment();
+    }
 
   @Override
   public void onStart() {
@@ -113,19 +126,6 @@ public class TroopsFragment extends BaseFragment {
     timestamp = BaseFragment.timestamp;
     super.onStop();
     EventBus.getDefault().unregister(this);
-  }
-
-  @Override
-  public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
-    super.onViewCreated(view, savedInstanceState);
-    getActivity().setTitle("Troops");
-  }
-
-  public void refresh() {
-    FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
-    transaction.detach(this);
-    transaction.attach(this);
-    transaction.commit();
   }
 
   @Subscribe(threadMode = ThreadMode.MAIN)

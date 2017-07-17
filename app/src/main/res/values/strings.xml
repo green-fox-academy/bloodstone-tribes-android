@@ -41,6 +41,7 @@
     <string name="background_sync_off">Background sync is OFF</string>
     <string name="gold_amount">1</string>
     <string name="food_amount">1</string>
+    <string name="loading">loading</string>
     <string name="register_btn">Register</string>
     <string name="your_kingdom">Write your kingdom name</string>
     <string name="add_password">Add a password</string>

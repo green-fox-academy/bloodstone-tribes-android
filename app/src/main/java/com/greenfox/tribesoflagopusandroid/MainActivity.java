@@ -3,27 +3,36 @@ package com.greenfox.tribesoflagopusandroid;
 
 import android.app.AlarmManager;
 import android.app.PendingIntent;
+import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.support.annotation.IdRes;
+import android.support.constraint.ConstraintLayout;
 import android.support.design.widget.NavigationView;
-import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.widget.Toast;
+import android.view.View;
+import android.widget.FrameLayout;
+import android.widget.TextView;
 
 import com.greenfox.tribesoflagopusandroid.api.model.gameobject.Kingdom;
 import com.greenfox.tribesoflagopusandroid.event.BuildingsEvent;
 import com.greenfox.tribesoflagopusandroid.event.TroopsEvent;
+import com.greenfox.tribesoflagopusandroid.fragments.BaseFragment;
 import com.greenfox.tribesoflagopusandroid.fragments.BattleFragment;
 import com.greenfox.tribesoflagopusandroid.fragments.BuildingsFragment;
 import com.greenfox.tribesoflagopusandroid.fragments.MainFragment;
@@ -36,7 +45,7 @@ import org.greenrobot.eventbus.ThreadMode;
 
 import javax.inject.Inject;
 
-public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
+public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener, LoadingViewListener {
 
   public static final String USER_ACCESS_TOKEN = "userToken";
   public static final String USERNAME = "username";
@@ -50,23 +59,32 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
   public static final String MAIN_FRAGMENT_SAVE = "mainSave";
 
   @Inject
-  public
-  SharedPreferences preferences;
+  public SharedPreferences preferences;
 
   SharedPreferences.Editor editor;
   String timestamp;
-  Fragment fragment = null;
+  public BaseFragment activeFragment = null;
   Kingdom thisKingdom = new Kingdom();
   public PendingIntent pendingIntent;
   public AlarmManager manager;
+  FrameLayout fragmentLayout;
+  ConstraintLayout loadingView;
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.activity_main);
     TribesApplication.app().basicComponent().inject(this);
+    if (!isConnected(com.greenfox.tribesoflagopusandroid.MainActivity.this))
+      buildDialog(com.greenfox.tribesoflagopusandroid.MainActivity.this).show();
+    else {
+      setContentView(R.layout.activity_main);
+    }
+
     EventBus.getDefault().register(this);
     editor = preferences.edit();
+    fragmentLayout = (FrameLayout) findViewById(R.id.layout_content);
+    loadingView = (ConstraintLayout) findViewById(R.id.loading_view);
     checkUserAccessToken();
     checkBackgroundSyncStatus();
     displaySelectedScreen(R.id.nav_kingdom);
@@ -81,6 +99,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     toggle.syncState();
     NavigationView navigationView = (NavigationView) findViewById(R.id.navigation_view);
     navigationView.setNavigationItemSelectedListener(this);
+    setNavItemCount(R.id.nav_buildings, 4);
+    setNavItemCount(R.id.nav_troops, 15);
   }
 
   public void checkBackgroundSyncStatus() {
@@ -101,17 +121,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     super.onOptionsItemSelected(item);
     switch (item.getItemId()) {
       case R.id.refreshing:
-        refreshActiveFragment();
+        activeFragment.refreshActiveFragment();
     }
     return false;
-  }
-
-  public void refreshActiveFragment() {
-    FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-    transaction.detach(fragment);
-    transaction.attach(fragment);
-    transaction.commit();
-    Toast.makeText(this, "Refreshing", Toast.LENGTH_SHORT).show();
   }
 
   public void checkUserAccessToken() {
@@ -182,13 +194,13 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         EventBus.getDefault().post(new BuildingsEvent());
         break;
       case R.id.nav_kingdom:
-        fragment = new MainFragment();
+        activeFragment = new MainFragment();
         break;
       case R.id.nav_battle:
-        fragment = new BattleFragment();
+        activeFragment = new BattleFragment();
         break;
       case R.id.nav_settings:
-        fragment = new SettingsFragment();
+        activeFragment = new SettingsFragment();
         break;
       case R.id.nav_troops:
         EventBus.getDefault().post(new TroopsEvent());
@@ -197,13 +209,58 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         logout();
         break;
     }
-    if (fragment != null) {
+    if (activeFragment != null) {
+      activeFragment.setLoadingViewListener(this);
       FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-      transaction.replace(R.id.layout_content, fragment);
+      transaction.replace(R.id.layout_content, activeFragment);
       transaction.commit();
     }
     DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
     drawer.closeDrawer(GravityCompat.START);
+  }
+
+
+  @Override
+  public void loadingStarted() {
+    fragmentLayout.setVisibility(View.INVISIBLE);
+    loadingView.setVisibility(View.VISIBLE);
+  }
+
+  @Override
+  public void loadingFinished() {
+    fragmentLayout.setVisibility(View.VISIBLE);
+    loadingView.setVisibility(View.INVISIBLE);
+  }
+
+  public boolean isConnected(Context context) {
+    ConnectivityManager connectivityManager = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
+    NetworkInfo networkInfo = connectivityManager.getActiveNetworkInfo();
+
+    if (networkInfo != null && networkInfo.isConnectedOrConnecting()) {
+      android.net.NetworkInfo wifi = connectivityManager.getNetworkInfo(ConnectivityManager.TYPE_WIFI);
+      android.net.NetworkInfo mobile = connectivityManager.getNetworkInfo(ConnectivityManager.TYPE_MOBILE);
+      return (mobile != null && mobile.isConnectedOrConnecting()) || (wifi != null && wifi.isConnectedOrConnecting());
+    } else return false;
+  }
+
+  public AlertDialog.Builder buildDialog(Context c) {
+    AlertDialog.Builder builder = new AlertDialog.Builder(c);
+    builder.setTitle("No Internet Connection");
+    builder.setMessage("You need to have Mobile Data or wifi to access this.");
+    builder.setNegativeButton("Exit", new DialogInterface.OnClickListener() {
+      @Override
+      public void onClick(DialogInterface dialog, int which) {
+        finish();
+      }
+    });
+    builder.setPositiveButton("Settings", new DialogInterface.OnClickListener() {
+      @Override
+      public void onClick(DialogInterface dialog, int which) {
+        startActivityForResult(new Intent(android.provider.Settings.ACTION_SETTINGS), 0);
+        finish();
+      }
+    });
+    return builder;
   }
 
   @SuppressWarnings("StatementWithEmptyBody")
@@ -214,13 +271,19 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     return true;
   }
 
+  private void setNavItemCount(@IdRes int itemId, int count) {
+    NavigationView navigationView = (NavigationView) findViewById(R.id.navigation_view);
+    TextView view = (TextView) navigationView.getMenu().findItem(itemId).getActionView();
+    view.setText(count > 0 ? String.valueOf(count) : null);
+  }
+
   @Subscribe(threadMode = ThreadMode.MAIN)
   public void onEventNavigateToBuildings(BuildingsEvent event) {
-    fragment = new BuildingsFragment();
+    activeFragment = new BuildingsFragment();
   }
 
   @Subscribe(threadMode = ThreadMode.MAIN)
   public void onEventNavigateToTroops(TroopsEvent event) {
-    fragment = new TroopsFragment();
+    activeFragment = new TroopsFragment();
   }
 }

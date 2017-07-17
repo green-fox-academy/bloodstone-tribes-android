@@ -12,7 +12,6 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.github.clans.fab.FloatingActionButton;
 import com.greenfox.tribesoflagopusandroid.MainActivity;
@@ -34,7 +33,6 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-import static android.R.attr.button;
 import static com.greenfox.tribesoflagopusandroid.MainActivity.MAIN_FRAGMENT_SAVE;
 import static com.greenfox.tribesoflagopusandroid.MainActivity.USER_ACCESS_TOKEN;
 
@@ -52,6 +50,9 @@ public class MainFragment extends BaseFragment {
   List<Building> buildings;
   List<Resource> resources;
   List<Troop> troops;
+    ImageView goldImage, foodImage;
+    TextView gold, food, totalBuildingNumber, totalTroopNumber;
+
 
   public MainFragment() {
   }
@@ -69,23 +70,25 @@ public class MainFragment extends BaseFragment {
     editor = preferences.edit();
 
     final View rootView = inflater.inflate(R.layout.fragment_main, container, false);
-    apiService.getKingdom(preferences.getString(USER_ACCESS_TOKEN, "")).enqueue(new Callback<Kingdom>() {
-      @Override
-      public void onResponse(Call<Kingdom> call, Response<Kingdom> response) {
-        if (response.code() == 400) {
-          ((MainActivity) getActivity()).logout();
-          return;
-        }
-        buildings = response.body().getBuildings();
-        troops = response.body().getTroops();
-        resources = response.body().getResources();
-        setMainFragmentView(rootView);
-      }
+    refreshActiveFragment();
+    setMainFragmentView(rootView);
+//    apiService.getKingdom(preferences.getString(USER_ACCESS_TOKEN, "")).enqueue(new Callback<Kingdom>() {
+//      @Override
+//      public void onResponse(Call<Kingdom> call, Response<Kingdom> response) {
+//        if (response.code() == 400) {
+//          ((MainActivity) getActivity()).logout();
+//          return;
+//        }
+//        buildings = response.body().getBuildings();
+//        troops = response.body().getTroops();
+//        resources = response.body().getResources();
+//
+//      }
 
-      @Override
-      public void onFailure(Call<Kingdom> call, Throwable t) {
-      }
-    });
+//      @Override
+//      public void onFailure(Call<Kingdom> call, Throwable t) {
+//      }
+//    });
 
     Button buildingButton = (Button) rootView.findViewById(R.id.go_to_buildings_btn);
     Button troopButton = (Button) rootView.findViewById(R.id.go_to_troops_btn);
@@ -93,24 +96,26 @@ public class MainFragment extends BaseFragment {
     buildingButton.setOnClickListener(new View.OnClickListener() {
       @Override
       public void onClick(View v) {
+        ((MainActivity)getActivity()).activeFragment = new BuildingsFragment();
         (getActivity()).getSupportFragmentManager()
                 .beginTransaction()
-                .replace(R.id.layout_content, new BuildingsFragment())
+                .replace(R.id.layout_content, ((MainActivity)getActivity()).activeFragment)
                 .commit();
       }
     });
 
-    troopButton.setOnClickListener(new View.OnClickListener() {
-      @Override
-      public void onClick(View v) {
-        (getActivity()).getSupportFragmentManager()
-                .beginTransaction()
-                .replace(R.id.layout_content, new TroopsFragment())
-                .commit();
-      }
-    });
-    return rootView;
-  }
+      troopButton.setOnClickListener(new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+          ((MainActivity)getActivity()).activeFragment = new TroopsFragment();
+          (getActivity()).getSupportFragmentManager()
+                  .beginTransaction()
+                  .replace(R.id.layout_content, ((MainActivity)getActivity()).activeFragment)
+                  .commit();
+        }
+      });
+      return rootView;
+    }
 
   @Override
   public void onStop() {
@@ -138,5 +143,33 @@ public class MainFragment extends BaseFragment {
       TextView totalTroopNumber = (TextView) rootView.findViewById(R.id.troops_finished);
       totalTroopNumber.setText((troops.size() + " finished"));
     }
+  }
+  public void getKingdomFromAPI() {
+    apiService.getKingdom(preferences.getString(USER_ACCESS_TOKEN, "")).enqueue(new Callback<Kingdom>() {
+      @Override
+      public void onResponse(Call<Kingdom> call, Response<Kingdom> response) {
+        if (response.code() == 400) {
+          ((MainActivity) getActivity()).logout();
+          return;
+        }
+        buildings = response.body().getBuildings();
+        troops = response.body().getTroops();
+        resources = response.body().getResources();
+        if (loadingViewListener != null) {
+          loadingViewListener.loadingFinished();
+        }
+      }
+
+      @Override
+      public void onFailure(Call<Kingdom> call, Throwable t) {
+      }
+    });
+  }
+
+
+  @Override
+  public void refreshActiveFragment() {
+    getKingdomFromAPI();
+    super.refreshActiveFragment();
   }
 }

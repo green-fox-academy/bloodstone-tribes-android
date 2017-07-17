@@ -14,8 +14,8 @@ import org.robolectric.RobolectricTestRunner;
 import org.robolectric.annotation.Config;
 
 import static junit.framework.Assert.assertNotNull;
-import static org.junit.Assert.*;
 import static org.robolectric.shadows.support.v4.SupportFragmentTestUtil.startFragment;
+import static org.junit.Assert.assertTrue;
 
 /**
  * Created by hegyi on 2017-06-29.
@@ -47,4 +47,5 @@ public class TroopsFragmentTest {
     floatingActionButton = (FloatingActionButton) troopsFragment.getView().findViewById(R.id.add_troop_menu_item);
     assertTrue(floatingActionButton.isClickable());
   }
+
 }

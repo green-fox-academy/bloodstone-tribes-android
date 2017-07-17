@@ -40,18 +40,15 @@ public class BuildingsFragment extends BaseFragment {
 
   @Inject
   SharedPreferences preferences;
-
-  SharedPreferences.Editor editor;
   @Inject
   ApiService apiService;
 
-  private final String createdBuilding = "Building created";
-
-  private BuildingsAdapter buildingsAdapter;
+  SharedPreferences.Editor editor;
   String timestamp;
-
+  private BuildingsAdapter buildingsAdapter;
   FloatingActionMenu buildingsFloatingMenu;
   FloatingActionButton addFarmFloatingButton, addMineFloatingButton, addBarrackFloatingButton;
+  ListView listView;
 
   public BuildingsFragment() {
   }
@@ -62,28 +59,14 @@ public class BuildingsFragment extends BaseFragment {
     getActivity().setTitle("Buildings");
   }
 
-  @Nullable
-  @Override
   public View onCreateView(LayoutInflater inflater, ViewGroup container,
                            Bundle savedInstanceState) {
     TribesApplication.app().basicComponent().inject(this);
     editor = preferences.edit();
-
-    buildingsAdapter = new BuildingsAdapter(getContext(), new ArrayList<Building>());
-    apiService.getBuildings(preferences.getString(USER_ACCESS_TOKEN, "")).enqueue(new Callback<BuildingsResponse>() {
-      @Override
-      public void onResponse(Call<BuildingsResponse> call, Response<BuildingsResponse> response) {
-        EventBus.getDefault().post(new BuildingsEvent(response.body().getBuildings()));
-      }
-
-      @Override
-      public void onFailure(Call<BuildingsResponse> call, Throwable t) {
-      }
-    });
-
     View rootView = inflater.inflate(R.layout.fragment_buildings, container, false);
-    ListView listView = (ListView) rootView.findViewById(R.id.buildings_list);
-    listView.setAdapter(buildingsAdapter);
+    buildingsAdapter = new BuildingsAdapter(getContext(), new ArrayList<Building>());
+    listView = (ListView) rootView.findViewById(R.id.buildings_list);
+    refreshActiveFragment();
 
     buildingsFloatingMenu = (FloatingActionMenu) rootView.findViewById(R.id.add_building_menu);
 
@@ -91,11 +74,10 @@ public class BuildingsFragment extends BaseFragment {
     addFarmFloatingButton.setOnClickListener(new View.OnClickListener() {
       @Override
       public void onClick(View v) {
-        Toast.makeText(getContext(), "Farm added", Toast.LENGTH_SHORT).show();
         apiService.postBuilding(preferences.getString(USER_ACCESS_TOKEN, ""), new BuildingDTO("farm")).enqueue(new Callback<Building>() {
           @Override
           public void onResponse(Call<Building> call, Response<Building> response) {
-            refresh();
+            refreshActiveFragment();
           }
 
           @Override
@@ -110,11 +92,10 @@ public class BuildingsFragment extends BaseFragment {
     addMineFloatingButton.setOnClickListener(new View.OnClickListener() {
       @Override
       public void onClick(View v) {
-        Toast.makeText(getContext(), "Mine added", Toast.LENGTH_SHORT).show();
         apiService.postBuilding(preferences.getString(USER_ACCESS_TOKEN, ""), new BuildingDTO("mine")).enqueue(new Callback<Building>() {
           @Override
           public void onResponse(Call<Building> call, Response<Building> response) {
-            refresh();
+            refreshActiveFragment();
           }
 
           @Override
@@ -129,11 +110,10 @@ public class BuildingsFragment extends BaseFragment {
     addBarrackFloatingButton.setOnClickListener(new View.OnClickListener() {
       @Override
       public void onClick(View v) {
-        Toast.makeText(getContext(), "Barrack added", Toast.LENGTH_SHORT).show();
-        apiService.postBuilding(preferences.getString(USER_ACCESS_TOKEN, ""),new BuildingDTO("barrack")).enqueue(new Callback<Building>() {
+        apiService.postBuilding(preferences.getString(USER_ACCESS_TOKEN, ""), new BuildingDTO("barrack")).enqueue(new Callback<Building>() {
           @Override
           public void onResponse(Call<Building> call, Response<Building> response) {
-            refresh();
+            refreshActiveFragment();
           }
 
           @Override
@@ -147,29 +127,49 @@ public class BuildingsFragment extends BaseFragment {
     return rootView;
   }
 
-    @Override
-    public void onStart() {
-      super.onStart();
-      EventBus.getDefault().register(this);
-    }
-
-    @Override
-    public void onStop () {
-      super.saveOnExit(BUILDINGS_FRAGMENT_SAVE);
-      timestamp = BaseFragment.timestamp;
-      super.onStop();
-      EventBus.getDefault().unregister(this);
-    }
-
-    @Subscribe(threadMode = ThreadMode.MAIN)
-    public void onEventBuildingAdded (BuildingsEvent event){
-      buildingsAdapter.addAll(event.getBuildings());
-    }
-
-  public void refresh() {
-    FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
-    transaction.detach(this);
-    transaction.attach(this);
-    transaction.commit();
+  @Override
+  public void onStart() {
+    super.onStart();
+    EventBus.getDefault().register(this);
   }
+
+
+  public void getBuildingsFromAPI() {
+    apiService.getBuildings(preferences.getString(USER_ACCESS_TOKEN, "")).enqueue(new Callback<BuildingsResponse>() {
+      @Override
+      public void onResponse(Call<BuildingsResponse> call, Response<BuildingsResponse> response) {
+        EventBus.getDefault().post(new BuildingsEvent(response.body().getBuildings()));
+        buildingsAdapter.clear();
+        buildingsAdapter.addAll(response.body().getBuildings());
+        listView.setAdapter(buildingsAdapter);
+        if (loadingViewListener != null) {
+          loadingViewListener.loadingFinished();
+        }
+      }
+
+      @Override
+      public void onFailure(Call<BuildingsResponse> call, Throwable t) {
+      }
+    });
+  }
+
+  @Override
+  public void refreshActiveFragment() {
+    getBuildingsFromAPI();
+    super.refreshActiveFragment();
+  }
+
+  @Override
+  public void onStop() {
+    super.saveOnExit(BUILDINGS_FRAGMENT_SAVE);
+    timestamp = BaseFragment.timestamp;
+    super.onStop();
+    EventBus.getDefault().unregister(this);
+  }
+
+  @Subscribe(threadMode = ThreadMode.MAIN)
+  public void onEventBuildingAdded(BuildingsEvent event) {
+    buildingsAdapter.addAll(event.getBuildings());
+  }
+
 }

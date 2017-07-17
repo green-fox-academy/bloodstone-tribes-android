@@ -1,5 +1,7 @@
 package com.greenfox.tribesoflagopusandroid.api.service;
 
+import android.os.AsyncTask;
+
 import com.greenfox.tribesoflagopusandroid.api.model.gameobject.Building;
 import com.greenfox.tribesoflagopusandroid.api.model.gameobject.BuildingDTO;
 import com.greenfox.tribesoflagopusandroid.api.model.gameobject.Kingdom;
@@ -12,11 +14,11 @@ import com.greenfox.tribesoflagopusandroid.api.model.response.BuildingsResponse;
 import com.greenfox.tribesoflagopusandroid.api.model.response.ResourcesResponse;
 import com.greenfox.tribesoflagopusandroid.api.model.response.TroopsResponse;
 
+import org.greenrobot.eventbus.EventBus;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-
-import org.greenrobot.eventbus.EventBus;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -37,7 +39,6 @@ public class MockApiService implements ApiService {
     private String name = "kingdomname";
     private long idOfUser = 1;
     private Building townhall = new Building(3, "townhall", 1, 10);
-    ;
     private List<Building> buildings = new ArrayList<>(Arrays.asList(townhall));
     private Resource gold = new Resource("gold", 100, 1);
     private Resource food = new Resource("food", 20, 1);
@@ -63,8 +64,23 @@ public class MockApiService implements ApiService {
     public Call<TroopsResponse> getTroops(@Header("X-tribes-token") String token) {
         return new MockCall<TroopsResponse>() {
             @Override
-            public void enqueue(Callback callback) {
-                callback.onResponse(null, Response.success(new TroopsResponse(troops)));
+            public void enqueue(final Callback callback) {
+                new AsyncTask<Void, Void, Void>() {
+                    @Override
+                    protected Void doInBackground(Void... params) {
+                        try {
+                            Thread.sleep(3000);
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
+                        }
+                        return null;
+                    }
+
+                    @Override
+                    protected void onPostExecute(Void aVoid) {
+                        callback.onResponse(null, Response.success(new TroopsResponse(troops)));
+                    }
+                }.execute();
             }
         };
     }
@@ -73,11 +89,28 @@ public class MockApiService implements ApiService {
     public Call<BuildingsResponse> getBuildings(@Header("X-tribes-token") String token) {
         return new MockCall<BuildingsResponse>() {
             @Override
-            public void enqueue(Callback callback) {
-                callback.onResponse(null, Response.success(new BuildingsResponse(buildings)));
+            public void enqueue(final Callback callback) {
+                new AsyncTask<Void, Void, Void>() {
+                    @Override
+                    protected Void doInBackground(Void... params) {
+                        try {
+                            Thread.sleep(3000);
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
+                        }
+                        return null;
+                    }
+
+                    @Override
+                    protected void onPostExecute(Void aVoid) {
+                        callback.onResponse(null, Response.success(new BuildingsResponse(buildings)));
+
+                    }
+                }.execute();
             }
         };
     }
+
 
     @Override
     public Call<Building> getCertainBuilding(@Header("X-tribes-token") String token, @Path("buildingId") int buildingId) {
@@ -93,8 +126,24 @@ public class MockApiService implements ApiService {
     public Call<Kingdom> getKingdom(@Header("X-tribes-token") String token) {
         return new MockCall<Kingdom>() {
             @Override
-            public void enqueue(Callback callback) {
-                callback.onResponse(null, Response.success(new Kingdom(id, name, idOfUser, buildings, resources, troops, location)));
+            public void enqueue(final Callback callback) {
+                new AsyncTask<Void, Void, Void>() {
+                    @Override
+                    protected Void doInBackground(Void... params) {
+                        try {
+                            Thread.sleep(3000);
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
+                        }
+                        return null;
+                    }
+
+                    @Override
+                    protected void onPostExecute(Void aVoid) {
+                        callback.onResponse(null, Response.success(new Kingdom(id, name, idOfUser, buildings, resources, troops, location)));
+
+                    }
+                }.execute();
             }
         };
     }
