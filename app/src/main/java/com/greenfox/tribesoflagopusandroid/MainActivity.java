@@ -114,6 +114,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
   public boolean onCreateOptionsMenu(Menu menu) {
     MenuInflater inflater = getMenuInflater();
     inflater.inflate(R.menu.game_menu, menu);
+    refreshMenu = menu;
     return true;
   }
 
