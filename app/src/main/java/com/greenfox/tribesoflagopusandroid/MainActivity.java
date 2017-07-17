@@ -3,16 +3,22 @@ package com.greenfox.tribesoflagopusandroid;
 
 import android.app.AlarmManager;
 import android.app.PendingIntent;
+import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.support.annotation.IdRes;
 import android.support.constraint.ConstraintLayout;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
@@ -21,11 +27,12 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.FrameLayout;
+import android.widget.TextView;
 
 import com.greenfox.tribesoflagopusandroid.api.model.gameobject.Kingdom;
-import com.greenfox.tribesoflagopusandroid.fragments.BaseFragment;
 import com.greenfox.tribesoflagopusandroid.event.BuildingsEvent;
 import com.greenfox.tribesoflagopusandroid.event.TroopsEvent;
+import com.greenfox.tribesoflagopusandroid.fragments.BaseFragment;
 import com.greenfox.tribesoflagopusandroid.fragments.BattleFragment;
 import com.greenfox.tribesoflagopusandroid.fragments.BuildingsFragment;
 import com.greenfox.tribesoflagopusandroid.fragments.MainFragment;
@@ -72,6 +79,11 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         TribesApplication.app().basicComponent().inject(this);
+        if (!isConnected(com.greenfox.tribesoflagopusandroid.MainActivity.this))
+            buildDialog(com.greenfox.tribesoflagopusandroid.MainActivity.this).show();
+        else {
+            setContentView(R.layout.activity_main);
+        }
         EventBus.getDefault().register(this);
         editor = preferences.edit();
         fragmentLayout = (FrameLayout) findViewById(R.id.layout_content);
@@ -92,13 +104,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         navigationView.setNavigationItemSelectedListener(this);
     }
 
-    public void checkBackgroundSyncStatus() {
-        preferences = PreferenceManager.getDefaultSharedPreferences(this);
-        if (preferences.getBoolean(BACKGROUND_SYNC, true)) {
-            startBackgroundSync();
-        }
-    }
-
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.game_menu, menu);
@@ -116,28 +121,34 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 activeFragment.refreshActiveFragment();
         }
         return false;
+  }
+
+  public void checkBackgroundSyncStatus() {
+    preferences = PreferenceManager.getDefaultSharedPreferences(this);
+    if (preferences.getBoolean(BACKGROUND_SYNC, true)) {
+      startBackgroundSync();
     }
+  }
 
-    public void checkUserAccessToken() {
-        preferences = PreferenceManager.getDefaultSharedPreferences(this);
+  public void checkUserAccessToken() {
+    preferences = PreferenceManager.getDefaultSharedPreferences(this);
 
-        if (TextUtils.isEmpty(preferences.getString(USER_ACCESS_TOKEN, null))) {
-            Intent intent = new Intent(this, LoginActivity.class);
-            startActivity(intent);
-        }
+    if (TextUtils.isEmpty(preferences.getString(USER_ACCESS_TOKEN, null))) {
+      Intent intent = new Intent(this, LoginActivity.class);
+      startActivity(intent);
     }
+  }
 
-    public void logout() {
-        switchToBackgroundMode();
-        preferences = PreferenceManager.getDefaultSharedPreferences(this);
-        editor = preferences.edit();
-        editor.clear();
-        editor.apply();
-        Intent intent = new Intent(this, LoginActivity.class);
-        startActivity(intent);
-        finish();
-
-    }
+  public void logout() {
+    switchToBackgroundMode();
+    preferences = PreferenceManager.getDefaultSharedPreferences(this);
+    editor = preferences.edit();
+    editor.clear();
+    editor.apply();
+    Intent intent = new Intent(this, LoginActivity.class);
+    startActivity(intent);
+    finish();
+  }
 
   public void startBackgroundSync() {
     manager = (AlarmManager) getApplicationContext().getSystemService(MainActivity.ALARM_SERVICE);
@@ -181,43 +192,42 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     editor.apply();
   }
 
-    private void displaySelectedScreen(int id) {
-
-        switch (id) {
-            case R.id.nav_buildings:
-                activeFragment = new BuildingsFragment();
-                break;
-            case R.id.nav_kingdom:
-                activeFragment = new MainFragment();
-                break;
-            case R.id.nav_battle:
-                activeFragment = new BattleFragment();
-                break;
-            case R.id.nav_settings:
-                activeFragment = new SettingsFragment();
-                break;
-            case R.id.nav_troops:
-                activeFragment = new TroopsFragment();
-                break;
-            case R.id.nav_logout:
-                logout();
-                break;
-        }
-        if (activeFragment != null) {
-            activeFragment.setLoadingViewListener(this);
-            FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-            transaction.replace(R.id.layout_content, activeFragment);
-            transaction.commit();
-        }
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        drawer.closeDrawer(GravityCompat.START);
+  private void displaySelectedScreen(int id) {
+    switch (id) {
+      case R.id.nav_buildings:
+        EventBus.getDefault().post(new BuildingsEvent());
+        break;
+      case R.id.nav_kingdom:
+        activeFragment = new MainFragment();
+        break;
+      case R.id.nav_battle:
+        activeFragment = new BattleFragment();
+        break;
+      case R.id.nav_settings:
+        activeFragment = new SettingsFragment();
+        break;
+      case R.id.nav_troops:
+        EventBus.getDefault().post(new TroopsEvent());
+        break;
+      case R.id.nav_logout:
+        logout();
+        break;
     }
-
-    @Override
-    public void loadingStarted() {
-        fragmentLayout.setVisibility(View.INVISIBLE);
-        loadingView.setVisibility(View.VISIBLE);
+    if (activeFragment != null) {
+      activeFragment.setLoadingViewListener(this);
+      FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+      transaction.replace(R.id.layout_content, activeFragment);
+      transaction.commit();
     }
+    DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+    drawer.closeDrawer(GravityCompat.START);
+  }
+
+  @Override
+  public void loadingStarted() {
+    fragmentLayout.setVisibility(View.INVISIBLE);
+    loadingView.setVisibility(View.VISIBLE);
+  }
 
     @Override
     public void loadingFinished() {
@@ -225,6 +235,37 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         loadingView.setVisibility(View.INVISIBLE);
         refreshMenu.getItem(0).setIcon(getResources().getDrawable(R.drawable.sync));
     }
+
+  public boolean isConnected(Context context) {
+    ConnectivityManager connectivityManager = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
+    NetworkInfo networkInfo = connectivityManager.getActiveNetworkInfo();
+
+    if (networkInfo != null && networkInfo.isConnectedOrConnecting()) {
+      android.net.NetworkInfo wifi = connectivityManager.getNetworkInfo(ConnectivityManager.TYPE_WIFI);
+      android.net.NetworkInfo mobile = connectivityManager.getNetworkInfo(ConnectivityManager.TYPE_MOBILE);
+      return (mobile != null && mobile.isConnectedOrConnecting()) || (wifi != null && wifi.isConnectedOrConnecting());
+    } else return false;
+  }
+
+  public AlertDialog.Builder buildDialog(Context c) {
+    AlertDialog.Builder builder = new AlertDialog.Builder(c);
+    builder.setTitle("No Internet Connection");
+    builder.setMessage("You need to have Mobile Data or wifi to access this.");
+    builder.setNegativeButton("Exit", new DialogInterface.OnClickListener() {
+      @Override
+      public void onClick(DialogInterface dialog, int which) {
+        finish();
+      }
+    });
+    builder.setPositiveButton("Settings", new DialogInterface.OnClickListener() {
+      @Override
+      public void onClick(DialogInterface dialog, int which) {
+        startActivityForResult(new Intent(android.provider.Settings.ACTION_SETTINGS), 0);
+        finish();
+      }
+    });
+    return builder;
+  }
 
   @SuppressWarnings("StatementWithEmptyBody")
   @Override
@@ -234,14 +275,19 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     return true;
   }
 
+  private void setNavItemCount(@IdRes int itemId, int count) {
+    NavigationView navigationView = (NavigationView) findViewById(R.id.navigation_view);
+    TextView view = (TextView) navigationView.getMenu().findItem(itemId).getActionView();
+    view.setText(count > 0 ? String.valueOf(count) : null);
+  }
+
   @Subscribe(threadMode = ThreadMode.MAIN)
   public void onEventNavigateToBuildings(BuildingsEvent event) {
-      activeFragment = new BuildingsFragment();
+    activeFragment = new BuildingsFragment();
   }
 
   @Subscribe(threadMode = ThreadMode.MAIN)
   public void onEventNavigateToTroops(TroopsEvent event) {
-      activeFragment = new TroopsFragment();
+    activeFragment = new TroopsFragment();
   }
-
 }

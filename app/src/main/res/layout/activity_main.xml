@@ -10,7 +10,7 @@
     tools:context="com.greenfox.tribesoflagopusandroid.MainActivity">
 
     <android.support.constraint.ConstraintLayout
-        android:id="@+id/loadingView"
+        android:id="@+id/loading_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:visibility="invisible">
