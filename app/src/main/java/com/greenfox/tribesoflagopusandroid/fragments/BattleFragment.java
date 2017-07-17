@@ -20,6 +20,7 @@ public class BattleFragment extends BaseFragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        refreshActiveFragment();
         return inflater.inflate(R.layout.fragment_battle, container, false);
     }
 
@@ -27,6 +28,14 @@ public class BattleFragment extends BaseFragment {
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         getActivity().setTitle("Battle");
+    }
+
+    @Override
+    public void refreshActiveFragment() {
+        super.refreshActiveFragment();
+        if (loadingViewListener != null) {
+            loadingViewListener.loadingFinished();
+        }
     }
 
     @Override
