@@ -50,9 +50,6 @@ public class MainFragment extends BaseFragment {
   List<Building> buildings;
   List<Resource> resources;
   List<Troop> troops;
-    ImageView goldImage, foodImage;
-    TextView gold, food, totalBuildingNumber, totalTroopNumber;
-
 
   public MainFragment() {
   }
@@ -72,23 +69,6 @@ public class MainFragment extends BaseFragment {
     final View rootView = inflater.inflate(R.layout.fragment_main, container, false);
     refreshActiveFragment();
     setMainFragmentView(rootView);
-//    apiService.getKingdom(preferences.getString(USER_ACCESS_TOKEN, "")).enqueue(new Callback<Kingdom>() {
-//      @Override
-//      public void onResponse(Call<Kingdom> call, Response<Kingdom> response) {
-//        if (response.code() == 400) {
-//          ((MainActivity) getActivity()).logout();
-//          return;
-//        }
-//        buildings = response.body().getBuildings();
-//        troops = response.body().getTroops();
-//        resources = response.body().getResources();
-//
-//      }
-
-//      @Override
-//      public void onFailure(Call<Kingdom> call, Throwable t) {
-//      }
-//    });
 
     Button buildingButton = (Button) rootView.findViewById(R.id.go_to_buildings_btn);
     Button troopButton = (Button) rootView.findViewById(R.id.go_to_troops_btn);

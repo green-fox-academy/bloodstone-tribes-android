@@ -123,7 +123,6 @@ public class BuildingsFragment extends BaseFragment {
         });
       }
     });
-
     return rootView;
   }
 
@@ -132,7 +131,6 @@ public class BuildingsFragment extends BaseFragment {
     super.onStart();
     EventBus.getDefault().register(this);
   }
-
 
   public void getBuildingsFromAPI() {
     apiService.getBuildings(preferences.getString(USER_ACCESS_TOKEN, "")).enqueue(new Callback<BuildingsResponse>() {
