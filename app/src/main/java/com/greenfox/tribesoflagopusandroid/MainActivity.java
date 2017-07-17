@@ -47,60 +47,80 @@ import javax.inject.Inject;
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener, LoadingViewListener {
 
-  public static final String USER_ACCESS_TOKEN = "userToken";
-  public static final String USERNAME = "username";
-  public static final String NOTIFICATION = "notification";
-  public static final String BACKGROUND_SYNC = "backgroundSync";
-  public static final String APP_SAVE = "appSave";
-  public static final String BUILDINGS_FRAGMENT_SAVE = "buildingsSave";
-  public static final String TROOPS_FRAGMENT_SAVE = "troopsSave";
-  public static final String SETTINGS_FRAGMENT_SAVE = "SettingsSave";
-  public static final String BATTLE_FRAGMENT_SAVE = "battleSave";
-  public static final String MAIN_FRAGMENT_SAVE = "mainSave";
+    public static final String USER_ACCESS_TOKEN = "userToken";
+    public static final String USERNAME = "username";
+    public static final String NOTIFICATION = "notification";
+    public static final String BACKGROUND_SYNC = "backgroundSync";
+    public static final String APP_SAVE = "appSave";
+    public static final String BUILDINGS_FRAGMENT_SAVE = "buildingsSave";
+    public static final String TROOPS_FRAGMENT_SAVE = "troopsSave";
+    public static final String SETTINGS_FRAGMENT_SAVE = "SettingsSave";
+    public static final String BATTLE_FRAGMENT_SAVE = "battleSave";
+    public static final String MAIN_FRAGMENT_SAVE = "mainSave";
 
-  @Inject
-  public SharedPreferences preferences;
+    @Inject
+    public
+    SharedPreferences preferences;
 
-  SharedPreferences.Editor editor;
-  String timestamp;
-  public BaseFragment activeFragment = null;
-  Kingdom thisKingdom = new Kingdom();
-  public PendingIntent pendingIntent;
-  public AlarmManager manager;
-  FrameLayout fragmentLayout;
-  ConstraintLayout loadingView;
+    SharedPreferences.Editor editor;
+    String timestamp;
+    public BaseFragment activeFragment = null;
+    Kingdom thisKingdom = new Kingdom();
+    public PendingIntent pendingIntent;
+    public AlarmManager manager;
+    FrameLayout fragmentLayout;
+    ConstraintLayout loadingView;
+    MenuItem refreshIcon;
+    Menu refreshMenu;
 
-  @Override
-  protected void onCreate(Bundle savedInstanceState) {
-    super.onCreate(savedInstanceState);
-    setContentView(R.layout.activity_main);
-    TribesApplication.app().basicComponent().inject(this);
-    if (!isConnected(com.greenfox.tribesoflagopusandroid.MainActivity.this))
-      buildDialog(com.greenfox.tribesoflagopusandroid.MainActivity.this).show();
-    else {
-      setContentView(R.layout.activity_main);
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+        TribesApplication.app().basicComponent().inject(this);
+        if (!isConnected(com.greenfox.tribesoflagopusandroid.MainActivity.this))
+            buildDialog(com.greenfox.tribesoflagopusandroid.MainActivity.this).show();
+        else {
+            setContentView(R.layout.activity_main);
+        }
+        EventBus.getDefault().register(this);
+        editor = preferences.edit();
+        fragmentLayout = (FrameLayout) findViewById(R.id.layout_content);
+        loadingView = (ConstraintLayout) findViewById(R.id.loadingView);
+        checkUserAccessToken();
+        checkBackgroundSyncStatus();
+        displaySelectedScreen(R.id.nav_kingdom);
+
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+
+        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
+                this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+        drawer.setDrawerListener(toggle);
+        toggle.syncState();
+        NavigationView navigationView = (NavigationView) findViewById(R.id.navigation_view);
+        navigationView.setNavigationItemSelectedListener(this);
     }
 
-    EventBus.getDefault().register(this);
-    editor = preferences.edit();
-    fragmentLayout = (FrameLayout) findViewById(R.id.layout_content);
-    loadingView = (ConstraintLayout) findViewById(R.id.loading_view);
-    checkUserAccessToken();
-    checkBackgroundSyncStatus();
-    displaySelectedScreen(R.id.nav_kingdom);
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.game_menu, menu);
+        refreshMenu = menu;
+        return true;
+    }
 
-    Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-    setSupportActionBar(toolbar);
-
-    DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-    ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
-            this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
-    drawer.setDrawerListener(toggle);
-    toggle.syncState();
-    NavigationView navigationView = (NavigationView) findViewById(R.id.navigation_view);
-    navigationView.setNavigationItemSelectedListener(this);
-    setNavItemCount(R.id.nav_buildings, 4);
-    setNavItemCount(R.id.nav_troops, 15);
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        this.refreshIcon = item;
+        super.onOptionsItemSelected(item);
+        switch (item.getItemId()) {
+            case R.id.refreshing:
+                refreshMenu.getItem(0).setIcon(getResources().getDrawable(R.drawable.slow_loading));
+                activeFragment.refreshActiveFragment();
+        }
+        return false;
   }
 
   public void checkBackgroundSyncStatus() {
@@ -108,22 +128,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     if (preferences.getBoolean(BACKGROUND_SYNC, true)) {
       startBackgroundSync();
     }
-  }
-
-  public boolean onCreateOptionsMenu(Menu menu) {
-    MenuInflater inflater = getMenuInflater();
-    inflater.inflate(R.menu.game_menu, menu);
-    return true;
-  }
-
-  @Override
-  public boolean onOptionsItemSelected(MenuItem item) {
-    super.onOptionsItemSelected(item);
-    switch (item.getItemId()) {
-      case R.id.refreshing:
-        activeFragment.refreshActiveFragment();
-    }
-    return false;
   }
 
   public void checkUserAccessToken() {
@@ -219,18 +223,18 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     drawer.closeDrawer(GravityCompat.START);
   }
 
-
   @Override
   public void loadingStarted() {
     fragmentLayout.setVisibility(View.INVISIBLE);
     loadingView.setVisibility(View.VISIBLE);
   }
 
-  @Override
-  public void loadingFinished() {
-    fragmentLayout.setVisibility(View.VISIBLE);
-    loadingView.setVisibility(View.INVISIBLE);
-  }
+    @Override
+    public void loadingFinished() {
+        fragmentLayout.setVisibility(View.VISIBLE);
+        loadingView.setVisibility(View.INVISIBLE);
+        refreshMenu.getItem(0).setIcon(getResources().getDrawable(R.drawable.sync));
+    }
 
   public boolean isConnected(Context context) {
     ConnectivityManager connectivityManager = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
