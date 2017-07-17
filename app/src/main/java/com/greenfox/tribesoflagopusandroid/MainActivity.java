@@ -63,6 +63,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     public AlarmManager manager;
     FrameLayout fragmentLayout;
     ConstraintLayout loadingView;
+    MenuItem refreshIcon;
+    Menu refreshMenu;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -99,14 +102,17 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.game_menu, menu);
+        refreshMenu = menu;
         return true;
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
+        this.refreshIcon = item;
         super.onOptionsItemSelected(item);
         switch (item.getItemId()) {
             case R.id.refreshing:
+                refreshMenu.getItem(0).setIcon(getResources().getDrawable(R.drawable.slow_loading));
                 activeFragment.refreshActiveFragment();
         }
         return false;
@@ -217,6 +223,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     public void loadingFinished() {
         fragmentLayout.setVisibility(View.VISIBLE);
         loadingView.setVisibility(View.INVISIBLE);
+        refreshMenu.getItem(0).setIcon(getResources().getDrawable(R.drawable.sync));
     }
 
   @SuppressWarnings("StatementWithEmptyBody")
