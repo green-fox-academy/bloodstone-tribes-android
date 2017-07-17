@@ -69,6 +69,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
   public AlarmManager manager;
   FrameLayout fragmentLayout;
   ConstraintLayout loadingView;
+  Menu refreshMenu;
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
@@ -121,6 +122,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     super.onOptionsItemSelected(item);
     switch (item.getItemId()) {
       case R.id.refreshing:
+        refreshMenu.getItem(0).setIcon(getResources().getDrawable(R.drawable.slow_loading));
         activeFragment.refreshActiveFragment();
     }
     return false;
@@ -230,6 +232,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
   public void loadingFinished() {
     fragmentLayout.setVisibility(View.VISIBLE);
     loadingView.setVisibility(View.INVISIBLE);
+    refreshMenu.getItem(0).setIcon(getResources().getDrawable(R.drawable.sync));
   }
 
   public boolean isConnected(Context context) {
