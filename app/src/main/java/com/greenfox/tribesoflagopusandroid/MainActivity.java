@@ -69,6 +69,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
   public AlarmManager manager;
   FrameLayout fragmentLayout;
   ConstraintLayout loadingView;
+  Menu refreshMenu;
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
@@ -80,7 +81,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     else {
       setContentView(R.layout.activity_main);
     }
-
     EventBus.getDefault().register(this);
     editor = preferences.edit();
     fragmentLayout = (FrameLayout) findViewById(R.id.layout_content);
@@ -113,6 +113,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
   public boolean onCreateOptionsMenu(Menu menu) {
     MenuInflater inflater = getMenuInflater();
     inflater.inflate(R.menu.game_menu, menu);
+    refreshMenu = menu;
+    refreshMenu.getItem(0).setIcon(getResources().getDrawable(R.drawable.sync));
     return true;
   }
 
@@ -121,6 +123,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     super.onOptionsItemSelected(item);
     switch (item.getItemId()) {
       case R.id.refreshing:
+        refreshMenu.getItem(0).setIcon(getResources().getDrawable(R.drawable.slow_loading));
         activeFragment.refreshActiveFragment();
     }
     return false;
@@ -230,6 +233,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
   public void loadingFinished() {
     fragmentLayout.setVisibility(View.VISIBLE);
     loadingView.setVisibility(View.INVISIBLE);
+    if (refreshMenu != null) {
+      refreshMenu.getItem(0).setIcon(getResources().getDrawable(R.drawable.sync));
+    }
   }
 
   public boolean isConnected(Context context) {
