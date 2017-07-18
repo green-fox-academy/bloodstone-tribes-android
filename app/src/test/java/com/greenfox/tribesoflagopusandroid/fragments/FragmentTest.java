@@ -1,5 +1,7 @@
 package com.greenfox.tribesoflagopusandroid.fragments;
 
+import android.view.Menu;
+
 import com.greenfox.tribesoflagopusandroid.BuildConfig;
 import com.greenfox.tribesoflagopusandroid.MainActivity;
 
@@ -22,6 +24,7 @@ public class FragmentTest {
 
     MainActivity mainActivity;
     BattleFragment battleFragment;
+    Menu refreshMenu;
     @Before
     public void setup() {
         mainActivity = Robolectric.setupActivity(MainActivity.class);
