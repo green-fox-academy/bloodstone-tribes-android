@@ -13,7 +13,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
 import android.view.Gravity;
 import android.view.View;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.Toast;
@@ -26,15 +25,8 @@ import com.greenfox.tribesoflagopusandroid.api.model.gameobject.UserRegisterDTO;
 import com.greenfox.tribesoflagopusandroid.api.service.ApiService;
 import com.greenfox.tribesoflagopusandroid.api.service.LoginService;
 
-import java.io.UnsupportedEncodingException;
-import java.security.InvalidAlgorithmParameterException;
-import java.security.InvalidKeyException;
-import java.security.NoSuchAlgorithmException;
-import java.security.spec.InvalidKeySpecException;
+import org.json.JSONObject;
 
-import javax.crypto.BadPaddingException;
-import javax.crypto.IllegalBlockSizeException;
-import javax.crypto.NoSuchPaddingException;
 import javax.inject.Inject;
 
 import retrofit2.Call;
@@ -172,6 +164,15 @@ public class LoginActivity extends AppCompatActivity {
         loginService.loginWithUser(new UserLoginDTO(username, password)).enqueue(new Callback<Token>() {
             @Override
             public void onResponse(Call<Token> call, Response<Token> response) {
+                if (response.code() != 200) {
+                    try {
+                        JSONObject errorAnswer = new JSONObject(response.errorBody().string());
+                        Toast.makeText(getApplication(), errorAnswer.getString("message"), Toast.LENGTH_LONG).show();
+                    }catch (Exception e) {
+                        Toast.makeText(getApplication(), e.getMessage(), Toast.LENGTH_LONG).show();
+                    }
+                    return;
+                }
                 Token token = response.body();
                 addUserToken(token.getToken());
                 addUserName(username);

@@ -128,7 +128,7 @@ public class MainFragment extends BaseFragment {
     apiService.getKingdom(preferences.getString(USER_ACCESS_TOKEN, "")).enqueue(new Callback<Kingdom>() {
       @Override
       public void onResponse(Call<Kingdom> call, Response<Kingdom> response) {
-        if (response.code() == 400) {
+        if (response.code() != 200) {
           ((MainActivity) getActivity()).logout();
           return;
         }
