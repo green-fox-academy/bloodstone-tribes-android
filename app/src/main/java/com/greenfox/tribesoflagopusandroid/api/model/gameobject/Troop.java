@@ -12,19 +12,19 @@ public class Troop extends BaseResponse {
   private int level;
   private int hp;
   private int attack;
-  private int defense;
+  private int defence;
   private long startedAt;
   private long finishedAt;
 
   public Troop() {
   }
 
-  public Troop(long id, int level, int hp, int attack, int defense) {
+  public Troop(long id, int level, int hp, int attack, int defence) {
     this.id = id;
     this.level = level;
     this.hp = hp;
     this.attack = attack;
-    this.defense = defense;
+    this.defence = defence;
     this.startedAt = System.currentTimeMillis();
     this.finishedAt = System.currentTimeMillis() + 600000;    //10 min
   }
@@ -61,12 +61,12 @@ public class Troop extends BaseResponse {
     this.attack = attack;
   }
 
-  public int getDefense() {
-    return defense;
+  public int getDefence() {
+    return defence;
   }
 
-  public void setDefense(int defense) {
-    this.defense = defense;
+  public void setDefence(int defence) {
+    this.defence = defence;
   }
 
   public long getStartedAt() {

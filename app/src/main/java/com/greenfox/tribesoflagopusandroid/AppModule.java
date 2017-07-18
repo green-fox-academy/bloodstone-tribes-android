@@ -2,6 +2,7 @@ package com.greenfox.tribesoflagopusandroid;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.os.Build;
 import android.preference.PreferenceManager;
 
 import com.google.gson.Gson;
@@ -22,7 +23,7 @@ import dagger.Provides;
 public class AppModule {
 
     private Context context;
-    private static final Boolean APISERVICE_IS_ACTIVE = false;
+    private static final Boolean APISERVICE_IS_ACTIVE = !"robolectric".equals(Build.FINGERPRINT);
     ServiceFactory serviceFactory;
 
     public AppModule(Context context) {
@@ -35,17 +36,20 @@ public class AppModule {
         return context;
     }
 
-    @Singleton @Provides
+    @Singleton
+    @Provides
     public SharedPreferences provideSharedPreferences(Context context){
         return PreferenceManager.getDefaultSharedPreferences(context);
     }
 
-    @Singleton @Provides
+    @Singleton
+    @Provides
     public Gson provideGson(){
         return new Gson();
     }
 
-    @Singleton @Provides
+    @Singleton
+    @Provides
     public LoginService provideLoginService() {
         if (APISERVICE_IS_ACTIVE) {
             return serviceFactory.createRetrofitService();
@@ -53,10 +57,11 @@ public class AppModule {
         return serviceFactory.createMockLoginService();
     }
 
-    @Singleton @Provides
-    public ApiService provideMockApiService() {
+    @Singleton
+    @Provides
+    public ApiService provideApiService() {
         if (APISERVICE_IS_ACTIVE) {
-            return serviceFactory.createRetrofitService();
+            return serviceFactory.createRetrofitApiService();
         }
         return serviceFactory.createMockApiService();
     }

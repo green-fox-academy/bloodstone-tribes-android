@@ -3,11 +3,13 @@ package com.greenfox.tribesoflagopusandroid.api.service;
 import android.os.AsyncTask;
 
 import com.greenfox.tribesoflagopusandroid.api.model.gameobject.Building;
+import com.greenfox.tribesoflagopusandroid.api.model.gameobject.BuildingDTO;
 import com.greenfox.tribesoflagopusandroid.api.model.gameobject.Kingdom;
 import com.greenfox.tribesoflagopusandroid.api.model.gameobject.Location;
 import com.greenfox.tribesoflagopusandroid.api.model.gameobject.Resource;
 import com.greenfox.tribesoflagopusandroid.api.model.gameobject.Troop;
 import com.greenfox.tribesoflagopusandroid.api.model.gameobject.User;
+import com.greenfox.tribesoflagopusandroid.api.model.gameobject.UserRegisterDTO;
 import com.greenfox.tribesoflagopusandroid.api.model.response.BuildingsResponse;
 import com.greenfox.tribesoflagopusandroid.api.model.response.ResourcesResponse;
 import com.greenfox.tribesoflagopusandroid.api.model.response.TroopsResponse;
@@ -21,6 +23,7 @@ import java.util.List;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
+import retrofit2.http.Body;
 import retrofit2.http.Field;
 import retrofit2.http.Header;
 import retrofit2.http.Path;
@@ -48,11 +51,11 @@ public class MockApiService implements ApiService {
     private Troop troop = new Troop(1L,1,1,1,1);
 
     @Override
-    public Call<User> register(@Field("username") final String username, @Field("password") String password, @Field("kingdomName") String kingdomName) {
+    public Call<User> register(@Body UserRegisterDTO userRegisterDTO) {
         return new MockCall<User>() {
             @Override
             public void enqueue(Callback callback) {
-                callback.onResponse(null, Response.success(new User(1, username, 1)));
+                callback.onResponse(null, Response.success(new User()));
             }
         };
     }
@@ -146,12 +149,12 @@ public class MockApiService implements ApiService {
     }
 
     @Override
-    public Call<Building> postBuilding(@Header("X-tribes-token") String token, @Field("type") final String type) {
+    public Call<Building> postBuilding(@Header("X-tribes-token") String token, @Body final BuildingDTO buildingDto) {
         EventBus.getDefault().post(new BuildingsResponse(buildings));
         return new MockCall<Building>() {
             @Override
             public void enqueue(Callback callback) {
-                Building building = new Building(1L, type, 1, 1);
+                Building building = new Building(1L, buildingDto.getType(), 1, 1);
                 buildings.add(building);
                 callback.onResponse(null, Response.success(building));
             }

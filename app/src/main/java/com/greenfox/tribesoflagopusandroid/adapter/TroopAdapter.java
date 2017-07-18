@@ -38,7 +38,7 @@ public class TroopAdapter extends ArrayAdapter<Troop> {
         TextView ap = (TextView) convertView.findViewById(R.id.AP_amount);
         ap.setText(Integer.toString(current.getAttack()));
         TextView dp = (TextView) convertView.findViewById(R.id.DP_amount);
-        dp.setText(Integer.toString(current.getDefense()));
+        dp.setText(Integer.toString(current.getDefence()));
 
         return convertView;
     }
