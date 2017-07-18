@@ -166,8 +166,8 @@ public class LoginActivity extends AppCompatActivity {
             public void onResponse(Call<Token> call, Response<Token> response) {
                 if (response.code() != 200) {
                     try {
-                        JSONObject errorAnswer = new JSONObject(response.errorBody().string());
-                        Toast.makeText(getApplication(), errorAnswer.getString("message"), Toast.LENGTH_LONG).show();
+                        JSONObject errorJSONAnswer = new JSONObject(response.errorBody().string());
+                        Toast.makeText(getApplication(), errorJSONAnswer.getString("message"), Toast.LENGTH_LONG).show();
                     }catch (Exception e) {
                         Toast.makeText(getApplication(), e.getMessage(), Toast.LENGTH_LONG).show();
                     }
