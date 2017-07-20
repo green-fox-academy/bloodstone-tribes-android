@@ -191,7 +191,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     editor.apply();
   }
 
-  private void displaySelectedScreen(int id) {
+  public void displaySelectedScreen(int id) {
     switch (id) {
       case R.id.nav_buildings:
         EventBus.getDefault().post(new BuildingsEvent());
