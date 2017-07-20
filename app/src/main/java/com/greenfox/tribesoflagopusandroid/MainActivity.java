@@ -99,8 +99,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     toggle.syncState();
     NavigationView navigationView = (NavigationView) findViewById(R.id.navigation_view);
     navigationView.setNavigationItemSelectedListener(this);
-    setNavItemCount(R.id.nav_buildings, 4);
-    setNavItemCount(R.id.nav_troops, 15);
   }
 
   public void checkBackgroundSyncStatus() {
@@ -279,12 +277,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     int id = item.getItemId();
     displaySelectedScreen(id);
     return true;
-  }
-
-  private void setNavItemCount(@IdRes int itemId, int count) {
-    NavigationView navigationView = (NavigationView) findViewById(R.id.navigation_view);
-    TextView view = (TextView) navigationView.getMenu().findItem(itemId).getActionView();
-    view.setText(count > 0 ? String.valueOf(count) : null);
   }
 
   @Subscribe(threadMode = ThreadMode.MAIN)

@@ -8,12 +8,16 @@ import android.content.SharedPreferences;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.app.NotificationCompat;
 import android.support.v4.app.TaskStackBuilder;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import com.github.clans.fab.FloatingActionButton;
 import com.github.clans.fab.FloatingActionMenu;
@@ -23,6 +27,8 @@ import com.greenfox.tribesoflagopusandroid.TribesApplication;
 import com.greenfox.tribesoflagopusandroid.adapter.BuildingsAdapter;
 import com.greenfox.tribesoflagopusandroid.api.model.gameobject.Building;
 import com.greenfox.tribesoflagopusandroid.api.model.gameobject.BuildingDTO;
+import com.greenfox.tribesoflagopusandroid.api.model.gameobject.Kingdom;
+import com.greenfox.tribesoflagopusandroid.api.model.gameobject.Resource;
 import com.greenfox.tribesoflagopusandroid.api.model.response.BuildingsResponse;
 import com.greenfox.tribesoflagopusandroid.api.service.ApiService;
 import com.greenfox.tribesoflagopusandroid.event.BuildingsEvent;
@@ -32,6 +38,7 @@ import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import javax.inject.Inject;
 
@@ -47,15 +54,17 @@ public class BuildingsFragment extends BaseFragment {
 
   @Inject
   SharedPreferences preferences;
-  @Inject
-  ApiService apiService;
 
   SharedPreferences.Editor editor;
-  String timestamp;
+  @Inject
+  ApiService apiService;
+  List<Resource> resources;
+
   private BuildingsAdapter buildingsAdapter;
+  String timestamp;
+
   FloatingActionMenu buildingsFloatingMenu;
   FloatingActionButton addFarmFloatingButton, addMineFloatingButton, addBarrackFloatingButton;
-  ListView listView;
 
   public BuildingsFragment() {
   }
@@ -66,14 +75,41 @@ public class BuildingsFragment extends BaseFragment {
     getActivity().setTitle("Buildings");
   }
 
+  @Nullable
+  @Override
   public View onCreateView(LayoutInflater inflater, ViewGroup container,
                            Bundle savedInstanceState) {
     TribesApplication.app().basicComponent().inject(this);
     editor = preferences.edit();
-    View rootView = inflater.inflate(R.layout.fragment_buildings, container, false);
+
     buildingsAdapter = new BuildingsAdapter(getContext(), new ArrayList<Building>());
-    listView = (ListView) rootView.findViewById(R.id.buildings_list);
-    refreshActiveFragment();
+    final View rootView = inflater.inflate(R.layout.fragment_buildings, container, false);
+    apiService.getKingdom(preferences.getString(USER_ACCESS_TOKEN, "")).enqueue(new Callback<Kingdom>() {
+      @Override
+      public void onResponse(Call<Kingdom> call, Response<Kingdom> response) {
+        if (response.code() == 400) {
+          ((MainActivity) getActivity()).logout();
+          return;
+        }
+        resources = response.body().getResources();
+        EventBus.getDefault().post(new BuildingsEvent(response.body().getBuildings()));
+        ImageView goldImage = (ImageView) rootView.findViewById(R.id.gold_icon);
+        ImageView foodImage = (ImageView) rootView.findViewById(R.id.food_icon);
+        TextView gold = (TextView) rootView.findViewById(R.id.gold_amount);
+        TextView food = (TextView) rootView.findViewById(R.id.food_amount);
+        gold.setText(resources.get(0).getAmount() + " ");
+        food.setText(resources.get(1).getAmount() + " ");
+        goldImage.setImageResource(R.drawable.gold);
+        foodImage.setImageResource(R.drawable.food);
+      }
+
+      @Override
+      public void onFailure(Call<Kingdom> call, Throwable t) {
+      }
+    });
+    ListView listView = (ListView) rootView.findViewById(R.id.buildings_list);
+    listView.setAdapter(buildingsAdapter);
+
 
     buildingsFloatingMenu = (FloatingActionMenu) rootView.findViewById(R.id.add_building_menu);
 
@@ -81,11 +117,11 @@ public class BuildingsFragment extends BaseFragment {
     addFarmFloatingButton.setOnClickListener(new View.OnClickListener() {
       @Override
       public void onClick(View v) {
+        Toast.makeText(getContext(), "Farm added", Toast.LENGTH_SHORT).show();
         apiService.postBuilding(preferences.getString(USER_ACCESS_TOKEN, ""), new BuildingDTO("farm")).enqueue(new Callback<Building>() {
           @Override
           public void onResponse(Call<Building> call, Response<Building> response) {
-            sendNotification("farm");
-            refreshActiveFragment();
+            refresh();
           }
 
           @Override
@@ -100,11 +136,11 @@ public class BuildingsFragment extends BaseFragment {
     addMineFloatingButton.setOnClickListener(new View.OnClickListener() {
       @Override
       public void onClick(View v) {
+        Toast.makeText(getContext(), "Mine added", Toast.LENGTH_SHORT).show();
         apiService.postBuilding(preferences.getString(USER_ACCESS_TOKEN, ""), new BuildingDTO("mine")).enqueue(new Callback<Building>() {
           @Override
           public void onResponse(Call<Building> call, Response<Building> response) {
-            sendNotification("mine");
-            refreshActiveFragment();
+            refresh();
           }
 
           @Override
@@ -119,11 +155,11 @@ public class BuildingsFragment extends BaseFragment {
     addBarrackFloatingButton.setOnClickListener(new View.OnClickListener() {
       @Override
       public void onClick(View v) {
+        Toast.makeText(getContext(), "Barrack added", Toast.LENGTH_SHORT).show();
         apiService.postBuilding(preferences.getString(USER_ACCESS_TOKEN, ""), new BuildingDTO("barrack")).enqueue(new Callback<Building>() {
           @Override
           public void onResponse(Call<Building> call, Response<Building> response) {
-            sendNotification("barrack");
-            refreshActiveFragment();
+            refresh();
           }
 
           @Override
@@ -133,6 +169,7 @@ public class BuildingsFragment extends BaseFragment {
         });
       }
     });
+
     return rootView;
   }
 
@@ -140,31 +177,6 @@ public class BuildingsFragment extends BaseFragment {
   public void onStart() {
     super.onStart();
     EventBus.getDefault().register(this);
-  }
-
-  public void getBuildingsFromAPI() {
-    apiService.getBuildings(preferences.getString(USER_ACCESS_TOKEN, "")).enqueue(new Callback<BuildingsResponse>() {
-      @Override
-      public void onResponse(Call<BuildingsResponse> call, Response<BuildingsResponse> response) {
-//        EventBus.getDefault().post(new BuildingsEvent(response.body().getBuildings()));
-        buildingsAdapter.clear();
-        buildingsAdapter.addAll(response.body().getBuildings());
-        listView.setAdapter(buildingsAdapter);
-        if (loadingViewListener != null) {
-          loadingViewListener.loadingFinished();
-        }
-      }
-
-      @Override
-      public void onFailure(Call<BuildingsResponse> call, Throwable t) {
-      }
-    });
-  }
-
-  @Override
-  public void refreshActiveFragment() {
-    getBuildingsFromAPI();
-    super.refreshActiveFragment();
   }
 
   @Override
@@ -180,28 +192,10 @@ public class BuildingsFragment extends BaseFragment {
     buildingsAdapter.addAll(event.getBuildings());
   }
 
-  public void sendNotification(String building) {
-    if (preferences.getBoolean(NOTIFICATION, true)) {
-      NotificationCompat.Builder mBuilder =
-              new NotificationCompat.Builder(getActivity())
-                      .setSmallIcon(R.drawable.tribes)
-                      .setLargeIcon(BitmapFactory.decodeResource(this.getResources(), R.drawable.tribesbig))
-                      .setContentTitle("New " + building + " has started!")
-                      .setContentText("Your workers has started to work on your new " + building + ".");
-      Intent resultIntent = new Intent(getContext(), MainActivity.class);
-      TaskStackBuilder stackBuilder = TaskStackBuilder.create(getContext());
-      stackBuilder.addParentStack(MainActivity.class);
-      stackBuilder.addNextIntent(resultIntent);
-      PendingIntent resultPendingIntent =
-              stackBuilder.getPendingIntent(
-                      0,
-                      PendingIntent.FLAG_UPDATE_CURRENT
-              );
-      mBuilder.setContentIntent(resultPendingIntent).setAutoCancel(true);
-
-      NotificationManager mNotificationManager =
-              (NotificationManager) getActivity().getSystemService(Context.NOTIFICATION_SERVICE);
-      mNotificationManager.notify(001, mBuilder.build());
-    }
+  public void refresh() {
+    FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
+    transaction.detach(this);
+    transaction.attach(this);
+    transaction.commit();
   }
 }
