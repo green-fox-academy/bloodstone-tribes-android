@@ -4,8 +4,6 @@ package com.greenfox.tribesoflagopusandroid.fragments;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentTransaction;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,7 +11,6 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.github.clans.fab.FloatingActionButton;
 import com.greenfox.tribesoflagopusandroid.MainActivity;
 import com.greenfox.tribesoflagopusandroid.R;
 import com.greenfox.tribesoflagopusandroid.TribesApplication;
@@ -22,8 +19,6 @@ import com.greenfox.tribesoflagopusandroid.api.model.gameobject.Kingdom;
 import com.greenfox.tribesoflagopusandroid.api.model.gameobject.Resource;
 import com.greenfox.tribesoflagopusandroid.api.model.gameobject.Troop;
 import com.greenfox.tribesoflagopusandroid.api.service.ApiService;
-
-import org.greenrobot.eventbus.EventBus;
 
 import java.util.List;
 
@@ -50,6 +45,7 @@ public class MainFragment extends BaseFragment {
   List<Building> buildings;
   List<Resource> resources;
   List<Troop> troops;
+  View rootView;
 
   public MainFragment() {
   }
@@ -66,9 +62,9 @@ public class MainFragment extends BaseFragment {
     TribesApplication.app().basicComponent().inject(this);
     editor = preferences.edit();
 
-    final View rootView = inflater.inflate(R.layout.fragment_main, container, false);
+    rootView = inflater.inflate(R.layout.fragment_main, container, false);
     refreshActiveFragment();
-    setMainFragmentView(rootView);
+//    setMainFragmentView(rootView);
 
     Button buildingButton = (Button) rootView.findViewById(R.id.go_to_buildings_btn);
     Button troopButton = (Button) rootView.findViewById(R.id.go_to_troops_btn);
@@ -76,22 +72,14 @@ public class MainFragment extends BaseFragment {
     buildingButton.setOnClickListener(new View.OnClickListener() {
       @Override
       public void onClick(View v) {
-        ((MainActivity)getActivity()).activeFragment = new BuildingsFragment();
-        (getActivity()).getSupportFragmentManager()
-                .beginTransaction()
-                .replace(R.id.layout_content, ((MainActivity)getActivity()).activeFragment)
-                .commit();
+        ((MainActivity)getActivity()).displaySelectedScreen(R.id.nav_buildings);
       }
     });
 
       troopButton.setOnClickListener(new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-          ((MainActivity)getActivity()).activeFragment = new TroopsFragment();
-          (getActivity()).getSupportFragmentManager()
-                  .beginTransaction()
-                  .replace(R.id.layout_content, ((MainActivity)getActivity()).activeFragment)
-                  .commit();
+          ((MainActivity)getActivity()).displaySelectedScreen(R.id.nav_troops);
         }
       });
       return rootView;
@@ -124,6 +112,7 @@ public class MainFragment extends BaseFragment {
       totalTroopNumber.setText((troops.size() + " finished"));
     }
   }
+
   public void getKingdomFromAPI() {
     apiService.getKingdom(preferences.getString(USER_ACCESS_TOKEN, "")).enqueue(new Callback<Kingdom>() {
       @Override
@@ -135,6 +124,7 @@ public class MainFragment extends BaseFragment {
         buildings = response.body().getBuildings();
         troops = response.body().getTroops();
         resources = response.body().getResources();
+        setMainFragmentView(rootView);
         if (loadingViewListener != null) {
           loadingViewListener.loadingFinished();
         }
@@ -152,4 +142,6 @@ public class MainFragment extends BaseFragment {
     getKingdomFromAPI();
     super.refreshActiveFragment();
   }
+
+
 }

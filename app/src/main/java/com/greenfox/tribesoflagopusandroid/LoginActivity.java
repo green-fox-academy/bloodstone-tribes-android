@@ -34,6 +34,7 @@ import retrofit2.Callback;
 import retrofit2.Response;
 import se.simbio.encryption.Encryption;
 
+import static com.greenfox.tribesoflagopusandroid.MainActivity.NOTIFICATION;
 import static com.greenfox.tribesoflagopusandroid.MainActivity.USERNAME;
 import static com.greenfox.tribesoflagopusandroid.MainActivity.USER_ACCESS_TOKEN;
 
@@ -63,6 +64,13 @@ public class LoginActivity extends AppCompatActivity {
         setContentView(R.layout.activity_login);
         TribesApplication.app().basicComponent().inject(this);
         editor = preferences.edit();
+//        if (settingsFragment.notification.isChecked()) {
+//            editor.putBoolean(NOTIFICATION, true);
+//            editor.apply();
+//        } else {
+//            editor.putBoolean(NOTIFICATION, false);
+//            editor.apply();
+//        }
 
         registerLayout = (LinearLayout) findViewById(R.id.registerLayout);
         loginLayout = (LinearLayout) findViewById(R.id.loginLayout);
@@ -192,7 +200,8 @@ public class LoginActivity extends AppCompatActivity {
             @Override
             public void onResponse(Call<Kingdom> call, Response<Kingdom> response) {
                 mainActivity.thisKingdom = response.body();
-                sendNotification(preferences.getString(USERNAME, ""));
+                checkNotificationStatus(preferences.getString(USERNAME, ""));
+//                sendNotification(preferences.getString(USERNAME, ""));
                 Intent intent = new Intent(LoginActivity.this, MainActivity.class);
                 startActivity(intent);
             }
@@ -204,27 +213,36 @@ public class LoginActivity extends AppCompatActivity {
         });
     }
 
-    public void sendNotification(String username) {
-        NotificationCompat.Builder mBuilder =
-                new NotificationCompat.Builder(this)
-                        .setSmallIcon(R.drawable.tribes)
-                        .setLargeIcon(BitmapFactory.decodeResource(this.getResources(), R.drawable.tribesbig))
-                        .setContentTitle("Hi " + username + "!")
-                        .setContentText("Welcome to the game, and have fun!");
-        Intent resultIntent = new Intent(this, MainActivity.class);
-        TaskStackBuilder stackBuilder = TaskStackBuilder.create(this);
-        stackBuilder.addParentStack(MainActivity.class);
-        stackBuilder.addNextIntent(resultIntent);
-        PendingIntent resultPendingIntent =
-                stackBuilder.getPendingIntent(
-                        0,
-                        PendingIntent.FLAG_UPDATE_CURRENT
-                );
-        mBuilder.setContentIntent(resultPendingIntent).setAutoCancel(true);
+    public void checkNotificationStatus(String username) {
+//        preferences = PreferenceManager.getDefaultSharedPreferences(this);
+        if (preferences.getBoolean(NOTIFICATION, true)) {
+            sendNotification(username);
+        }
+    }
 
-        NotificationManager mNotificationManager =
-                (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
-        mNotificationManager.notify(001, mBuilder.build());
+    public void sendNotification(String username) {
+        if (preferences.getBoolean(NOTIFICATION, true)) {
+            NotificationCompat.Builder mBuilder =
+                    new NotificationCompat.Builder(this)
+                            .setSmallIcon(R.drawable.tribes)
+                            .setLargeIcon(BitmapFactory.decodeResource(this.getResources(), R.drawable.tribesbig))
+                            .setContentTitle("Hi " + username + "!")
+                            .setContentText("Welcome to the game, and have fun!");
+            Intent resultIntent = new Intent(this, MainActivity.class);
+            TaskStackBuilder stackBuilder = TaskStackBuilder.create(this);
+            stackBuilder.addParentStack(MainActivity.class);
+            stackBuilder.addNextIntent(resultIntent);
+            PendingIntent resultPendingIntent =
+                    stackBuilder.getPendingIntent(
+                            0,
+                            PendingIntent.FLAG_UPDATE_CURRENT
+                    );
+            mBuilder.setContentIntent(resultPendingIntent).setAutoCancel(true);
+
+            NotificationManager mNotificationManager =
+                    (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+            mNotificationManager.notify(001, mBuilder.build());
+        }
     }
 
     protected void addUserToken(String token) {
