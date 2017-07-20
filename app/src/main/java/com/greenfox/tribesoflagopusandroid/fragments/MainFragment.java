@@ -45,6 +45,7 @@ public class MainFragment extends BaseFragment {
   List<Building> buildings;
   List<Resource> resources;
   List<Troop> troops;
+  View rootView;
 
   public MainFragment() {
   }
@@ -61,9 +62,9 @@ public class MainFragment extends BaseFragment {
     TribesApplication.app().basicComponent().inject(this);
     editor = preferences.edit();
 
-    final View rootView = inflater.inflate(R.layout.fragment_main, container, false);
+    rootView = inflater.inflate(R.layout.fragment_main, container, false);
     refreshActiveFragment();
-    setMainFragmentView(rootView);
+//    setMainFragmentView(rootView);
 
     Button buildingButton = (Button) rootView.findViewById(R.id.go_to_buildings_btn);
     Button troopButton = (Button) rootView.findViewById(R.id.go_to_troops_btn);
@@ -111,6 +112,7 @@ public class MainFragment extends BaseFragment {
       totalTroopNumber.setText((troops.size() + " finished"));
     }
   }
+
   public void getKingdomFromAPI() {
     apiService.getKingdom(preferences.getString(USER_ACCESS_TOKEN, "")).enqueue(new Callback<Kingdom>() {
       @Override
@@ -122,6 +124,7 @@ public class MainFragment extends BaseFragment {
         buildings = response.body().getBuildings();
         troops = response.body().getTroops();
         resources = response.body().getResources();
+        setMainFragmentView(rootView);
         if (loadingViewListener != null) {
           loadingViewListener.loadingFinished();
         }
@@ -139,4 +142,6 @@ public class MainFragment extends BaseFragment {
     getKingdomFromAPI();
     super.refreshActiveFragment();
   }
+
+
 }

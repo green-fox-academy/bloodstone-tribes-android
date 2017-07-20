@@ -1,8 +1,15 @@
 package com.greenfox.tribesoflagopusandroid.fragments;
 
+import android.app.NotificationManager;
+import android.app.PendingIntent;
+import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.app.NotificationCompat;
+import android.support.v4.app.TaskStackBuilder;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,6 +17,7 @@ import android.widget.ListView;
 
 import com.github.clans.fab.FloatingActionButton;
 import com.github.clans.fab.FloatingActionMenu;
+import com.greenfox.tribesoflagopusandroid.MainActivity;
 import com.greenfox.tribesoflagopusandroid.R;
 import com.greenfox.tribesoflagopusandroid.TribesApplication;
 import com.greenfox.tribesoflagopusandroid.adapter.TroopAdapter;
@@ -75,6 +83,7 @@ public class TroopsFragment extends BaseFragment {
                 apiService.postTroop(preferences.getString(USER_ACCESS_TOKEN, "")).enqueue(new Callback<Troop>() {
                     @Override
                     public void onResponse(Call<Troop> call, Response<Troop> response) {
+                        sendNotification();
                         refreshActiveFragment();
                     }
 
@@ -132,4 +141,27 @@ public class TroopsFragment extends BaseFragment {
   public void onEventTroopAdded(TroopsEvent event) {
     troopAdapter.addAll(event.getTroops());
   }
+
+    public void sendNotification() {
+        NotificationCompat.Builder mBuilder =
+                new NotificationCompat.Builder(getActivity())
+                        .setSmallIcon(R.drawable.tribes)
+                        .setLargeIcon(BitmapFactory.decodeResource(this.getResources(), R.drawable.tribesbig))
+                        .setContentTitle("New training has started!")
+                        .setContentText("Your new troops started their training.");
+        Intent resultIntent = new Intent(getContext(), MainActivity.class);
+        TaskStackBuilder stackBuilder = TaskStackBuilder.create(getContext());
+        stackBuilder.addParentStack(MainActivity.class);
+        stackBuilder.addNextIntent(resultIntent);
+        PendingIntent resultPendingIntent =
+                stackBuilder.getPendingIntent(
+                        0,
+                        PendingIntent.FLAG_UPDATE_CURRENT
+                );
+        mBuilder.setContentIntent(resultPendingIntent).setAutoCancel(true);
+
+        NotificationManager mNotificationManager =
+                (NotificationManager) getActivity().getSystemService(Context.NOTIFICATION_SERVICE);
+        mNotificationManager.notify(001, mBuilder.build());
+    }
 }

@@ -1,8 +1,15 @@
 package com.greenfox.tribesoflagopusandroid.fragments;
 
+import android.app.NotificationManager;
+import android.app.PendingIntent;
+import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.app.NotificationCompat;
+import android.support.v4.app.TaskStackBuilder;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,6 +17,7 @@ import android.widget.ListView;
 
 import com.github.clans.fab.FloatingActionButton;
 import com.github.clans.fab.FloatingActionMenu;
+import com.greenfox.tribesoflagopusandroid.MainActivity;
 import com.greenfox.tribesoflagopusandroid.R;
 import com.greenfox.tribesoflagopusandroid.TribesApplication;
 import com.greenfox.tribesoflagopusandroid.adapter.BuildingsAdapter;
@@ -75,6 +83,7 @@ public class BuildingsFragment extends BaseFragment {
         apiService.postBuilding(preferences.getString(USER_ACCESS_TOKEN, ""), new BuildingDTO("farm")).enqueue(new Callback<Building>() {
           @Override
           public void onResponse(Call<Building> call, Response<Building> response) {
+            sendNotification("farm");
             refreshActiveFragment();
           }
 
@@ -93,6 +102,7 @@ public class BuildingsFragment extends BaseFragment {
         apiService.postBuilding(preferences.getString(USER_ACCESS_TOKEN, ""), new BuildingDTO("mine")).enqueue(new Callback<Building>() {
           @Override
           public void onResponse(Call<Building> call, Response<Building> response) {
+            sendNotification("mine");
             refreshActiveFragment();
           }
 
@@ -111,6 +121,7 @@ public class BuildingsFragment extends BaseFragment {
         apiService.postBuilding(preferences.getString(USER_ACCESS_TOKEN, ""), new BuildingDTO("barrack")).enqueue(new Callback<Building>() {
           @Override
           public void onResponse(Call<Building> call, Response<Building> response) {
+            sendNotification("barrack");
             refreshActiveFragment();
           }
 
@@ -168,4 +179,26 @@ public class BuildingsFragment extends BaseFragment {
     buildingsAdapter.addAll(event.getBuildings());
   }
 
+  public void sendNotification(String building) {
+    NotificationCompat.Builder mBuilder =
+            new NotificationCompat.Builder(getActivity())
+                    .setSmallIcon(R.drawable.tribes)
+                    .setLargeIcon(BitmapFactory.decodeResource(this.getResources(), R.drawable.tribesbig))
+                    .setContentTitle("New " + building + " has started!")
+                    .setContentText("Your workers has started to work on your new " + building + ".");
+    Intent resultIntent = new Intent(getContext(), MainActivity.class);
+    TaskStackBuilder stackBuilder = TaskStackBuilder.create(getContext());
+    stackBuilder.addParentStack(MainActivity.class);
+    stackBuilder.addNextIntent(resultIntent);
+    PendingIntent resultPendingIntent =
+            stackBuilder.getPendingIntent(
+                    0,
+                    PendingIntent.FLAG_UPDATE_CURRENT
+            );
+    mBuilder.setContentIntent(resultPendingIntent).setAutoCancel(true);
+
+    NotificationManager mNotificationManager =
+            (NotificationManager) getActivity().getSystemService(Context.NOTIFICATION_SERVICE);
+    mNotificationManager.notify(001, mBuilder.build());
+  }
 }
