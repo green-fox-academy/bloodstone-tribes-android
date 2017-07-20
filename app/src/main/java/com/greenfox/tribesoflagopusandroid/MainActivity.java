@@ -139,7 +139,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
   }
 
   public void logout() {
-    switchToBackgroundMode();
+    preferences = PreferenceManager.getDefaultSharedPreferences(this);
+    if (preferences.getBoolean(BACKGROUND_SYNC, true)) {
+      switchToBackgroundMode();
+    }
     preferences = PreferenceManager.getDefaultSharedPreferences(this);
     editor = preferences.edit();
     editor.clear();
@@ -192,6 +195,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
   }
 
   public void displaySelectedScreen(int id) {
+    checkBackgroundSyncStatus();
     switch (id) {
       case R.id.nav_buildings:
         EventBus.getDefault().post(new BuildingsEvent());

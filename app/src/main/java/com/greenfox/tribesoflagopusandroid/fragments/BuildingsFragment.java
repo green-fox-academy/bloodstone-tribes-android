@@ -40,6 +40,7 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 import static com.greenfox.tribesoflagopusandroid.MainActivity.BUILDINGS_FRAGMENT_SAVE;
+import static com.greenfox.tribesoflagopusandroid.MainActivity.NOTIFICATION;
 import static com.greenfox.tribesoflagopusandroid.MainActivity.USER_ACCESS_TOKEN;
 
 public class BuildingsFragment extends BaseFragment {
@@ -145,7 +146,7 @@ public class BuildingsFragment extends BaseFragment {
     apiService.getBuildings(preferences.getString(USER_ACCESS_TOKEN, "")).enqueue(new Callback<BuildingsResponse>() {
       @Override
       public void onResponse(Call<BuildingsResponse> call, Response<BuildingsResponse> response) {
-        EventBus.getDefault().post(new BuildingsEvent(response.body().getBuildings()));
+//        EventBus.getDefault().post(new BuildingsEvent(response.body().getBuildings()));
         buildingsAdapter.clear();
         buildingsAdapter.addAll(response.body().getBuildings());
         listView.setAdapter(buildingsAdapter);
@@ -180,25 +181,27 @@ public class BuildingsFragment extends BaseFragment {
   }
 
   public void sendNotification(String building) {
-    NotificationCompat.Builder mBuilder =
-            new NotificationCompat.Builder(getActivity())
-                    .setSmallIcon(R.drawable.tribes)
-                    .setLargeIcon(BitmapFactory.decodeResource(this.getResources(), R.drawable.tribesbig))
-                    .setContentTitle("New " + building + " has started!")
-                    .setContentText("Your workers has started to work on your new " + building + ".");
-    Intent resultIntent = new Intent(getContext(), MainActivity.class);
-    TaskStackBuilder stackBuilder = TaskStackBuilder.create(getContext());
-    stackBuilder.addParentStack(MainActivity.class);
-    stackBuilder.addNextIntent(resultIntent);
-    PendingIntent resultPendingIntent =
-            stackBuilder.getPendingIntent(
-                    0,
-                    PendingIntent.FLAG_UPDATE_CURRENT
-            );
-    mBuilder.setContentIntent(resultPendingIntent).setAutoCancel(true);
+    if (preferences.getBoolean(NOTIFICATION, true)) {
+      NotificationCompat.Builder mBuilder =
+              new NotificationCompat.Builder(getActivity())
+                      .setSmallIcon(R.drawable.tribes)
+                      .setLargeIcon(BitmapFactory.decodeResource(this.getResources(), R.drawable.tribesbig))
+                      .setContentTitle("New " + building + " has started!")
+                      .setContentText("Your workers has started to work on your new " + building + ".");
+      Intent resultIntent = new Intent(getContext(), MainActivity.class);
+      TaskStackBuilder stackBuilder = TaskStackBuilder.create(getContext());
+      stackBuilder.addParentStack(MainActivity.class);
+      stackBuilder.addNextIntent(resultIntent);
+      PendingIntent resultPendingIntent =
+              stackBuilder.getPendingIntent(
+                      0,
+                      PendingIntent.FLAG_UPDATE_CURRENT
+              );
+      mBuilder.setContentIntent(resultPendingIntent).setAutoCancel(true);
 
-    NotificationManager mNotificationManager =
-            (NotificationManager) getActivity().getSystemService(Context.NOTIFICATION_SERVICE);
-    mNotificationManager.notify(001, mBuilder.build());
+      NotificationManager mNotificationManager =
+              (NotificationManager) getActivity().getSystemService(Context.NOTIFICATION_SERVICE);
+      mNotificationManager.notify(001, mBuilder.build());
+    }
   }
 }

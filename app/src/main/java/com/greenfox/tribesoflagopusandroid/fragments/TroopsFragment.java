@@ -38,6 +38,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
+import static com.greenfox.tribesoflagopusandroid.MainActivity.NOTIFICATION;
 import static com.greenfox.tribesoflagopusandroid.MainActivity.TROOPS_FRAGMENT_SAVE;
 import static com.greenfox.tribesoflagopusandroid.MainActivity.USER_ACCESS_TOKEN;
 
@@ -101,7 +102,7 @@ public class TroopsFragment extends BaseFragment {
         apiService.getTroops(preferences.getString(USER_ACCESS_TOKEN, "")).enqueue(new Callback<TroopsResponse>() {
             @Override
             public void onResponse(Call<TroopsResponse> call, Response<TroopsResponse> response) {
-                EventBus.getDefault().post(new TroopsEvent(response.body().getTroops()));
+//                EventBus.getDefault().post(new TroopsEvent(response.body().getTroops()));
                 troopAdapter.clear();
                 troopAdapter.addAll(response.body().getTroops());
                 listView.setAdapter(troopAdapter);
@@ -143,25 +144,27 @@ public class TroopsFragment extends BaseFragment {
   }
 
     public void sendNotification() {
-        NotificationCompat.Builder mBuilder =
-                new NotificationCompat.Builder(getActivity())
-                        .setSmallIcon(R.drawable.tribes)
-                        .setLargeIcon(BitmapFactory.decodeResource(this.getResources(), R.drawable.tribesbig))
-                        .setContentTitle("New training has started!")
-                        .setContentText("Your new troops started their training.");
-        Intent resultIntent = new Intent(getContext(), MainActivity.class);
-        TaskStackBuilder stackBuilder = TaskStackBuilder.create(getContext());
-        stackBuilder.addParentStack(MainActivity.class);
-        stackBuilder.addNextIntent(resultIntent);
-        PendingIntent resultPendingIntent =
-                stackBuilder.getPendingIntent(
-                        0,
-                        PendingIntent.FLAG_UPDATE_CURRENT
-                );
-        mBuilder.setContentIntent(resultPendingIntent).setAutoCancel(true);
+        if (preferences.getBoolean(NOTIFICATION, true)) {
+            NotificationCompat.Builder mBuilder =
+                    new NotificationCompat.Builder(getActivity())
+                            .setSmallIcon(R.drawable.tribes)
+                            .setLargeIcon(BitmapFactory.decodeResource(this.getResources(), R.drawable.tribesbig))
+                            .setContentTitle("New training has started!")
+                            .setContentText("Your new troops started their training.");
+            Intent resultIntent = new Intent(getContext(), MainActivity.class);
+            TaskStackBuilder stackBuilder = TaskStackBuilder.create(getContext());
+            stackBuilder.addParentStack(MainActivity.class);
+            stackBuilder.addNextIntent(resultIntent);
+            PendingIntent resultPendingIntent =
+                    stackBuilder.getPendingIntent(
+                            0,
+                            PendingIntent.FLAG_UPDATE_CURRENT
+                    );
+            mBuilder.setContentIntent(resultPendingIntent).setAutoCancel(true);
 
-        NotificationManager mNotificationManager =
-                (NotificationManager) getActivity().getSystemService(Context.NOTIFICATION_SERVICE);
-        mNotificationManager.notify(001, mBuilder.build());
+            NotificationManager mNotificationManager =
+                    (NotificationManager) getActivity().getSystemService(Context.NOTIFICATION_SERVICE);
+            mNotificationManager.notify(001, mBuilder.build());
+        }
     }
 }
