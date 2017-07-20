@@ -98,8 +98,8 @@ public class MainFragment extends BaseFragment {
     TextView gold = (TextView) rootView.findViewById(R.id.resources_gold);
     TextView food = (TextView) rootView.findViewById(R.id.resources_food);
     if (resources != null && resources.size() != 0) {
-      gold.setText(resources.get(0).getAmount() + " " + resources.get(0).getType());
-      food.setText(resources.get(1).getAmount() + " " + resources.get(1).getType());
+      gold.setText(resources.get(0).getAmount() + " ");
+      food.setText(resources.get(1).getAmount() + " ");
     }
     goldImage.setImageResource(R.drawable.gold);
     foodImage.setImageResource(R.drawable.food);
